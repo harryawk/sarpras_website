@@ -31,6 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'peminjam.apps.PeminjamConfig',
+    'peminjaman.apps.PeminjamanConfig',
+    'ruangan.apps.RuanganConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

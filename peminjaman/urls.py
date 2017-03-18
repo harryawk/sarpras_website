@@ -4,10 +4,13 @@ from . import views
 app_name = 'peminjaman'
 
 urlpatterns = [
+
     # /peminjaman/
     url(r'^$', views.index, name='index'),
 
     # /peminjaman/add/
     url(r'^add/$',views.formadd, name='add'),
 
+    # /peminjaman/add/process/
+    url(r'^add/process/$', views.processadd, name='processadd'),
 ]

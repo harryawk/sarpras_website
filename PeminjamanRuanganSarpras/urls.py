@@ -17,5 +17,9 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 urlpatterns = [
+    url(r'^peminjam/', include('peminjam.urls')),
+    url(r'^peminjaman/', include('peminjaman.urls')),
+    url(r'^ruangan/', include('ruangan.urls')),
+
     url(r'^admin/', admin.site.urls),
 ]

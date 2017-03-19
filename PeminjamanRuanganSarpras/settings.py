@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'admin_sarpras.apps.AdminSarprasConfig',
     'peminjam.apps.PeminjamConfig',
     'peminjaman.apps.PeminjamanConfig',
     'ruangan.apps.RuanganConfig',

@@ -1,10 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Pembayaran, Peminjaman
+from ruangan.models import Ruangan
+from peminjam.models import Peminjam
 
 
 # Peminjaman index view, mostly for debugging purpose
 def index(request):
-    return render(request, 'peminjaman/index.html', {})
+    all_peminjaman = Peminjaman.objects.all()
+    return render(request, 'peminjaman/index.html', {
+        'all_peminjaman' : all_peminjaman,
+    })
 
 
 # Return a form which'll be used to add new Peminjaman object to model

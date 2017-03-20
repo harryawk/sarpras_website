@@ -1,1 +1,83 @@
-<h1>This is "Peminjaman" Index Page</h1>>
+{% extends "base.html" %}
+
+
+{% block head %}
+<title>Daftar peminjaman</title>
+
+<style>
+   table, th , td {
+      border: 1px solid grey;
+      border-collapse: collapse;
+      padding: 5px;
+   }
+   
+   table tr:nth-child(odd) {
+      background-color: #f2f2f2;
+   }
+
+   table tr:nth-child(even) {
+      background-color: #ffffff;
+   }
+</style>
+{% endblock %}
+
+
+{% block body %}
+<h1>Daftar peminjaman</h1>
+
+<script>
+    var peminjamanList = angular.module('peminjamanList', []);
+    peminjamanList.config(function($interpolateProvider) {
+  		$interpolateProvider.startSymbol('{[{');
+  		$interpolateProvider.endSymbol('}]}');
+	});
+	peminjamanList.controller("peminjamanListController", function($scope) {
+		
+		$scope.peminjamanListData = [];
+		{% for peminjaman in all_peminjaman %}
+		$scope.peminjamanListData = $scope.peminjamanListData.concat({
+			peminjam: "{{ peminjaman.peminjam }}",
+			ruangan:"{{ peminjaman.ruangan }}",
+			waktu_awal:"{{ peminjaman.waktu_awal }}",
+			waktu_akhir:"{{ peminjaman.waktu_akhir }}",
+			deskripsi:"{{ peminjaman.deskripsi }}",
+			edit_link: "{% url 'peminjaman:edit' peminjaman.id %}",
+			delete_link: "{% url 'peminjaman:delete' peminjaman.id %}"
+		});
+		{% endfor %}
+
+	});
+</script>
+
+<div ng-app="peminjamanList" ng-controller="peminjamanListController">
+
+Filter Peminjam: <input type = "text" ng-model = "filterPeminjam">
+Filter Ruangan: <input type = "text" ng-model = "filterRuangan">
+
+<table>
+   <tr>
+      <th>Peminjam</th>
+      <th>Ruangan</th>
+      <th>Waktu Awal</th>
+      <th>Waktu Akhir</th>
+      <th>Description</th>
+      <th>Edit</th>
+      <th>Delete</th>
+   </tr>
+   
+   <tr ng-repeat = "peminjamanData in peminjamanListData | filter:{peminjam:filterPeminjam} | filter:{ruangan:filterRuangan}">
+      <td>{[{ peminjamanData.peminjam }]}</td>
+      <td>{[{ peminjamanData.ruangan }]}</td>
+      <td>{[{ peminjamanData.waktu_awal }]}</td>
+      <td>{[{ peminjamanData.waktu_akhir }]}</td>
+      <td>{[{ peminjamanData.deskripsi }]}</td>
+      <td>{[{ peminjamanData.edit_link }]}</td>
+      <td>{[{ peminjamanData.delete_link }]}</td>
+   </tr>
+
+</table>
+
+</div>
+
+{% endblock %}
+

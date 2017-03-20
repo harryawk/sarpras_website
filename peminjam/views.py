@@ -1,10 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Peminjam
 
 
 # Peminjam index view, mostly for debugging purpose
 def index(request):
-    return render(request, 'peminjam/index.html', {})
+    all_peminjam = Peminjam.objects.all()
+    return render(request, 'peminjam/index.html', {
+        'all_peminjam': all_peminjam
+    })
 
 
 # Return a form which'll be used to add new Peminjam object to model

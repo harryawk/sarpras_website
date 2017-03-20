@@ -1,1 +1,75 @@
-<h1>This is "Peminjam" Index Page</h1>>
+{% extends "base.html" %}
+
+
+{% block head %}
+<title>Daftar Peminjam</title>
+
+<style>
+   table, th , td {
+      border: 1px solid grey;
+      border-collapse: collapse;
+      padding: 5px;
+   }
+   
+   table tr:nth-child(odd) {
+      background-color: #f2f2f2;
+   }
+
+   table tr:nth-child(even) {
+      background-color: #ffffff;
+   }
+</style>
+{% endblock %}
+
+
+{% block body %}
+<h1>Daftar Peminjam</h1>
+
+<script>
+    var peminjamList = angular.module('peminjamList', []);
+    peminjamList.config(function($interpolateProvider) {
+  		$interpolateProvider.startSymbol('{[{');
+  		$interpolateProvider.endSymbol('}]}');
+	});
+	peminjamList.controller("peminjamListController", function($scope) {
+		
+		$scope.peminjamListData = [];
+		{% for peminjam in all_peminjam %}
+		$scope.peminjamListData = $scope.peminjamListData.concat({
+			id: "{{ peminjam.id }}",
+			nama:"{{ peminjam.nama }}",
+			deskripsi:"{{ peminjam.deskripsi }}",
+			edit_link: "{% url 'peminjam:edit' peminjam.id %}",
+			delete_link: "{% url 'peminjam:delete' peminjam.id %}"
+		});
+		{% endfor %}
+
+	});
+</script>
+
+<div ng-app="peminjamList" ng-controller="peminjamListController">
+
+Filter Name: <input type = "text" ng-model = "filterNama">
+
+<table>
+
+   <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Edit</th>
+      <th>Delete</th>
+   </tr>
+   
+   <tr ng-repeat = "peminjamData in peminjamListData | filter:{id:filterId} | filter:{nama:filterNama}">
+      <td>{[{ peminjamData.nama }]}</td>
+      <td>{[{ peminjamData.deskripsi }]}</td>
+      <td>{[{ peminjamData.edit_link }]}</td>
+      <td>{[{ peminjamData.delete_link }]}</td>
+   </tr>
+
+</table>
+
+</div>
+
+{% endblock %}
+

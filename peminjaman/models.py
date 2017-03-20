@@ -11,7 +11,7 @@ class Peminjaman(models.Model):
     deskripsi = models.CharField(max_length=1000, blank=True)
 
     def __str__(self):
-        return self.peminjam +' : '+ self.ruangan +', '+ self.waktu_awal +' -> '+ self.waktu_akhir
+        return (self.peminjam.__str__() +' : '+ self.ruangan.__str__() +', '+ self.waktu_awal.__str__() +' -> '+ self.waktu_akhir.__str__())
 
 
 class Pembayaran(models.Model):

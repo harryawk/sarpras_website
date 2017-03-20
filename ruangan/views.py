@@ -1,10 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Ruangan
 
 
 # Ruangan index view, mostly for debugging purpose
 def index(request):
-    return render(request, 'ruangan/index.html', {})
+    all_ruangan = Ruangan.objects.all()
+    return render(request, 'ruangan/index.html', {
+        'all_ruangan': all_ruangan
+    })
 
 
 # Return a form which'll be used to add new Ruangan object to model

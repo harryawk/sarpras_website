@@ -1,1 +1,80 @@
-<h1>This is "Ruangan" Index Page</h1>>
+{% extends "base.html" %}
+
+
+{% block head %}
+<title>Daftar ruangan</title>
+
+<style>
+   table, th , td {
+      border: 1px solid grey;
+      border-collapse: collapse;
+      padding: 5px;
+   }
+   
+   table tr:nth-child(odd) {
+      background-color: #f2f2f2;
+   }
+
+   table tr:nth-child(even) {
+      background-color: #ffffff;
+   }
+</style>
+{% endblock %}
+
+
+{% block body %}
+<h1>Daftar Ruangan</h1>
+
+<script>
+    var ruanganList = angular.module('ruanganList', []);
+    ruanganList.config(function($interpolateProvider) {
+  		$interpolateProvider.startSymbol('{[{');
+  		$interpolateProvider.endSymbol('}]}');
+	});
+	ruanganList.controller("ruanganListController", function($scope) {
+		
+		$scope.ruanganListData = [];
+		{% for ruangan in all_ruangan %}
+		$scope.ruanganListData = $scope.ruanganListData.concat({
+			id: "{{ ruangan.id }}",
+			nama:"{{ ruangan.nama }}",
+			harga:"{{ ruangan.harga }}",
+			deskripsi:"{{ ruangan.deskripsi }}",
+			tipe:"{{ ruangan.tipe }}",
+			edit_link: "{% url 'ruangan:edit' ruangan.id %}",
+			delete_link: "{% url 'ruangan:delete' ruangan.id %}"
+		});
+		{% endfor %}
+
+	});
+</script>
+
+<div ng-app="ruanganList" ng-controller="ruanganListController">
+
+Filter Name: <input type = "text" ng-model = "filterNama">
+
+<table>
+   <tr>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Edit</th>
+      <th>Delete</th>
+   </tr>
+   
+   <tr ng-repeat = "ruanganData in ruanganListData | filter:{id:filterId} | filter:{nama:filterNama}">
+      <td>{[{ ruanganData.nama }]}</td>
+      <td>{[{ ruanganData.harga }]}</td>
+      <td>{[{ ruanganData.deskripsi }]}</td>
+      <td>{[{ ruanganData.tipe }]}</td>
+      <td>{[{ ruanganData.edit_link }]}</td>
+      <td>{[{ ruanganData.delete_link }]}</td>
+   </tr>
+
+</table>
+
+</div>
+
+{% endblock %}
+

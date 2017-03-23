@@ -29,23 +29,14 @@
 		});
 		{% endfor %}
 
-	});
-</script>
-<!--
-<script>
-    var ruanganList = angular.module('ruanganList', []);
-    ruanganList.config(function($interpolateProvider) {
-  		$interpolateProvider.startSymbol('{[{');
-  		$interpolateProvider.endSymbol('}]}');
-	});
-	ruanganList.controller("ruanganListController", function($scope) {
-		
 		$scope.ruanganListData = [];
 		{% for ruangan in all_ruangan %}
 		$scope.ruanganListData = $scope.ruanganListData.concat({
 			id: "{{ ruangan.id }}",
 			nama:"{{ ruangan.nama }}",
+			harga:"{{ ruangan.harga }}",
 			deskripsi:"{{ ruangan.deskripsi }}",
+			tipe:"{{ ruangan.tipe }}",
 			edit_link: "{% url 'ruangan:edit' ruangan.id %}",
 			delete_link: "{% url 'ruangan:delete' ruangan.id %}"
 		});
@@ -53,7 +44,7 @@
 
 	});
 </script>
--->
+
 <form enctype="multipart/form-data" action="" method="post" id="peminjaman_form" novalidate ng-app="peminjamList" ng-controller="peminjamListController">
 	{% csrf_token %}
 
@@ -64,26 +55,30 @@
 				<option value="" selected>---------</option>							
 				<option ng-repeat = "peminjamData in peminjamListData">{[{ peminjamData.nama }]}</option>
 			</select>
+
 			<a class="related-widget-wrapper-link change-related" id="change_id_peminjam"
 			data-href-template="/admin/peminjam/peminjam/__fk__/change/?_to_field=id&amp;_popup=1"
 			title="Change selected peminjam"><img src="/static/admin/img/icon-changelink.svg" alt="Change"/></a><a class="related-widget-wrapper-link add-related" id="add_id_peminjam"
 			href="/admin/peminjam/peminjam/add/?_to_field=id&amp;_popup=1"
 			title="Add another peminjam"><img src="/static/admin/img/icon-addlink.svg" alt="Add"/></a>
+
 		</div>
 	</div>
 
-	<div ng-app="ruanganList" ng-controller="ruanganListController">
+	<div>
 		<label for="id_ruangan">Ruangan:</label>
 		<div>
 			<select name="ruangan" required id="id_ruangan">
 				<option value="" selected>---------</option>
 				<option ng-repeat = "ruanganData in ruanganListData">{[{ ruanganData.nama }]}</option>
 			</select>
+
 			<a class="related-widget-wrapper-link change-related" id="change_id_ruangan"
 			data-href-template="/admin/ruangan/ruangan/__fk__/change/?_to_field=id&amp;_popup=1"
 			title="Change selected ruangan"><img src="/static/admin/img/icon-changelink.svg" alt="Change"/></a><a class="related-widget-wrapper-link add-related" id="add_id_ruangan"
 			href="/admin/ruangan/ruangan/add/?_to_field=id&amp;_popup=1"
 			title="Add another ruangan"><img src="/static/admin/img/icon-addlink.svg" alt="Add"/></a>
+
 		</div>
 	</div>
 

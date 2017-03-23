@@ -17,10 +17,10 @@ def index(request, errormsg=''):
 # Return a form which'll be used to add new Peminjaman object to model
 def formadd(request):
     all_peminjam = Peminjam.objects.all()
-    
+    all_ruangan = Ruangan.objects.all()
     return render(request, 'peminjaman/add.html', {
         'all_peminjam' : all_peminjam,
-        
+        'all_ruangan' : all_ruangan,
     })
 
 

@@ -1,1 +1,53 @@
-<h1>This is "Ruangan" Edit Form</h1>
+{% extends "base.html" %}
+
+{% block head %}
+<title>Mengubah Informasi Ruangan</title>
+{% endblock %}
+
+{% block body %}
+<h1>Mengubah Informasi Ruangan</h1>
+
+<form action="{% url 'ruangan:edit' selected_ruangan.id %}" method="post">
+    {% csrf_token %}
+
+	<div>
+		<label for="id_nama">Nama:</label>
+		<input type="text" name="nama" id="id_nama" value="{{ selected_ruangan.nama }}" maxlength="250" />
+	</div>
+
+	<div>
+		<label for="id_harga">Harga:</label>
+		<input type="number" name="harga" id="id_harga" value="{{ selected_ruangan.harga }}" required />
+	</div>
+
+	<div>
+		<label for="id_deskripsi">Deskripsi:</label>
+		<textarea name="deskripsi" id="id_deskripsi" maxlength="1000">{{ selected_ruangan.deskripsi }}</textarea>
+	</div>
+	
+	<div>
+		<label for="id_tipe">Tipe:</label>
+		<select name="tipe" id="id_tipe">
+			<option value="R" {% if selected_ruangan.tipe == "Ruang" %} selected {% endif %}>Ruang</option>
+			<option value="S" {% if selected_ruangan.tipe == "Selasar" %} selected {% endif %}>Selasar</option>
+			<option value="L" {% if selected_ruangan.tipe == "Lapangan" %} selected {% endif %}>Lapangan</option>
+		</select>
+	</div>
+	
+	<div>
+		<input type="submit" value="Edit" />
+	</div>
+
+    <ul>
+    {% for error_item in error %}
+        <li>{{ error_item }}</li>
+    {% endfor %}
+
+    {% for message_item in message %}
+        <li>{{ message_item }}</li>
+    {% endfor %}
+    </ul>
+
+</form>
+{% endblock %}
+

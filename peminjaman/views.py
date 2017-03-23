@@ -6,7 +6,7 @@ from peminjam.models import Peminjam
 
 
 # Peminjaman index view, mostly for debugging purpose
-def index(request, errormsg):
+def index(request, errormsg=''):
     all_peminjaman = Peminjaman.objects.all()
     return render(request, 'peminjaman/index.html', {
         'all_peminjaman' : all_peminjaman,
@@ -16,7 +16,12 @@ def index(request, errormsg):
 
 # Return a form which'll be used to add new Peminjaman object to model
 def formadd(request):
-    return render(request, 'peminjaman/add.html', {})
+    all_peminjam = Peminjam.objects.all()
+    
+    return render(request, 'peminjaman/add.html', {
+        'all_peminjam' : all_peminjam,
+        
+    })
 
 
 # Return a form which'll be used to edit peminjaman object to model

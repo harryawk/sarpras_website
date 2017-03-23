@@ -60,7 +60,50 @@ def formadd(request):
 
 # Return a form which'll be used to edit Ruangan object to model
 def formedit(request, ruangan_id):
-    return render(request, 'ruangan/edit.html', {})
+	
+	# Berusaha mendapat model ruangan yang ingin diubah
+    try:
+        selected_ruangan = Ruangan.objects.get(id=ruangan_id)
+    except Exception as e:
+        return redirect(reverse('ruangan:index'))
+
+    # Inisiasi variabel berdasarkan post jika ada
+    new_nama = request.POST.get("nama",'')
+    new_harga = request.POST.get("harga",'')
+    new_deskripsi = request.POST.get("deskripsi", '')
+    new_tipe = request.POST.get("tipe", '')
+    error = []
+    message = []
+
+    # Jika ada data post yang diberikan,
+    if(new_nama and new_harga and new_deskripsi and new_tipe):
+
+        # Mengecek apakah ada object dengan nama yang sama
+        if (Ruangan.objects.filter(nama=new_nama) and (not(selected_ruangan.nama == new_nama))):
+            error += ["Sudah ada data peminjam dengan nama yang sama", ]
+
+        # Berusaha mengubah informasi object jika tidak ada error
+        if not error:
+            selected_ruangan.nama = new_nama
+            selected_ruangan.harga = new_harga
+            selected_ruangan.deskripsi = new_deskripsi
+            selected_ruangan.tipe = new_tipe
+			
+            # Berusaha menyimpan perubahan dan redirect ke Index jika berhasil
+            try:
+                selected_ruangan.save()
+            except Exception as e:
+                message += ["Unhandled Exception", ]
+            else:
+                return redirect(reverse('ruangan:index'))
+
+
+    # Mengembalikan form yang sama
+    return render(request, 'ruangan/edit.html', {
+        'selected_ruangan': selected_ruangan,
+        'error': error,
+        'message': message,
+    })
 
 
 # Return a form which'll be used to delete Ruangan object to model

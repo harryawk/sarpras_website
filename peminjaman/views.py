@@ -6,10 +6,11 @@ from peminjam.models import Peminjam
 
 
 # Peminjaman index view, mostly for debugging purpose
-def index(request):
+def index(request, errormsg):
     all_peminjaman = Peminjaman.objects.all()
     return render(request, 'peminjaman/index.html', {
         'all_peminjaman' : all_peminjaman,
+        'error' : errormsg
     })
 
 

@@ -1,1 +1,34 @@
-<h1>This is "Peminjam" Edit Form</h1>
+{% extends "base.html" %}
+
+{% block head %}
+<title>Mengubah Informasi Peminjam</title>
+{% endblock %}
+
+{% block body %}
+<h1>Mengubah Informasi Organisasi Peminjam</h1>
+
+<form action="{% url 'peminjam:edit' selected_peminjam.id %}" method="post">
+    {% csrf_token %}
+
+    Nama: <br />
+    <input type="text" name="nama" value="{{ selected_peminjam.nama }}" autofocus required>
+    <br /><br />
+
+    Deskripsi: <br />
+    <textarea name="deskripsi" rows="10" cols="30">{{ selected_peminjam.deskripsi }}</textarea>
+    <br />
+
+    <ul>
+    {% for error_item in error %}
+        <li>{{ error_item }}</li>
+    {% endfor %}
+
+    {% for message_item in message %}
+        <li>{{ message_item }}</li>
+    {% endfor %}
+    </ul>
+
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}
+

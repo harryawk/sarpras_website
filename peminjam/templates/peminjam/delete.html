@@ -1,1 +1,38 @@
-<h1>This is "Peminjam" Delete Form</h1>
+{% extends "base.html" %}
+
+{% block head %}
+<title>Menghapus Data Peminjam</title>
+{% endblock %}
+
+{% block body %}
+<h1>Menghapus Data Organisasi Peminjam</h1>
+
+<br />Harap Perhatian, Anda akan menghapus data peminjam berikut ini,
+<br />
+<br />Nama: {{ selected_peminjam.nama }}
+<br />Deskripsi: {{ selected_peminjam.deskripsi }}
+<br />
+<br />Dengan menghapus data peminjam, maka
+<br />SEMUA DATA PEMINJAMAN TERKAIT PEMINJAM INI JUGA AKAN DIHAPUS
+<br />Harap berhati hati,
+<br />
+<br />Untuk menghapus, harap ketik ulang nama peminjam dan kirim form dibawah
+<br /><form action="{% url 'peminjam:delete' selected_peminjam.id %}" method="post">
+
+    {% csrf_token %}
+    <input type="password" name="nama" autofocus required>
+
+    <ul>
+    {% for error_item in error %}
+        <li>{{ error_item }}</li>
+    {% endfor %}
+
+    {% for message_item in message %}
+        <li>{{ message_item }}</li>
+    {% endfor %}
+    </ul>
+
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}
+

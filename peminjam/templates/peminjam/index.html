@@ -61,13 +61,23 @@ Filter Name: <input type = "text" ng-model = "filterNama">
    </tr>
    
    <tr ng-repeat = "peminjamData in peminjamListData | filter:{id:filterId} | filter:{nama:filterNama}">
-      <td>{[{ peminjamData.nama }]}</td>
-      <td>{[{ peminjamData.deskripsi }]}</td>
-      <td>{[{ peminjamData.edit_link }]}</td>
-      <td>{[{ peminjamData.delete_link }]}</td>
+       <td>{[{ peminjamData.nama }]}</td>
+       <td>{[{ peminjamData.deskripsi }]}</td>
+       <td><a href="{[{ peminjamData.edit_link }]}">EDIT</a></td>
+       <td><a href="{[{ peminjamData.delete_link }]}">DELETE</a></td>
    </tr>
 
 </table>
+
+<ul>
+{% for error_item in error %}
+    <li>{{ error_item }}</li>
+{% endfor %}
+
+{% for message_item in message %}
+    <li>{{ message_item }}</li>
+{% endfor %}
+ </ul>
 
 </div>
 

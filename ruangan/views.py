@@ -108,5 +108,41 @@ def formedit(request, ruangan_id):
 
 # Return a form which'll be used to delete Ruangan object to model
 def formdelete(request, ruangan_id):
-    return render(request, 'ruangan/delete.html', {})
+    
+	# Berusaha mendapat model peminjam yang ingin diubah
+    try:
+        selected_ruangan = Ruangan.objects.get(id=ruangan_id)
+    except Exception as e:
+        return redirect(reverse('ruangan:index'))
+
+    # Inisiasi variabel berdasarkan post jika ada
+    new_nama = request.POST.get("nama",'')
+    error = []
+    message = []
+
+    # Jika ada data post yang diberikan,
+    if(new_nama):
+
+        # Mengecek apakah ada object dengan nama yang sama
+        if (not(selected_ruangan.nama == new_nama)):
+            error += ["Nama ruangan tidak sama", ]
+
+        # Berusaha mengubah informasi object jika tidak ada error
+        if not error:
+
+            # Berusaha menyimpan perubahan dan redirect ke Index jika berhasil
+            try:
+                selected_ruangan.delete()
+            except Exception as e:
+                message += ["Unhandled Exception", ]
+            else:
+                return redirect(reverse('ruangan:index'))
+
+    # Mengembalikan form yang sama
+    return render(request, 'ruangan/delete.html', {
+        'selected_ruangan': selected_ruangan,
+        'error': error,
+        'message': message,
+    })
+
 

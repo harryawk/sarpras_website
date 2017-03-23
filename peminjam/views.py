@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from .models import Peminjam
 from django.urls import reverse
 
+
 # Peminjam index view, mostly for debugging purpose
-def index(request, message=[], error=[]):
+def index(request, message='', error=''):
     all_peminjam = Peminjam.objects.all()
     return render(request, 'peminjam/index.html', {
         'error': error,
@@ -35,15 +36,13 @@ def formadd(request):
                 deskripsi=new_deskripsi
             )
 
+            # Berusaha menyimpan perubahan dan redirect ke Index jika berhasil
             try:
                 new_peminjam.save()
             except Exception as e:
                 message += ["Unhandled Exception", ]
             else:
                 return redirect(reverse('peminjam:index'))
-
-            new_nama = ""
-            new_deskripsi = ""
 
     # Mengembalikan form yang sama
     return render(request, 'peminjam/add.html', {
@@ -81,6 +80,7 @@ def formedit(request, peminjam_id):
             selected_peminjam.nama = new_nama
             selected_peminjam.deskripsi = new_deskripsi
 
+            # Berusaha menyimpan perubahan dan redirect ke Index jika berhasil
             try:
                 selected_peminjam.save()
             except Exception as e:
@@ -120,6 +120,8 @@ def formdelete(request, peminjam_id):
 
         # Berusaha mengubah informasi object jika tidak ada error
         if not error:
+
+            # Berusaha menyimpan perubahan dan redirect ke Index jika berhasil
             try:
                 selected_peminjam.delete()
             except Exception as e:

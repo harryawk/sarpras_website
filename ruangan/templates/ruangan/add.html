@@ -1,16 +1,14 @@
 {% extends "base.html" %}
 
-
 {% block head %}
 <title>Menambahkan Ruangan Baru</title>
 {% endblock %}
 
-
 {% block body %}
-
 <h1>Tambah Ruangan</h1>
 
-<form enctype="multipart/form-data" action="" method="post" id="ruangan_form" novalidate>
+<form enctype="multipart/form-data" action="{% url 'ruangan:add' %}" method="post" id="ruangan_form" novalidate>
+	
 	{% csrf_token %}
 
 	<div>
@@ -38,12 +36,9 @@
 	</div>
 
 	<div>
-		<input type="submit" value="Save" class="default" name="_save" />
-		<input type="submit" value="Save and add another" name="_addanother" />
-		<input type="submit" value="Save and continue editing" name="_continue" />
+		<input type="submit" value="Save" />
 	</div>
 
 </form>
-
 {% endblock %}
 

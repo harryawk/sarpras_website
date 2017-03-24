@@ -77,6 +77,16 @@ Filter Ruangan: <input type = "text" ng-model = "filterRuangan">
 
 </table>
 
+<ul>
+{% for error_item in error %}
+<li>{{ error_item }}</li>
+{% endfor %}
+
+{% for message_item in message %}
+<li>{{ message_item }}</li>
+{% endfor %}
+</ul>
+
 </div>
 
 {% endblock %}

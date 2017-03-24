@@ -33,12 +33,8 @@
 			<option value="L" {% if selected_ruangan.tipe == "Lapangan" %} selected {% endif %}>Lapangan</option>
 		</select>
 	</div>
-	
-	<div>
-		<input type="submit" value="Edit" />
-	</div>
 
-    <ul>
+	<ul>
     {% for error_item in error %}
         <li>{{ error_item }}</li>
     {% endfor %}
@@ -47,6 +43,10 @@
         <li>{{ message_item }}</li>
     {% endfor %}
     </ul>
+
+	<div>
+		<input type="submit" value="Edit" />
+	</div>
 
 </form>
 {% endblock %}

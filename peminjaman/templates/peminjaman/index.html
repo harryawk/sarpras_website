@@ -51,8 +51,9 @@
 
 <div ng-app="peminjamanList" ng-controller="peminjamanListController">
 
-Filter Peminjam: <input type = "text" ng-model = "filterPeminjam">
-Filter Ruangan: <input type = "text" ng-model = "filterRuangan">
+   Filter Peminjam: <input type = "text" ng-model = "filterPeminjam">
+   Filter Ruangan: <input type = "text" ng-model = "filterRuangan">
+   <button><a href="{% url 'peminjaman:add' %}" style="text-decoration: none; color: black;">ADD</a></button>
 
 <table>
    <tr>
@@ -71,8 +72,8 @@ Filter Ruangan: <input type = "text" ng-model = "filterRuangan">
       <td>{[{ peminjamanData.waktu_awal }]}</td>
       <td>{[{ peminjamanData.waktu_akhir }]}</td>
       <td>{[{ peminjamanData.deskripsi }]}</td>
-      <td>{[{ peminjamanData.edit_link }]}</td>
-      <td>{[{ peminjamanData.delete_link }]}</td>
+      <td><a href="{[{ peminjamanData.edit_link }]}">EDIT</a></td>
+      <td><a href="{[{ peminjamanData.delete_link }]}">DELETE</a></td>
    </tr>
 
 </table>

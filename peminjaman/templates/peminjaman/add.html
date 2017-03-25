@@ -106,6 +106,17 @@
 		<label for="id_deskripsi">Deskripsi:</label>
 		<textarea name="deskripsi" id="id_deskripsi" maxlength="1000"></textarea>
 	</div>
+
+	<ul>
+	{% for error_item in error %}
+	<li>{{ error_item }}</li>
+	{% endfor %}
+
+	{% for message_item in message %}
+	<li>{{ message_item }}</li>
+	{% endfor %}
+	</ul>
+
 	<div>
 		<!--<input type="submit" value="Save" class="default" name="_save" />-->
 		<!--<input type="submit" value="WAWA" >-->

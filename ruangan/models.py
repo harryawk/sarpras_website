@@ -6,9 +6,9 @@ class Ruangan(models.Model):
     harga = models.BigIntegerField(default=0)
     deskripsi = models.CharField(max_length=1000, blank=True)
 
-    RUANG = 'R'
-    SELASAR = 'S'
-    LAPANGAN = 'L'
+    RUANG = 'Ruang'
+    SELASAR = 'Selasar'
+    LAPANGAN = 'Lapangan'
     PILIHAN_TIPE_RUANG = (
         (RUANG, 'Ruang'),
         (SELASAR, 'Selasar'),

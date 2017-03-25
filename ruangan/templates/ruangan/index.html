@@ -68,11 +68,21 @@ Filter Name: <input type = "text" ng-model = "filterNama">
       <td>{[{ ruanganData.harga }]}</td>
       <td>{[{ ruanganData.deskripsi }]}</td>
       <td>{[{ ruanganData.tipe }]}</td>
-      <td>{[{ ruanganData.edit_link }]}</td>
-      <td>{[{ ruanganData.delete_link }]}</td>
+      <td><a href="{[{ ruanganData.edit_link }]}">EDIT</a></td>
+      <td><a href="{[{ ruanganData.delete_link }]}">DELETE</a></td>
    </tr>
 
 </table>
+
+<ul>
+{% for error_item in error %}
+<li>{{ error_item }}</li>
+{% endfor %}
+
+{% for message_item in message %}
+<li>{{ message_item }}</li>
+{% endfor %}
+</ul>
 
 </div>
 

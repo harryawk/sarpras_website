@@ -1,1 +1,43 @@
-<h1>This is "Ruangan" Delete Form</h1>
+{% extends "base.html" %}
+
+{% block head %}
+<title>Menghapus Data Ruangan</title>
+{% endblock %}
+
+{% block body %}
+<h1>Menghapus Data Ruangan</h1>
+
+<br />Harap Perhatian, Anda akan menghapus data ruangan berikut ini,
+<br />
+<br />Nama: {{ selected_ruangan.nama }}
+<br />Harga: {{ selected_ruangan.harga }}
+<br />Deskripsi: {{ selected_ruangan.deskripsi }}
+<br />Tipe: {{ selected_ruangan.tipe }}
+<br />
+<br />Dengan menghapus data ruangan, maka
+<br />SEMUA DATA RUANGAN TERKAIT RUANGAN INI JUGA AKAN DIHAPUS
+<br />Harap berhati hati,
+<br />
+<br />Untuk menghapus, harap ketik ulang nama ruangan dan kirim form dibawah
+<br />
+
+<form action="{% url 'ruangan:delete' selected_ruangan.id %}" method="post">
+
+    {% csrf_token %}
+    <input type="text" name="nama" autofocus required>
+
+    <ul>
+    {% for error_item in error %}
+        <li>{{ error_item }}</li>
+    {% endfor %}
+
+    {% for message_item in message %}
+        <li>{{ message_item }}</li>
+    {% endfor %}
+    </ul>
+
+    <input type="submit" value="Delete">
+
+</form>
+{% endblock %}
+

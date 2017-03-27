@@ -11,7 +11,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+    {% block head %}
     <title>SB Admin - Bootstrap Admin Template</title>
+    {% endblock %}
 
     <!-- Bootstrap Core CSS -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
@@ -42,16 +44,16 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="active">
-                        <a href="index.html"><i>&#xe800;</i> Peminjaman</a>
+                        <a href="{% url 'peminjaman:index' %}"><i>&#xe800;</i> Peminjaman</a>
                     </li>
                     <li>
                         <a href="#"><i>&#xe802;</i> Pembayaraan</a>
                     </li>
                     <li>
-                        <a href="#"><i>&#xe801;</i> Peminjam</a>
+                        <a href="{% url 'peminjam:index' %}"><i>&#xe801;</i> Peminjam</a>
                     </li>
                     <li>
-                        <a href="#"><i>&#xe804;</i> Ruangan</a>
+                        <a href="{% url 'ruangan:index' %}"><i>&#xe804;</i> Ruangan</a>
                     </li>
                     <li>
                         <a href="#"><i>&#xe803;</i> Logout</a>
@@ -63,6 +65,7 @@
 
         <div id="page-wrapper">
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            {% block body %}
             <br>
             <br>
             <br>
@@ -79,6 +82,7 @@
             <br>
             <br>
             <br>
+            {% endblock %}
 
         </div>
         <!-- /#page-wrapper -->

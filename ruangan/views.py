@@ -13,18 +13,23 @@ def index(request):
 
 # Return a form which'll be used to add new Ruangan object to model
 def formadd(request):
-	
+
 	# Inisiasi variabel berdasarkan post jika ada
     new_nama = request.POST.get("nama",'')
-    new_harga = request.POST.get("harga",'')
+    new_harga = request.POST.get("harga",0)
     new_deskripsi = request.POST.get("deskripsi", '')
-    new_tipe = request.POST.get("tipe", '')
-	
+    new_tipe = request.POST.get("tipe",'Selasar')
+
     error = []
     message = []
 
+    if new_nama == '' and request.method == 'POST':
+        error +=["Nama ruangan tidak boleh kosong", ]
+    if(new_tipe != 'Selasar' and new_tipe != 'Lapangan' and new_tipe != 'Ruang'):
+        error += ["Pilihan tipe tidak valid", ]
+
     # Jika ada data post yang diberikan,
-    if(new_nama and new_harga and new_deskripsi and new_tipe):
+    if not error and request.method == 'POST':
 
         # Mengecek apakah ada object dengan nama yang sama
         if (Ruangan.objects.filter(nama=new_nama)):
@@ -68,15 +73,21 @@ def formedit(request, ruangan_id):
         return redirect(reverse('ruangan:index'))
 
     # Inisiasi variabel berdasarkan post jika ada
-    new_nama = request.POST.get("nama",'')
-    new_harga = request.POST.get("harga",'')
+    new_nama = request.POST.get("nama", '')
+    new_harga = request.POST.get("harga", 0)
     new_deskripsi = request.POST.get("deskripsi", '')
-    new_tipe = request.POST.get("tipe", '')
+    new_tipe = request.POST.get("tipe", 'Selasar')
+
     error = []
     message = []
 
+    if new_nama == '' and request.method == 'POST':
+        error += ["Nama ruangan tidak boleh kosong", ]
+    if (new_tipe != 'Selasar' and new_tipe != 'Lapangan' and new_tipe != 'Ruang'):
+        error += ["Pilihan tipe tidak valid", ]
+
     # Jika ada data post yang diberikan,
-    if(new_nama and new_harga and new_deskripsi and new_tipe):
+    if not error and request.method == 'POST':
 
         # Mengecek apakah ada object dengan nama yang sama
         if (Ruangan.objects.filter(nama=new_nama) and (not(selected_ruangan.nama == new_nama))):

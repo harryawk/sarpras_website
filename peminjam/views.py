@@ -22,8 +22,11 @@ def formadd(request):
     error = []
     message = []
 
+    if new_nama == '' and request.method == 'POST':
+        error += ["Nama organisasi tidak boleh kosong", ]
+
     # Jika ada data post yang diberikan,
-    if(new_nama and new_deskripsi):
+    if not error and request.method == 'POST':
 
         # Mengecek apakah ada object dengan nama yang sama
         if (Peminjam.objects.filter(nama=new_nama)):
@@ -68,8 +71,11 @@ def formedit(request, peminjam_id):
     error = []
     message = []
 
+    if new_nama == '' and request.method == 'POST':
+        error += ["Nama organisasi tidak boleh kosong", ]
+
     # Jika ada data post yang diberikan,
-    if(new_nama and new_deskripsi):
+    if not error and request.method == 'POST':
 
         # Mengecek apakah ada object dengan nama yang sama
         if (Peminjam.objects.filter(nama=new_nama) and (not(selected_peminjam.nama == new_nama))):

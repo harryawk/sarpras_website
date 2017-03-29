@@ -1,7 +1,6 @@
 from django.db import models
 from ruangan.models import Ruangan
 from peminjam.models import Peminjam
-import pytz
 
 
 class Peminjaman(models.Model):

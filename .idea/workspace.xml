@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b15cec65-9896-4738-b78d-77c45f662315" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruangan/templates/ruangan/add.html" afterPath="$PROJECT_DIR$/ruangan/templates/ruangan/add.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/peminjaman/templates/peminjaman/edit.html" afterPath="$PROJECT_DIR$/peminjaman/templates/peminjaman/edit.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ruangan/templates/ruangan/edit.html" afterPath="$PROJECT_DIR$/ruangan/templates/ruangan/edit.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -24,7 +24,7 @@
       <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/admin_sarpras/templates/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
+            <state relative-caret-position="0">
               <caret line="18" column="29" lean-forward="false" selection-start-line="18" selection-start-column="29" selection-end-line="18" selection-end-column="29" />
               <folding />
             </state>
@@ -34,18 +34,38 @@
       <file leaf-file-name="add.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/peminjaman/templates/peminjaman/add.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="21" column="26" lean-forward="false" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="26" />
+            <state relative-caret-position="306">
+              <caret line="155" column="6" lean-forward="true" selection-start-line="48" selection-start-column="0" selection-end-line="155" selection-end-column="6" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="add.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="add.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ruangan/templates/ruangan/add.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="37" column="33" lean-forward="true" selection-start-line="37" selection-start-column="33" selection-end-line="37" selection-end-column="33" />
+            <state relative-caret-position="453">
+              <caret line="57" column="27" lean-forward="true" selection-start-line="57" selection-start-column="27" selection-end-line="57" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="edit.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/peminjaman/templates/peminjaman/edit.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-374">
+              <caret line="8" column="16" lean-forward="false" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="edit.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ruangan/templates/ruangan/edit.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="273">
+              <caret line="63" column="6" lean-forward="false" selection-start-line="63" selection-start-column="6" selection-end-line="63" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -93,7 +113,6 @@
         <option value="$PROJECT_DIR$/../TestingGround/music/urls.py" />
         <option value="$PROJECT_DIR$/PeminjamanRuanganSarpras/urls.py" />
         <option value="$PROJECT_DIR$/adminruangan/templates/adminruangan/base.html" />
-        <option value="$PROJECT_DIR$/peminjaman/templates/peminjaman/edit.html" />
         <option value="$PROJECT_DIR$/ruangan/templates/ruangan/delete.html" />
         <option value="$PROJECT_DIR$/admin_sarpras/apps.py" />
         <option value="$PROJECT_DIR$/PeminjamanRuanganSarpras/settings.py" />
@@ -108,7 +127,6 @@
         <option value="$PROJECT_DIR$/ruangan/templates/ruangan/index.html" />
         <option value="$PROJECT_DIR$/peminjaman/templates/peminjaman/index.html" />
         <option value="$PROJECT_DIR$/admin_sarpras/static/css/sb-admin.css" />
-        <option value="$PROJECT_DIR$/ruangan/templates/ruangan/edit.html" />
         <option value="$PROJECT_DIR$/peminjam/templates/peminjam/add.html" />
         <option value="$PROJECT_DIR$/peminjam/templates/peminjam/edit.html" />
         <option value="$PROJECT_DIR$/peminjam/views.py" />
@@ -116,6 +134,8 @@
         <option value="$PROJECT_DIR$/admin_sarpras/templates/base.html" />
         <option value="$PROJECT_DIR$/peminjaman/templates/peminjaman/add.html" />
         <option value="$PROJECT_DIR$/ruangan/templates/ruangan/add.html" />
+        <option value="$PROJECT_DIR$/ruangan/templates/ruangan/edit.html" />
+        <option value="$PROJECT_DIR$/peminjaman/templates/peminjaman/edit.html" />
       </list>
     </option>
   </component>
@@ -612,13 +632,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/peminjaman/templates/peminjaman/edit.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="39" lean-forward="false" selection-start-line="0" selection-start-column="39" selection-end-line="0" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PeminjamanRuanganSarpras/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="260">
@@ -697,13 +710,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ruangan/templates/ruangan/edit.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-218">
-          <caret line="9" column="35" lean-forward="false" selection-start-line="9" selection-start-column="35" selection-end-line="9" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/peminjam/templates/peminjam/add.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -762,24 +768,40 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/admin_sarpras/templates/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
+        <state relative-caret-position="0">
           <caret line="18" column="29" lean-forward="false" selection-start-line="18" selection-start-column="29" selection-end-line="18" selection-end-column="29" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/peminjaman/templates/peminjaman/add.html">
+    <entry file="file://$PROJECT_DIR$/ruangan/templates/ruangan/edit.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" column="26" lean-forward="false" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="26" />
+        <state relative-caret-position="273">
+          <caret line="63" column="6" lean-forward="false" selection-start-line="63" selection-start-column="6" selection-end-line="63" selection-end-column="6" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ruangan/templates/ruangan/add.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="37" column="33" lean-forward="true" selection-start-line="37" selection-start-column="33" selection-end-line="37" selection-end-column="33" />
+        <state relative-caret-position="453">
+          <caret line="57" column="27" lean-forward="true" selection-start-line="57" selection-start-column="27" selection-end-line="57" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/peminjaman/templates/peminjaman/add.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="155" column="6" lean-forward="true" selection-start-line="48" selection-start-column="0" selection-end-line="155" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/peminjaman/templates/peminjaman/edit.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-374">
+          <caret line="8" column="16" lean-forward="false" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
           <folding />
         </state>
       </provider>

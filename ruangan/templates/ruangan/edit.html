@@ -5,49 +5,62 @@
 {% endblock %}
 
 {% block body %}
-<h1>Mengubah Informasi Ruangan</h1>
+<div class="row">
+	<div class="col-lg-10">
+		<form enctype="multipart/form-data" action="{% url 'ruangan:edit' selected_ruangan.id %}" method="post" id="ruangan_form" novalidate class="form-horizontal">
+			{% csrf_token %}
+			<fieldset>
+				<legend>Formulir Perubahan Ruangan</legend>
+				<div class="form-group">
+					<label for="id_nama" class="col-lg-2 control-label">Nama</label>
+					<div class="col-lg-9">
+						<input type="text" name="nama" id="id_nama" required value="{{ selected_ruangan.nama }}" maxlength="250" class="form-control"/>
+					</div>
+				</div>
 
-<form action="{% url 'ruangan:edit' selected_ruangan.id %}" method="post">
-    {% csrf_token %}
+				<div class="form-group">
+					<label for="id_harga" class="control-label col-lg-2">Harga</label>
+					<div class="col-lg-9">
+						<input type="number" name="harga" id="id_harga" required value="{{ selected_ruangan.harga }}" class="form-control"/>
+					</div>
+				</div>
 
-	<div>
-		<label for="id_nama">Nama:</label>
-		<input type="text" name="nama" id="id_nama" value="{{ selected_ruangan.nama }}" maxlength="250" />
+				<div class="form-group">
+					<label for="id_deskripsi" class="control-label col-lg-2">Deskripsi</label>
+					<div class="col-md-9">
+						<textarea name="deskripsi" id="id_deskripsi" maxlength="1000" class="form-control">{{ selected_ruangan.deskripsi }}</textarea>
+					</div>
+				</div>
+
+				<div class="form-group">
+				<label for="id_tipe" class="control-label col-lg-2">Tipe</label>
+					<div class="col-lg-9">
+						<select name="tipe" id="id_tipe">
+							<option value="Ruang" {% if selected_ruangan.tipe == "Ruang" %} selected {% endif %}>Ruang</option>
+							<option value="Selasar" {% if selected_ruangan.tipe == "Selasar" %} selected {% endif %}>Selasar</option>
+							<option value="Lapangan" {% if selected_ruangan.tipe == "Lapangan" %} selected {% endif %}>Lapangan</option>
+						</select>
+					</div>
+				</div>
+
+				<ul>
+				{% for error_item in error %}
+					<li>{{ error_item }}</li>
+				{% endfor %}
+
+				{% for message_item in message %}
+					<li>{{ message_item }}</li>
+				{% endfor %}
+				</ul>
+
+				<div class="form-group">
+					<div class="col-lg-10 col-lg-offset-2">
+						<input type="submit" value="Save" class="btn btn-primary"/>
+					</div>
+				</div>
+			</fieldset>
+		</form>
 	</div>
-
-	<div>
-		<label for="id_harga">Harga:</label>
-		<input type="number" name="harga" id="id_harga" value="{{ selected_ruangan.harga }}" required />
-	</div>
-
-	<div>
-		<label for="id_deskripsi">Deskripsi:</label>
-		<textarea name="deskripsi" id="id_deskripsi" maxlength="1000">{{ selected_ruangan.deskripsi }}</textarea>
-	</div>
-	
-	<div>
-		<label for="id_tipe">Tipe:</label>
-		<select name="tipe" id="id_tipe">
-			<option value="Ruang" {% if selected_ruangan.tipe == "Ruang" %} selected {% endif %}>Ruang</option>
-			<option value="Selasar" {% if selected_ruangan.tipe == "Selasar" %} selected {% endif %}>Selasar</option>
-			<option value="Lapangan" {% if selected_ruangan.tipe == "Lapangan" %} selected {% endif %}>Lapangan</option>
-		</select>
-	</div>
-
-	<ul>
-    {% for error_item in error %}
-        <li>{{ error_item }}</li>
-    {% endfor %}
-
-    {% for message_item in message %}
-        <li>{{ message_item }}</li>
-    {% endfor %}
-    </ul>
-
-	<div>
-		<input type="submit" value="Edit" />
-	</div>
-
-</form>
+</div>
 {% endblock %}
 

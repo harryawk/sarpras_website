@@ -1,6 +1,7 @@
 from django.db import models
 from ruangan.models import Ruangan
 from peminjam.models import Peminjam
+import pytz
 
 
 class Peminjaman(models.Model):
@@ -12,6 +13,15 @@ class Peminjaman(models.Model):
 
     def __str__(self):
         return (self.peminjam.__str__() +' : '+ self.ruangan.__str__() +', '+ self.waktu_awal.__str__() +' -> '+ self.waktu_akhir.__str__())
+
+    @staticmethod
+    def is_collision(Peminjaman_old, Peminjaman_new):
+        new_time_start = Peminjaman_new.waktu_awal.replace(tzinfo=None)
+        new_time_finish = Peminjaman_new.waktu_akhir.replace(tzinfo=None)
+        old_time_start = Peminjaman_old.waktu_awal.replace(tzinfo=None)
+        old_time_finish = Peminjaman_old.waktu_akhir.replace(tzinfo=None)
+        return (new_time_start <= old_time_start <= new_time_finish) \
+               or (old_time_start <= new_time_start <= old_time_finish)
 
 
 class Pembayaran(models.Model):

@@ -27,6 +27,10 @@
 		});
 		{% endfor %}
 
+		$scope.peminjamID = {% if input_peminjam %} "{{input_peminjam}}" {% else %} "" {% endif %};
+
+		$scope.ruanganID = {% if input_ruangan %} "{{input_ruangan}}" {% else %} "" {% endif %}
+
 		$scope.ruanganListData = [];
 		{% for ruangan in all_ruangan %}
 		$scope.ruanganListData = $scope.ruanganListData.concat({
@@ -138,7 +142,7 @@
                 </ul>
 
                 <div class="form-group">
-                    <div CLASS="col-lg-10 col-lg-offset-2">
+                    <div class="col-lg-10 col-lg-offset-2">
                         <!--<input type="submit" value="Save" class="default" name="_save" />-->
                         <!--<input type="submit" value="WAWA" >-->
                         <input type="submit" value="Save" class="btn btn-primary" >

@@ -67,8 +67,8 @@ def formedit(request, peminjam_id):
         return redirect(reverse('peminjam:index'))
 
     # Inisiasi variabel berdasarkan post jika ada
-    new_nama = request.POST.get("nama",'')
-    new_deskripsi = request.POST.get("deskripsi",'')
+    new_nama = request.POST.get("nama",selected_peminjam.nama)
+    new_deskripsi = request.POST.get("deskripsi",selected_peminjam.deskripsi)
     error = []
     message = []
 

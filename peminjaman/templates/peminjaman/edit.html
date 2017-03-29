@@ -2,49 +2,53 @@
 
 
 {% block head %}
-<title>Mengedit Peminjaman Baru</title>
+<title>Menambahkan Peminjaman Baru</title>
 {% endblock %}
 
 
 {% block body %}
+
 <script>
     var peminjamList = angular.module('peminjamList', []);
     peminjamList.config(function($interpolateProvider) {
-  		$interpolateProvider.startSymbol('{[{');
-  		$interpolateProvider.endSymbol('}]}');
-	});
-	peminjamList.controller("peminjamListController", function($scope) {
-		
-		$scope.peminjamListData = [];
-		{% for peminjam in all_peminjam %}
-		$scope.peminjamListData = $scope.peminjamListData.concat({
-			id: "{{ peminjam.id }}",
-			nama:"{{ peminjam.nama }}",
-			deskripsi:"{{ peminjam.deskripsi }}",
-			edit_link: "{% url 'peminjam:edit' peminjam.id %}",
-			delete_link: "{% url 'peminjam:delete' peminjam.id %}"
-		});
-		{% endfor %}
+        $interpolateProvider.startSymbol('{[{');
+        $interpolateProvider.endSymbol('}]}');
+    });
+    peminjamList.controller("peminjamListController", function($scope) {
+        
+        $scope.peminjamListData = [];
+        {% for peminjam in all_peminjam %}
+        $scope.peminjamListData = $scope.peminjamListData.concat({
+            id: "{{ peminjam.id }}",
+            nama:"{{ peminjam.nama }}",
+            deskripsi:"{{ peminjam.deskripsi }}",
+            edit_link: "{% url 'peminjam:edit' peminjam.id %}",
+            delete_link: "{% url 'peminjam:delete' peminjam.id %}"
+        });
+        {% endfor %}
 
-		$scope.ruanganListData = [];
-		{% for ruangan in all_ruangan %}
-		$scope.ruanganListData = $scope.ruanganListData.concat({
-			id: "{{ ruangan.id }}",
-			nama:"{{ ruangan.nama }}",
-			harga:"{{ ruangan.harga }}",
-			deskripsi:"{{ ruangan.deskripsi }}",
-			tipe:"{{ ruangan.tipe }}",
-			edit_link: "{% url 'ruangan:edit' ruangan.id %}",
-			delete_link: "{% url 'ruangan:delete' ruangan.id %}"
-		});
-		{% endfor %}
+        $scope.peminjamID = {% if input_peminjam %} "{{input_peminjam}}" {% else %} "" {% endif %};
 
-	});
+        $scope.ruanganID = {% if input_ruangan %} "{{input_ruangan}}" {% else %} "" {% endif %}
+
+        $scope.ruanganListData = [];
+        {% for ruangan in all_ruangan %}
+        $scope.ruanganListData = $scope.ruanganListData.concat({
+            id: "{{ ruangan.id }}",
+            nama:"{{ ruangan.nama }}",
+            harga:"{{ ruangan.harga }}",
+            deskripsi:"{{ ruangan.deskripsi }}",
+            tipe:"{{ ruangan.tipe }}",
+            edit_link: "{% url 'ruangan:edit' ruangan.id %}",
+            delete_link: "{% url 'ruangan:delete' ruangan.id %}"
+        });
+        {% endfor %}
+
+    });
 </script>
-
 <div class="row">
     <div class="col-lg-10">
-        <form enctype="multipart/form-data" action="{% url 'peminjaman:edit' id_peminjaman %}" method="post" id="peminjaman_form" novalidate ng-app="peminjamList" ng-controller="peminjamListController" class="form-horizontal">
+        <form enctype="multipart/form-data" action="{% url 'peminjaman:edit' selected_peminjaman.id %}" method="post" id="peminjaman_form" novalidate ng-app="peminjamList" ng-controller="peminjamListController" class="form-horizontal">
             {% csrf_token %}
             <fieldset>
                 <legend>Formulir Penambahan Peminjaman</legend>
@@ -90,13 +94,13 @@
                         <div class="form-group">
                             <label for="id_waktu_awal_0" class="col-md-1 control-label">Date</label>
                             <div class="col-md-11">
-                                <input type="date" name="waktu_awal_0" id="id_waktu_awal_0" class="form-control" required />
+                                <input type="date" name="waktu_awal_0" id="id_waktu_awal_0" class="form-control" value="{{ tanggal_awal }}" required />
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="id_waktu_awal_1" class="col-md-1 control-label">Time</label>
                             <div class="col-md-11">
-                                <input type="time" name="waktu_awal_1" id="id_waktu_awal_1" class="form-control" required />
+                                <input type="time" name="waktu_awal_1" id="id_waktu_awal_1" class="form-control" value="{{ pukul_awal }}" required />
                             </div>
                         </div>
                     </div>
@@ -108,13 +112,13 @@
                         <div class="form-group">
                             <label for="id_waktu_akhir_0" class="col-md-1 control-label">Date</label>
                             <div class="col-md-11">
-                                <input type="date" name="waktu_akhir_0" id="id_waktu_akhir_0" class="form-control" required />
+                                <input type="date" name="waktu_akhir_0" id="id_waktu_akhir_0" class="form-control" value="{{ tanggal_akhir }}" required />
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="id_waktu_akhir_1" class="col-md-1 control-label">Time</label>
                             <div class="col-md-11">
-                                <input type="time" name="waktu_akhir_1" id="id_waktu_akhir_1" class="form-control" required />
+                                <input type="time" name="waktu_akhir_1" id="id_waktu_akhir_1" class="form-control" value="{{ pukul_akhir }}" required />
                             </div>
                         </div>
                     </div>
@@ -123,7 +127,7 @@
                 <div class="form-group">
                     <label for="id_deskripsi" class="col-lg-2 control-label">Deskripsi</label>
                     <div class="col-lg-9">
-                        <textarea name="deskripsi" id="id_deskripsi" maxlength="1000" class="form-control"></textarea>
+                        <textarea name="deskripsi" id="id_deskripsi" maxlength="1000" class="form-control">{{ input_deskripsi }}</textarea>
                     </div>
                 </div>
 

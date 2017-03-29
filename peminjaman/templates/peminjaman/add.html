@@ -57,7 +57,7 @@
 			</select>
 
 			<a id="change_id_peminjam"
-			href="{[{ peminjamID }]}"
+			href="/peminjam/edit/{[{peminjamID}]}"
 			title="Change selected peminjam"><img src="/static/admin/img/icon-changelink.svg" alt="Change"/></a>
 			<a id="add_id_peminjam"
 			href="{% url 'peminjam:add' %}"
@@ -75,7 +75,7 @@
 			</select>
 
 			<a id="change_id_ruangan"
-			href="{[{ ruanganID }]}"
+			href="/ruangan/edit/{[{ruanganID}]}"
 			title="Change selected ruangan"><img src="/static/admin/img/icon-changelink.svg" alt="Change"/></a>
 			<a id="add_id_ruangan"
 			href="{% url 'ruangan:add' %}"

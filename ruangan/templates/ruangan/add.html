@@ -13,25 +13,25 @@
 
 	<div>
 		<label for="id_nama">Nama:</label>
-		<input type="text" name="nama" id="id_nama" required maxlength="250" />
+		<input type="text" name="nama" id="id_nama" required value="{{ nama }}" maxlength="250" />
 	</div>
 
 	<div>
 		<label for="id_harga">Harga:</label>
-		<input type="number" name="harga" value="0" id="id_harga" required />
+		<input type="number" name="harga" id="id_harga" required value="{{ harga }}" />
 	</div>
 
 	<div>
 		<label for="id_deskripsi">Deskripsi:</label>
-		<textarea name="deskripsi" id="id_deskripsi" maxlength="1000"></textarea>
+		<textarea name="deskripsi" id="id_deskripsi" maxlength="1000">{{ deskripsi }}</textarea>
 	</div>
 
 	<div>
 	<label for="id_tipe">Tipe:</label>
 		<select name="tipe" id="id_tipe">
-			<option value="Ruang">Ruang</option>
-			<option value="Selasar" selected>Selasar</option>
-			<option value="Lapangan">Lapangan</option>
+			<option value="Ruang" {% if tipe == "Ruang" %} selected {% endif %}>Ruang</option>
+			<option value="Selasar" {% if tipe == "Selasar" %} selected {% endif %}>Selasar</option>
+			<option value="Lapangan" {% if tipe == "Lapangan" %} selected {% endif %}>Lapangan</option>
 		</select>
 	</div>
 

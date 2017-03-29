@@ -13,18 +13,26 @@ def index(request):
 
 # Return a form which'll be used to add new Ruangan object to model
 def formadd(request):
-	
+
 	# Inisiasi variabel berdasarkan post jika ada
     new_nama = request.POST.get("nama",'')
-    new_harga = request.POST.get("harga",'')
+    new_harga = request.POST.get("harga",0)
     new_deskripsi = request.POST.get("deskripsi", '')
-    new_tipe = request.POST.get("tipe", '')
-	
+    new_tipe = request.POST.get("tipe",'Selasar')
+
     error = []
     message = []
 
     # Jika ada data post yang diberikan,
-    if(new_nama and new_harga and new_deskripsi and new_tipe):
+    if request.method == 'POST':
+
+        # Mengecek apakah ada nama valid yang diberikan
+        if new_nama == '':
+            error += ["Nama ruangan tidak boleh kosong", ]
+
+        # Mengecek apakah tipe ruangan yg diberikan valid
+        if (new_tipe != 'Selasar' and new_tipe != 'Lapangan' and new_tipe != 'Ruang'):
+            error += ["Pilihan tipe tidak valid", ]
 
         # Mengecek apakah ada object dengan nama yang sama
         if (Ruangan.objects.filter(nama=new_nama)):
@@ -68,15 +76,24 @@ def formedit(request, ruangan_id):
         return redirect(reverse('ruangan:index'))
 
     # Inisiasi variabel berdasarkan post jika ada
-    new_nama = request.POST.get("nama",'')
-    new_harga = request.POST.get("harga",'')
+    new_nama = request.POST.get("nama", '')
+    new_harga = request.POST.get("harga", 0)
     new_deskripsi = request.POST.get("deskripsi", '')
-    new_tipe = request.POST.get("tipe", '')
+    new_tipe = request.POST.get("tipe", 'Selasar')
+
     error = []
     message = []
 
     # Jika ada data post yang diberikan,
-    if(new_nama and new_harga and new_deskripsi and new_tipe):
+    if request.method == 'POST':
+
+        # Mengecek apakah ada nama valid yang diberikan
+        if new_nama == '':
+            error += ["Nama ruangan tidak boleh kosong", ]
+
+        # Mengecek apakah tipe ruangan yg diberikan valid
+        if (new_tipe != 'Selasar' and new_tipe != 'Lapangan' and new_tipe != 'Ruang'):
+            error += ["Pilihan tipe tidak valid", ]
 
         # Mengecek apakah ada object dengan nama yang sama
         if (Ruangan.objects.filter(nama=new_nama) and (not(selected_ruangan.nama == new_nama))):

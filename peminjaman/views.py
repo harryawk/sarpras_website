@@ -24,13 +24,13 @@ def formadd(request):
 
         tanggal_mulai_pinjam = request.POST['waktu_awal_0'] # format tanggal : %Y-%m-%d
         tanggal_mulai_pinjam = datetime.strptime(tanggal_mulai_pinjam, "%Y-%m-%d")
-        print "tanggal_mulai_pinjam : ", tanggal_mulai_pinjam
+        print("tanggal_mulai_pinjam : ", tanggal_mulai_pinjam)
         pukul_mulai_pinjam = request.POST['waktu_awal_1'] # format waktu : %H:%M
         x = datetime.strptime(pukul_mulai_pinjam, "%H:%M")
         # print datetime.time()
         tanggal_mulai_pinjam = tanggal_mulai_pinjam.replace(hour=x.hour, minute=x.minute)
-        print "Setelah : " + str(tanggal_mulai_pinjam)
-        print x.hour, x.minute, x.second
+        print("Setelah : " + str(tanggal_mulai_pinjam))
+        print(x.hour, x.minute, x.second)
         tanggal_selesai_pinjam = request.POST['waktu_akhir_0']
         tanggal_selesai_pinjam = datetime.strptime(tanggal_selesai_pinjam, "%Y-%m-%d")
         pukul_selesai_pinjam = request.POST['waktu_akhir_1']

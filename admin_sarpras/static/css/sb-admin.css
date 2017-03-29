@@ -1,0 +1,115 @@
+/*!
+ * Start Bootstrap - SB Admin (http://startbootstrap.com/)
+ * Copyright 2013-2016 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+ */
+
+/* Global Styles */
+@font-face {
+    font-family: 'fontello';
+    src: url('../fonts/fontello/fontello.eot?56049164');
+    src: url('../fonts/fontello/fontello.eot?82787786#iefix') format('embedded-opentype'),
+       url('../fonts/fontello/fontello.woff?56049164') format('woff'),
+       url('../fonts/fontello/fontello.ttf?56049164') format('truetype'),
+       url('../fonts/fontello/fontello.svg?56049164#fontello') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+body {
+    margin-top: 100px;
+    background-color: #222;
+}
+
+@media(min-width:768px) {
+    body {
+        margin-top: 50px;
+    }
+}
+
+#wrapper {
+    padding-left: 0;
+}
+
+#page-wrapper {
+    width: 100%;
+    padding: 0;
+    background-color: #fff;
+}
+
+.huge {
+    font-size: 50px;
+    line-height: normal;
+}
+
+@media(min-width:768px) {
+    #wrapper {
+        padding-left: 225px;
+    }
+
+    #page-wrapper {
+        padding: 10px;
+    }
+}
+
+/* Navbar */
+.navbar-default {
+    background-color: #222;
+    border-color: #222;
+}
+
+/* Top Navigation */
+
+
+/* Side Navigation */
+
+@media(min-width:768px) {
+    .side-nav {
+        position: fixed;
+        top: 51px;
+        left: 225px;
+        width: 225px;
+        margin-left: -225px;
+        border: none;
+        border-radius: 0;
+        overflow-y: auto;
+        background-color: #222;
+        bottom: 0;
+        overflow-x: hidden;
+        padding-bottom: 40px;
+    }
+
+    .side-nav>li>a {
+        width: 225px;
+    }
+
+    .side-nav li a:hover,
+    .side-nav li a:focus {
+        outline: none;
+        color : white;
+        background-color: #222 !important;
+    }
+}
+
+.side-nav>li>ul {
+    padding: 0;
+}
+
+.side-nav>li>ul>li>a {
+    display: block;
+    padding: 10px 15px 10px 38px;
+    text-decoration: none;
+    color: #999;
+}
+
+.side-nav>li>ul>li>a:hover {
+    color: white;
+}
+
+i {
+    font-family: "fontello";
+    font-style: normal;
+    font-weight: normal;
+    padding-right: 5px;
+}

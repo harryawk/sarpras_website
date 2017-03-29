@@ -23,13 +23,16 @@ def formadd(request):
     error = []
     message = []
 
-    if new_nama == '' and request.method == 'POST':
-        error +=["Nama ruangan tidak boleh kosong", ]
-    if(new_tipe != 'Selasar' and new_tipe != 'Lapangan' and new_tipe != 'Ruang'):
-        error += ["Pilihan tipe tidak valid", ]
-
     # Jika ada data post yang diberikan,
-    if not error and request.method == 'POST':
+    if request.method == 'POST':
+
+        # Mengecek apakah ada nama valid yang diberikan
+        if new_nama == '':
+            error += ["Nama ruangan tidak boleh kosong", ]
+
+        # Mengecek apakah tipe ruangan yg diberikan valid
+        if (new_tipe != 'Selasar' and new_tipe != 'Lapangan' and new_tipe != 'Ruang'):
+            error += ["Pilihan tipe tidak valid", ]
 
         # Mengecek apakah ada object dengan nama yang sama
         if (Ruangan.objects.filter(nama=new_nama)):
@@ -81,13 +84,16 @@ def formedit(request, ruangan_id):
     error = []
     message = []
 
-    if new_nama == '' and request.method == 'POST':
-        error += ["Nama ruangan tidak boleh kosong", ]
-    if (new_tipe != 'Selasar' and new_tipe != 'Lapangan' and new_tipe != 'Ruang'):
-        error += ["Pilihan tipe tidak valid", ]
-
     # Jika ada data post yang diberikan,
-    if not error and request.method == 'POST':
+    if request.method == 'POST':
+
+        # Mengecek apakah ada nama valid yang diberikan
+        if new_nama == '':
+            error += ["Nama ruangan tidak boleh kosong", ]
+
+        # Mengecek apakah tipe ruangan yg diberikan valid
+        if (new_tipe != 'Selasar' and new_tipe != 'Lapangan' and new_tipe != 'Ruang'):
+            error += ["Pilihan tipe tidak valid", ]
 
         # Mengecek apakah ada object dengan nama yang sama
         if (Ruangan.objects.filter(nama=new_nama) and (not(selected_ruangan.nama == new_nama))):

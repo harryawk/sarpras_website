@@ -52,50 +52,46 @@ def formadd(request):
         obj_peminjam = Peminjam.objects.get(id=input_peminjam)
         obj_ruangan = Ruangan.objects.get(id=input_ruangan)
 
-        try:
-            Peminjaman.objects.get(peminjam=obj_peminjam, ruangan=obj_ruangan, waktu_awal=tanggal_mulai_pinjam, waktu_akhir=tanggal_selesai_pinjam)
+        # Mengecek tanggal mulai kurang dari tanggal selesai
+        temp_mulai = tanggal_mulai_pinjam.replace(tzinfo=None)
+        temp_selesai = tanggal_selesai_pinjam.replace(tzinfo=None)
+        if temp_mulai >= temp_selesai:
+            errormsg += ['Waktu mulai harus kurang dari waktu selesai']
 
-        except Peminjaman.DoesNotExist:
-            obj_peminjaman = Peminjaman(peminjam=obj_peminjam,
-                                         ruangan=obj_ruangan,
-                                         waktu_awal=tanggal_mulai_pinjam,
-                                         waktu_akhir=tanggal_selesai_pinjam,
-                                         deskripsi=input_deskripsi)
-            is_collision = True
-            for obj in Peminjaman.objects.all():
-                if Peminjaman.is_collision(obj, obj_peminjaman):
-                    is_collision = False
-                    errormsg += ['Terdapat jadwal lain yang bentrok', ]
-                    break
-            if is_collision:
-                obj_peminjaman.save()
-                return redirect(reverse('peminjaman:index'))
+        # Jika belum ditemukan error
+        if not errormsg:
+
+            # Membuat object peminjaman yang sesuai, BELUM DI-SAVE
+            new_peminjaman = Peminjaman(peminjam=obj_peminjam,
+                                        ruangan=obj_ruangan,
+                                        waktu_awal=tanggal_mulai_pinjam,
+                                        waktu_akhir=tanggal_selesai_pinjam,
+                                        deskripsi=input_deskripsi)
+
+            # Mengecek apakah ada peminjaman yang bentrok,
+            collision = new_peminjaman.get_all_conflicted_set()
+
+            # Apabila tidak ada bentrok, maka simpan peminjaman, dan kembali ke index
+            if(not collision):
+                try:
+                    new_peminjaman.save()
+                except Exception as e:
+                    messages += ["Unhandled Exception", ]
+                else:
+                    return redirect(reverse('peminjaman:index'))
+
+            # Jika ada, print semua jadwal yang bentrok, dan kembalikan form
             else:
-                all_peminjam = Peminjam.objects.all()
-                all_ruangan = Ruangan.objects.all()
-                return render(request, 'peminjaman/add.html', {
-                    'all_peminjam': all_peminjam,
-                    'all_ruangan': all_ruangan,
-                    'error': errormsg,
-                    'message': messages,
-                    'input_peminjam': input_peminjam,
-                    'input_ruangan': input_ruangan,
-                    'input_deskripsi': input_deskripsi,
-                    'tanggal_awal': tanggal_awal,
-                    'pukul_awal': pukul_awal,
-                    'tanggal_akhir': tanggal_akhir,
-                    'pukul_akhir': pukul_akhir,
-                })
-        else:
-            messages += ['Sudah ada organisasi yang meminjam', ]
+                errormsg += ['Terdapat jadwal yang bentrok :' ]
+                for peminjaman in collision:
+                    errormsg += [peminjaman.__str__(), ]
 
-    # Peminjam.objects.get(peminjam=input_peminjam)
-    # Ruangan.objects.get(ruangan=input_ruangan)
+    # Apabila tidak redirect ke index, maka kirim form
     all_peminjam = Peminjam.objects.all()
     all_ruangan = Ruangan.objects.all()
     return render(request, 'peminjaman/add.html', {
-        'all_peminjam' : all_peminjam,
-        'all_ruangan' : all_ruangan,
+        'all_peminjam': all_peminjam,
+        'all_ruangan': all_ruangan,
         'error': errormsg,
         'message': messages,
         'input_peminjam': input_peminjam,
@@ -106,6 +102,7 @@ def formadd(request):
         'tanggal_akhir': tanggal_akhir,
         'pukul_akhir': pukul_akhir,
     })
+
 
 # Return a form which'll be used to edit peminjaman object to model
 def formedit(request, peminjaman_id):

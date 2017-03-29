@@ -13,14 +13,23 @@ class Peminjaman(models.Model):
     def __str__(self):
         return (self.peminjam.__str__() +' : '+ self.ruangan.__str__() +', '+ self.waktu_awal.__str__() +' -> '+ self.waktu_akhir.__str__())
 
-    @staticmethod
-    def is_collision(Peminjaman_old, Peminjaman_new):
+    def is_collision(self, Peminjaman_new):
         new_time_start = Peminjaman_new.waktu_awal.replace(tzinfo=None)
         new_time_finish = Peminjaman_new.waktu_akhir.replace(tzinfo=None)
-        old_time_start = Peminjaman_old.waktu_awal.replace(tzinfo=None)
-        old_time_finish = Peminjaman_old.waktu_akhir.replace(tzinfo=None)
-        return (new_time_start <= old_time_start <= new_time_finish) \
-               or (old_time_start <= new_time_start <= old_time_finish)
+        old_time_start = self.waktu_awal.replace(tzinfo=None)
+        old_time_finish = self.waktu_akhir.replace(tzinfo=None)
+        return (new_time_start <= old_time_start <= new_time_finish) or (old_time_start <= new_time_start <= old_time_finish)
+
+    def get_all_conflicted_set(self):
+        conflicted_candidates = Peminjaman.objects.all()
+        conflicted_candidates.filter(ruangan = self.ruangan)
+        conflicteds = []
+
+        for candidate in conflicted_candidates:
+            if self.is_collision(candidate):
+                conflicteds.append(candidate)
+
+        return conflicteds
 
 
 class Pembayaran(models.Model):

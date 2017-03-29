@@ -54,6 +54,7 @@ def formadd(request):
 
         try:
             Peminjaman.objects.get(peminjam=obj_peminjam, ruangan=obj_ruangan, waktu_awal=tanggal_mulai_pinjam, waktu_akhir=tanggal_selesai_pinjam)
+
         except Peminjaman.DoesNotExist:
             obj_peminjaman = Peminjaman(peminjam=obj_peminjam,
                                          ruangan=obj_ruangan,
@@ -109,8 +110,6 @@ def formadd(request):
 # Return a form which'll be used to edit peminjaman object to model
 def formedit(request, peminjaman_id):
 
-    print "===========FORMEDIT==========="
-
     object_peminjaman = Peminjaman.objects.get(id=peminjaman_id)
     if request.method == 'POST':
         # Ambil data hasil input dari user
@@ -119,13 +118,10 @@ def formedit(request, peminjaman_id):
 
         tanggal_mulai_pinjam = request.POST['waktu_awal_0']  # format tanggal : %Y-%m-%d
         tanggal_mulai_pinjam = datetime.strptime(tanggal_mulai_pinjam, "%Y-%m-%d")
-        print "tanggal_mulai_pinjam : ", tanggal_mulai_pinjam
         pukul_mulai_pinjam = request.POST['waktu_awal_1']  # format waktu : %H:%M
         x = datetime.strptime(pukul_mulai_pinjam, "%H:%M")
         # print datetime.time()
         tanggal_mulai_pinjam = tanggal_mulai_pinjam.replace(hour=x.hour, minute=x.minute)
-        print "Setelah : " + str(tanggal_mulai_pinjam)
-        print x.hour, x.minute, x.second
 
         tanggal_selesai_pinjam = request.POST['waktu_akhir_0']
         tanggal_selesai_pinjam = datetime.strptime(tanggal_selesai_pinjam, "%Y-%m-%d")
@@ -146,9 +142,8 @@ def formedit(request, peminjaman_id):
             object_peminjaman.waktu_awal=tanggal_mulai_pinjam
             object_peminjaman.waktu_akhir=tanggal_selesai_pinjam
             object_peminjaman.deskripsi=input_deskripsi
-            print "///////////SAVE/////////////"
             object_peminjaman.save()
-            return HttpResponseRedirect("/peminjaman/")
+            return redirect(reverse('peminjaman:index'))
 
     all_peminjam = Peminjam.objects.all()
     all_ruangan = Ruangan.objects.all()

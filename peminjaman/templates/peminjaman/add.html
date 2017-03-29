@@ -29,6 +29,10 @@
 		});
 		{% endfor %}
 
+		$scope.peminjamID = {% if input_peminjam %} "{{input_peminjam}}" {% else %} "" {% endif %};
+
+		$scope.ruanganID = {% if input_ruangan %} "{{input_ruangan}}" {% else %} "" {% endif %}
+
 		$scope.ruanganListData = [];
 		{% for ruangan in all_ruangan %}
 		$scope.ruanganListData = $scope.ruanganListData.concat({
@@ -52,7 +56,7 @@
 		<label for="id_peminjam">Peminjam:</label>
 		<div>
 			<select name="peminjam" required id="id_peminjam" ng-model="peminjamID">
-				<option value="" selected>---------</option>							
+				<option value="">---------</option>
 				<option value="{[{ peminjamData.id }]}" ng-repeat = "peminjamData in peminjamListData">{[{ peminjamData.nama }]}</option>
 			</select>
 
@@ -70,7 +74,7 @@
 		<label for="id_ruangan">Ruangan:</label>
 		<div>
 			<select name="ruangan" required id="id_ruangan" ng-model="ruanganID">
-				<option value="" selected>---------</option>
+				<option value="">---------</option>
 				<option value="{[{ ruanganData.id }]}" ng-repeat = "ruanganData in ruanganListData">{[{ ruanganData.nama }]}</option>
 			</select>
 
@@ -87,24 +91,24 @@
 	<div>
 		<label for="id_waktu_awal_0">Waktu awal:</label>
 		<p class="datetime">
-		Date: <input type="date" name="waktu_awal_0" id="id_waktu_awal_0" required />
+		Date: <input type="date" name="waktu_awal_0" id="id_waktu_awal_0" value="{{ tanggal_awal }}" required />
 		<br />
-		Time: <input type="time" name="waktu_awal_1" id="id_waktu_awal_1" required />
+		Time: <input type="time" name="waktu_awal_1" id="id_waktu_awal_1" value="{{ pukul_awal }}" required />
 		</p>
 	</div>
 
 	<div>
 		<label for="id_waktu_akhir_0">Waktu akhir:</label>
 		<p class="datetime">
-		Date: <input type="date" name="waktu_akhir_0" id="id_waktu_akhir_0" required />
+		Date: <input type="date" name="waktu_akhir_0" id="id_waktu_akhir_0" value="{{ tanggal_akhir }}" required />
 		<br />
-		Time: <input type="time" name="waktu_akhir_1" id="id_waktu_akhir_1" required />
+		Time: <input type="time" name="waktu_akhir_1" id="id_waktu_akhir_1" value="{{ pukul_akhir }}" required />
 		</p>
 	</div>
 
 	<div>
 		<label for="id_deskripsi">Deskripsi:</label>
-		<textarea name="deskripsi" id="id_deskripsi" maxlength="1000"></textarea>
+		<textarea name="deskripsi" id="id_deskripsi" maxlength="1000">{{ input_deskripsi }}</textarea>
 	</div>
 
 	<ul>

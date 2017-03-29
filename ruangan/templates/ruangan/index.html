@@ -52,6 +52,13 @@
 <div ng-app="ruanganList" ng-controller="ruanganListController">
 
 Filter Name: <input type = "text" ng-model = "filterNama">
+<select  ng-model="filterTipe">
+    <option value="" selected>Semua</option>
+    <option value="Ruangan">Ruangan</option>
+    <option value="Lapangan">Lapangan</option>
+    <option value="Selasar">Selasar</option>
+</select>
+
 <button><a href="{% url 'ruangan:add' %}" style="text-decoration: none; color: black;">ADD</a></button>
 
 <table>
@@ -64,7 +71,7 @@ Filter Name: <input type = "text" ng-model = "filterNama">
       <th>Delete</th>
    </tr>
    
-   <tr ng-repeat = "ruanganData in ruanganListData | filter:{id:filterId} | filter:{nama:filterNama}">
+   <tr ng-repeat = "ruanganData in ruanganListData | filter:{tipe:filterTipe} | filter:{nama:filterNama}">
       <td>{[{ ruanganData.nama }]}</td>
       <td>{[{ ruanganData.harga }]}</td>
       <td>{[{ ruanganData.deskripsi }]}</td>

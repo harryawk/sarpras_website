@@ -33,27 +33,78 @@
 	});
 	peminjamanList.controller("peminjamanListController", function($scope) {
 		
+    $scope.toTimestamp = function(date) {
+      return new Date(date).getTime()/1000;
+    };
+
+    $scope.inRange = function(start,end){
+      return function(item){
+        return item.unix_timestamp_awal > start && item.unix_timestamp_akhir < end;
+      }
+    }
+
+    $scope.filterTimeStart = new Date();
+    $scope.filterTimeStart.setMonth(0);
+    $scope.filterTimeStart.setDate(1);
+
+    $scope.filterTimeEnd = new Date();
+    $scope.filterTimeEnd.setMonth(0);
+    $scope.filterTimeEnd.setDate(1);
+    $scope.filterTimeEnd.setFullYear(1+$scope.filterTimeStart.getFullYear());
+
 		$scope.peminjamanListData = [];
 		{% for peminjaman in all_peminjaman %}
 		$scope.peminjamanListData = $scope.peminjamanListData.concat({
 			peminjam: "{{ peminjaman.peminjam }}",
 			ruangan:"{{ peminjaman.ruangan }}",
 			waktu_awal:"{{ peminjaman.waktu_awal }}",
+      unix_timestamp_awal:"{{ peminjaman.waktu_awal|date:"U" }}",
 			waktu_akhir:"{{ peminjaman.waktu_akhir }}",
+      unix_timestamp_akhir:"{{ peminjaman.waktu_akhir|date:"U" }}",
 			deskripsi:"{{ peminjaman.deskripsi }}",
 			edit_link: "{% url 'peminjaman:edit' peminjaman.id %}",
 			delete_link: "{% url 'peminjaman:delete' peminjaman.id %}"
 		});
 		{% endfor %}
 
+    $scope.peminjamListData = [];
+    {% for peminjam in all_peminjam %}
+    $scope.peminjamListData = $scope.peminjamListData.concat({
+      string: "{{ peminjam }}",
+      nama:"{{ peminjam.nama }}",
+    });
+    {% endfor %}
+
+    $scope.ruanganListData = [];
+    {% for ruangan in all_ruangan %}
+    $scope.ruanganListData = $scope.ruanganListData.concat({
+      string: "{{ ruangan }}",
+      nama:"{{ ruangan.nama }}",
+    });
+    {% endfor %}
+
 	});
 </script>
 
 <div ng-app="peminjamanList" ng-controller="peminjamanListController">
 
-   Filter Peminjam: <input type = "text" ng-model = "filterPeminjam">
-   Filter Ruangan: <input type = "text" ng-model = "filterRuangan">
-   <a href="{% url 'peminjaman:add' %}" style="text-decoration: none; color: black;"><button>ADD</button></a>
+  Filter Peminjam:
+  <select ng-model="filterPeminjam">
+    <option value="" selected>Semua</option>
+    <option value="{[{ peminjamData.string }]}" ng-repeat = "peminjamData in peminjamListData">{[{ peminjamData.nama }]}</option>
+  </select>
+
+  Filter Ruangan:
+  <select ng-model="filterRuangan">
+    <option value="" selected>Semua</option>
+    <option value="{[{ ruanganData.string }]}" ng-repeat = "ruanganData in ruanganListData">{[{ ruanganData.nama }]}</option>
+  </select>
+
+  <a href="{% url 'peminjaman:add' %}" style="text-decoration: none; color: black;"><button>ADD</button></a>
+
+  <br />
+  From <input type="date" ng-model="filterTimeStart"/>
+  To <input type="date" ng-model="filterTimeEnd"/>
 
 <table>
    <tr>
@@ -66,7 +117,9 @@
       <th>Delete</th>
    </tr>
    
-   <tr ng-repeat = "peminjamanData in peminjamanListData | filter:{peminjam:filterPeminjam} | filter:{ruangan:filterRuangan}">
+   <tr ng-repeat = "peminjamanData in peminjamanListData | filter:{peminjam:filterPeminjam} | filter:{ruangan:filterRuangan} | 
+                    filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd))">
+
       <td>{[{ peminjamanData.peminjam }]}</td>
       <td>{[{ peminjamanData.ruangan }]}</td>
       <td>{[{ peminjamanData.waktu_awal }]}</td>

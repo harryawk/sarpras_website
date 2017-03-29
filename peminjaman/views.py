@@ -9,8 +9,12 @@ from datetime import datetime
 # Peminjaman index view, mostly for debugging purpose
 def index(request, errormsg=''):
     all_peminjaman = Peminjaman.objects.all()
+    all_ruangan = Ruangan.objects.all()
+    all_peminjam = Peminjam.objects.all()
     return render(request, 'peminjaman/index.html', {
         'all_peminjaman' : all_peminjaman,
+        'all_ruangan' : all_ruangan,
+        'all_peminjam' : all_peminjam,
         'error' : errormsg
     })
 

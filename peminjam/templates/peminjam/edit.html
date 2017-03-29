@@ -5,30 +5,46 @@
 {% endblock %}
 
 {% block body %}
-<h1>Mengubah Informasi Organisasi Peminjam</h1>
+<div class="row">
+    <div class="col-lg-10">
+        <form action="{% url 'peminjam:add' %}" method="post" class="form-horizontal">
+            {% csrf_token %}
 
-<form action="{% url 'peminjam:edit' selected_peminjam.id %}" method="post">
-    {% csrf_token %}
+            <fieldset>
+                <legend>Formulir Penambahan Peminjam</legend>
+                <div class="form-group">
+                    <label for="id_nama" class="col-lg-2 control-label">Nama</label>
+                    <div class="col-lg-9">
+                        <input type="text" name="nama" id="id_nama" required value="{{ selected_peminjam.nama }}" maxlength="250" class="form-control"/>
+                    </div>
+                </div>
 
-    Nama: <br />
-    <input type="text" name="nama" value="{{ selected_peminjam.nama }}" autofocus required>
-    <br /><br />
+                <div class="form-group">
+					<label for="id_deskripsi" class="control-label col-lg-2">Deskripsi</label>
+					<div class="col-md-9">
+						<textarea name="deskripsi" id="id_deskripsi" maxlength="1000" class="form-control">{{ selected_peminjam.deskripsi }}</textarea>
+					</div>
+				</div>
 
-    Deskripsi: <br />
-    <textarea name="deskripsi" rows="10" cols="30">{{ selected_peminjam.deskripsi }}</textarea>
-    <br />
+                <ul>
+                {% for error_item in error %}
+                    <li>{{ error_item }}</li>
+                {% endfor %}
 
-    <ul>
-    {% for error_item in error %}
-        <li>{{ error_item }}</li>
-    {% endfor %}
+                {% for message_item in message %}
+                    <li>{{ message_item }}</li>
+                {% endfor %}
+                </ul>
 
-    {% for message_item in message %}
-        <li>{{ message_item }}</li>
-    {% endfor %}
-    </ul>
+                <div class="form-group">
+					<div class="col-lg-10 col-lg-offset-2">
+						<input type="submit" value="Save" class="btn btn-primary"/>
+					</div>
+				</div>
 
-    <input type="submit" value="Submit">
-</form>
+            </fieldset>
+        </form>
+    </div>
+</div>
 {% endblock %}
 

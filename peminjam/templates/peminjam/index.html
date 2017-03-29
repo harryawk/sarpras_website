@@ -23,7 +23,7 @@
 
 
 {% block body %}
-<h1>Daftar Peminjam</h1>
+<legend>Daftar Peminjam</legend>
 
 <script>
     var peminjamList = angular.module('peminjamList', []);
@@ -49,35 +49,55 @@
 
 <div ng-app="peminjamList" ng-controller="peminjamListController">
 
-Filter Name: <input type = "text" ng-model = "filterNama">
-<button><a href="{% url 'peminjam:add' %}" style="text-decoration: none; color: black;">ADD</a></button>
-<table>
+    <div class="row" style="margin-bottom: 10px">
+        <div class="col-lg-6">
+            <button><a href="{% url 'peminjam:add' %}" style="text-decoration: none; color: black;">ADD</a></button>
+        </div>
+        <div class="col-lg-4">
+            <div class="form-group" style="text-align: right;">
+                <label for="id_nama" class="control-label col-lg-4" style="text-align: right">Filter Name</label>
+                <div class="col-lg-8" style="text-align: right;padding: 0px;">
+                    <input type="text" name="nama" id="id_nama" class="form-control input-sm" ng-model = "filterNama"/>
+                </div>
+            </div>
+        </div>
+    </div>
 
-   <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Edit</th>
-      <th>Delete</th>
-   </tr>
-   
-   <tr ng-repeat = "peminjamData in peminjamListData | filter:{id:filterId} | filter:{nama:filterNama}">
-       <td>{[{ peminjamData.nama }]}</td>
-       <td>{[{ peminjamData.deskripsi }]}</td>
-       <td><a href="{[{ peminjamData.edit_link }]}">EDIT</a></td>
-       <td><a href="{[{ peminjamData.delete_link }]}">DELETE</a></td>
-   </tr>
+    <div class="row">
+        <div class="col-lg-10">
+            <table class="table table-striped table-hover ">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   <tr ng-repeat = "peminjamData in peminjamListData | filter:{id:filterId} | filter:{nama:filterNama}">
+                       <td>{[{ peminjamData.id }]}</td>
+                       <td>{[{ peminjamData.nama }]}</td>
+                       <td>{[{ peminjamData.deskripsi }]}</td>
+                       <td><a href="{[{ peminjamData.edit_link }]}">EDIT</a></td>
+                       <td><a href="{[{ peminjamData.delete_link }]}">DELETE</a></td>
+                   </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-</table>
 
 <ul>
-{% for error_item in error %}
-    <li>{{ error_item }}</li>
-{% endfor %}
+    {% for error_item in error %}
+        <li>{{ error_item }}</li>
+    {% endfor %}
 
-{% for message_item in message %}
-    <li>{{ message_item }}</li>
-{% endfor %}
- </ul>
+    {% for message_item in message %}
+        <li>{{ message_item }}</li>
+    {% endfor %}
+</ul>
 
 </div>
 

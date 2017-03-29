@@ -8,8 +8,6 @@
 
 {% block body %}
 
-<h1>Tambah Peminjaman</h1>
-
 <script>
     var peminjamList = angular.module('peminjamList', []);
     peminjamList.config(function($interpolateProvider) {
@@ -48,87 +46,112 @@
 
 	});
 </script>
+<div class="row">
+    <div class="col-lg-10">
+        <form enctype="multipart/form-data" action="{% url 'peminjaman:add' %}" method="post" id="peminjaman_form" novalidate ng-app="peminjamList" ng-controller="peminjamListController" class="form-horizontal">
+            {% csrf_token %}
+            <fieldset>
+                <legend>Formulir Penambahan Peminjaman</legend>
+                <div class="form-group">
+                    <label for="id_peminjam" class="col-md-2 control-label">Peminjam</label>
+                    <div class="col-md-9">
+                        <select name="peminjam" required id="id_peminjam" ng-model="peminjamID" class="form-control">
+                            <option value="" selected>---------</option>
+                            <option value="{[{ peminjamData.id }]}" ng-repeat = "peminjamData in peminjamListData">{[{ peminjamData.nama }]}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <a id="change_id_peminjam"
+                        href="/peminjam/edit/{[{peminjamID}]}"
+                        title="Change selected peminjam"><img src="/static/admin/img/icon-changelink.svg" alt="Change"/></a>
+                        <a id="add_id_peminjam"
+                        href="{% url 'peminjam:add' %}"
+                        title="Add another peminjam"><img src="/static/admin/img/icon-addlink.svg" alt="Add"/></a>
+                    </div>
+                </div>
 
-<form enctype="multipart/form-data" action="{% url 'peminjaman:add' %}" method="post" id="peminjaman_form" novalidate ng-app="peminjamList" ng-controller="peminjamListController">
-	{% csrf_token %}
+                <div class="form-group">
+                    <label for="id_ruangan" class="col-lg-2 control-label">Ruangan</label>
+                    <div class="col-lg-9">
+                        <select name="ruangan" required id="id_ruangan" ng-model="ruanganID" class="form-control">
+                            <option value="" selected>---------</option>
+                            <option value="{[{ ruanganData.id }]}" ng-repeat = "ruanganData in ruanganListData">{[{ ruanganData.nama }]}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-1">
+                        <a id="change_id_ruangan"
+                        href="/ruangan/edit/{[{ruanganID}]}"
+                        title="Change selected ruangan"><img src="/static/admin/img/icon-changelink.svg" alt="Change"/></a>
+                        <a id="add_id_ruangan"
+                        href="{% url 'ruangan:add' %}"
+                        title="Add another ruangan"><img src="/static/admin/img/icon-addlink.svg" alt="Add"/></a>
+                    </div>
+                </div>
 
-	<div>
-		<label for="id_peminjam">Peminjam:</label>
-		<div>
-			<select name="peminjam" required id="id_peminjam" ng-model="peminjamID">
-				<option value="">---------</option>
-				<option value="{[{ peminjamData.id }]}" ng-repeat = "peminjamData in peminjamListData">{[{ peminjamData.nama }]}</option>
-			</select>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">Waktu awal</label>
+                    <div class="col-md-9">
+                        <div class="form-group">
+                            <label for="id_waktu_awal_0" class="col-md-1 control-label">Date</label>
+                            <div class="col-md-11">
+                                <input type="date" name="waktu_awal_0" id="id_waktu_awal_0" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_waktu_awal_1" class="col-md-1 control-label">Time</label>
+                            <div class="col-md-11">
+                                <input type="time" name="waktu_awal_1" id="id_waktu_awal_1" class="form-control" required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-			<a id="change_id_peminjam"
-			href="{[{ (peminjamListData | filter : {id:peminjamID} : true)[0].edit_link }]}"
-			title="Change selected peminjam"><img src="/static/admin/img/icon-changelink.svg" alt="Change"/></a>
-			<a id="add_id_peminjam"
-			href="{% url 'peminjam:add' %}"
-			title="Add another peminjam"><img src="/static/admin/img/icon-addlink.svg" alt="Add"/></a>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">Waktu awal</label>
+                    <div class="col-md-9">
+                        <div class="form-group">
+                            <label for="id_waktu_akhir_0" class="col-md-1 control-label">Date</label>
+                            <div class="col-md-11">
+                                <input type="date" name="waktu_akhir_0" id="id_waktu_akhir_0" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_waktu_akhir_1" class="col-md-1 control-label">Time</label>
+                            <div class="col-md-11">
+                                <input type="time" name="waktu_akhir_1" id="id_waktu_akhir_1" class="form-control" required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-		</div>
-	</div>
+                <div class="form-group">
+                    <label for="id_deskripsi" class="col-lg-2 control-label">Deskripsi</label>
+                    <div class="col-lg-9">
+                        <textarea name="deskripsi" id="id_deskripsi" maxlength="1000" class="form-control"></textarea>
+                    </div>
+                </div>
 
-	<div>
-		<label for="id_ruangan">Ruangan:</label>
-		<div>
-			<select name="ruangan" required id="id_ruangan" ng-model="ruanganID">
-				<option value="">---------</option>
-				<option value="{[{ ruanganData.id }]}" ng-repeat = "ruanganData in ruanganListData">{[{ ruanganData.nama }]}</option>
-			</select>
+                <ul>
+                {% for error_item in error %}
+                <li>{{ error_item }}</li>
+                {% endfor %}
 
-			<a id="change_id_ruangan"
-			href="{[{ (ruanganListData | filter : {id:ruanganID} : true)[0].edit_link }]}"
-			title="Change selected ruangan"><img src="/static/admin/img/icon-changelink.svg" alt="Change"/></a>
-			<a id="add_id_ruangan"
-			href="{% url 'ruangan:add' %}"
-			title="Add another ruangan"><img src="/static/admin/img/icon-addlink.svg" alt="Add"/></a>
+                {% for message_item in message %}
+                <li>{{ message_item }}</li>
+                {% endfor %}
+                </ul>
 
-		</div>
-	</div>
-
-	<div>
-		<label for="id_waktu_awal_0">Waktu awal:</label>
-		<p class="datetime">
-		Date: <input type="date" name="waktu_awal_0" id="id_waktu_awal_0" value="{{ tanggal_awal }}" required />
-		<br />
-		Time: <input type="time" name="waktu_awal_1" id="id_waktu_awal_1" value="{{ pukul_awal }}" required />
-		</p>
-	</div>
-
-	<div>
-		<label for="id_waktu_akhir_0">Waktu akhir:</label>
-		<p class="datetime">
-		Date: <input type="date" name="waktu_akhir_0" id="id_waktu_akhir_0" value="{{ tanggal_akhir }}" required />
-		<br />
-		Time: <input type="time" name="waktu_akhir_1" id="id_waktu_akhir_1" value="{{ pukul_akhir }}" required />
-		</p>
-	</div>
-
-	<div>
-		<label for="id_deskripsi">Deskripsi:</label>
-		<textarea name="deskripsi" id="id_deskripsi" maxlength="1000">{{ input_deskripsi }}</textarea>
-	</div>
-
-	<ul>
-	{% for error_item in error %}
-	<li>{{ error_item }}</li>
-	{% endfor %}
-
-	{% for message_item in message %}
-	<li>{{ message_item }}</li>
-	{% endfor %}
-	</ul>
-
-	<div>
-		<!--<input type="submit" value="Save" class="default" name="_save" />-->
-		<!--<input type="submit" value="WAWA" >-->
-		<input type="submit" value="Save" >
-		<!--<input type="submit" value="Save and add another" name="_addanother" />-->
-		<!--<input type="submit" value="Save and continue editing" name="_continue" />-->
-
-	</div>
-</form>
-
+                <div class="form-group">
+                    <div class="col-lg-10 col-lg-offset-2">
+                        <!--<input type="submit" value="Save" class="default" name="_save" />-->
+                        <!--<input type="submit" value="WAWA" >-->
+                        <input type="submit" value="Save" class="btn btn-primary" >
+                        <!--<input type="submit" value="Save and add another" name="_addanother" />-->
+                        <!--<input type="submit" value="Save and continue editing" name="_continue" />-->
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
 {% endblock %}

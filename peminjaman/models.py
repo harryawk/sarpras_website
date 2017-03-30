@@ -21,8 +21,7 @@ class Peminjaman(models.Model):
         return (new_time_start <= old_time_start <= new_time_finish) or (old_time_start <= new_time_start <= old_time_finish)
 
     def get_all_conflicted_set(self):
-        conflicted_candidates = Peminjaman.objects.all()
-        conflicted_candidates.filter(ruangan = self.ruangan)
+        conflicted_candidates = Peminjaman.objects.filter(ruangan = self.ruangan)
         conflicteds = []
 
         for candidate in conflicted_candidates:

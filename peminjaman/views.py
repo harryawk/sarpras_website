@@ -24,8 +24,8 @@ def formadd(request):
 
     input_peminjam = ''
     input_ruangan = ''
-    tanggal_awal = request.POST.get('waktu_awal_0', '2016-01-31') # format tanggal : %Y-%m-%d
-    tanggal_akhir = request.POST.get('waktu_akhir_0', '2017-01-31') # format tanggal : %Y-%m-%d
+    tanggal_awal = request.POST.get('waktu_awal_0', datetime.now().strftime("%Y-%m-%d")) # format tanggal : %Y-%m-%d
+    tanggal_akhir = request.POST.get('waktu_akhir_0', datetime.now().strftime("%Y-%m-%d")) # format tanggal : %Y-%m-%d
     pukul_awal = request.POST.get('waktu_awal_1', '00:00') # format waktu : %H:%M
     pukul_akhir = request.POST.get('waktu_akhir_1', '00:00') # format waktu : %H:%M
     input_deskripsi = request.POST.get('deskripsi', '')

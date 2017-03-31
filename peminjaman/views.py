@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.http import HttpResponse, Http404
+from django.http import JsonResponse
 from .models import Pembayaran, Peminjaman
 from ruangan.models import Ruangan
 from peminjam.models import Peminjam
@@ -221,3 +221,8 @@ def formdelete(request, peminjaman_id, errormsg=''):
         'error': errormsg,
     })
     # return render(request, 'peminjaman/delete.html', {})
+
+
+def fetchrecord(request, start_year):
+    selected_peminjaman = Peminjaman.objects.filter(waktu_awal__year = start_year).values()
+    return JsonResponse({'results': list(selected_peminjaman)})

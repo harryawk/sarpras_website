@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Ruangan
+from django.http import JsonResponse
 from django.urls import reverse
 
 
@@ -163,3 +164,6 @@ def formdelete(request, ruangan_id):
     })
 
 
+def fetchrecord(request):
+    all_ruangan = Ruangan.objects.all().values()
+    return JsonResponse({'results': list(all_ruangan)})

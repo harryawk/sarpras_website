@@ -7,20 +7,31 @@
 
 	peminjamanCalendar.controller("peminjamanCalendarController", function($scope, $http) {
 
-		$http.get("{% url 'peminjam:json' %}").success(function(data, status, headers, config) {
+		$scope.peminjamEdit = "{% url 'peminjam:editbase' %}"
+		$scope.peminjamDelete = "{% url 'peminjam:deletebase' %}"
+		$scope.peminjamJson = "{% url 'peminjam:json' %}"
+		$scope.peminjamanEdit = "{% url 'peminjaman:editbase' %}"
+		$scope.peminjamanDelete = "{% url 'peminjaman:deletebase' %}"
+		$scope.peminjamanJson = "{% url 'peminjaman:jsonbase' %}"
+		$scope.ruanganEdit = "{% url 'ruangan:editbase' %}"
+		$scope.ruanganDelete = "{% url 'ruangan:deletebase' %}"
+		$scope.ruanganJson = "{% url 'ruangan:json' %}"
+
+
+		$http.get($scope.peminjamJson).success(function(data, status, headers, config) {
 	      	$scope.peminjamList = data.results;
 	    }).error(function(data, status, headers, config) {
 	      	$scope.peminjamList = "ERROR";
 	    });
 
-	    $http.get("{% url 'ruangan:json' %}").success(function(data, status, headers, config) {
+	    $http.get($scope.ruanganJson).success(function(data, status, headers, config) {
 	      	$scope.ruanganList = data.results;
 	    }).error(function(data, status, headers, config) {
 	      	$scope.ruanganList = "ERROR";
 	    });
 
 	    $scope.fetchPeminjaman = function(year){
-	      	$http.get("{% url 'peminjaman:jsonbase' %}" + year).success(function(data, status, headers, config) {
+	      	$http.get($scope.peminjamanJson + year).success(function(data, status, headers, config) {
 	      		$scope.peminjamanList = data.results;
 	    	}).error(function(data, status, headers, config) {
 	      		$scope.peminjamanList = "ERROR";

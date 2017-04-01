@@ -106,7 +106,7 @@ def formadd(request):
 
 
 # Return a form which'll be used to edit peminjaman object to model
-def formedit(request, peminjaman_id):
+def formedit(request, peminjaman_id = 0):
 
     # Berusaha mendapat model peminjam yang ingin diubah
     try:
@@ -208,7 +208,7 @@ def formedit(request, peminjaman_id):
 
 
 # Return a form which'll be used to delete peminjaman object to model
-def formdelete(request, peminjaman_id, errormsg=''):
+def formdelete(request, peminjaman_id = 0, errormsg=''):
     try:
         object_peminjaman = Peminjaman.objects.get(id=peminjaman_id)
         object_peminjaman.delete()

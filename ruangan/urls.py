@@ -12,9 +12,11 @@ urlpatterns = [
     url(r'^add/$', views.formadd, name='add'),
 
     # /ruangan/edit/4
+    url(r'^edit/$', views.formedit, name='editbase'),
     url(r'^edit/(?P<ruangan_id>[0-9]+)/$', views.formedit, name='edit'),
 
     # /ruangan/delete/4
+    url(r'^delete/$', views.formdelete, name='deletebase'),
     url(r'^delete/(?P<ruangan_id>[0-9]+)/$', views.formdelete, name='delete'),
 
     # /ruangan/fetchjson/

@@ -68,7 +68,7 @@ def formadd(request):
 
 
 # Return a form which'll be used to edit Ruangan object to model
-def formedit(request, ruangan_id):
+def formedit(request, ruangan_id = 0):
 	
 	# Berusaha mendapat model ruangan yang ingin diubah
     try:
@@ -125,7 +125,7 @@ def formedit(request, ruangan_id):
 
 
 # Return a form which'll be used to delete Ruangan object to model
-def formdelete(request, ruangan_id):
+def formdelete(request, ruangan_id = 0):
     
 	# Berusaha mendapat model peminjam yang ingin diubah
     try:

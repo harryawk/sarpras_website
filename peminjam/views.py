@@ -59,7 +59,7 @@ def formadd(request):
 
 
 # Return a form which'll be used to edit Peminjam object to model
-def formedit(request, peminjam_id):
+def formedit(request, peminjam_id = 0):
 
     # Berusaha mendapat model peminjam yang ingin diubah
     try:
@@ -107,7 +107,7 @@ def formedit(request, peminjam_id):
 
 
 # Return a form which'll be used to delete Peminjam object to model
-def formdelete(request, peminjam_id):
+def formdelete(request, peminjam_id = 0):
 
     # Berusaha mendapat model peminjam yang ingin diubah
     try:

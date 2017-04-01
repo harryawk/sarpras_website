@@ -12,9 +12,11 @@ urlpatterns = [
     url(r'^add/$',views.formadd, name='add'),
 
     # /peminjam/edit/4
+    url(r'^edit/$', views.formedit, name='editbase'),
     url(r'^edit/(?P<peminjam_id>[0-9]+)/$', views.formedit, name='edit'),
 
     # /peminjam/delete/4
+    url(r'^delete/$', views.formdelete, name='deletebase'),
     url(r'^delete/(?P<peminjam_id>[0-9]+)/$', views.formdelete, name='delete'),
 
     # /peminjam/fetchjson/

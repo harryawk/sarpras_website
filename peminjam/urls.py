@@ -17,4 +17,6 @@ urlpatterns = [
     # /peminjam/delete/4
     url(r'^delete/(?P<peminjam_id>[0-9]+)/$', views.formdelete, name='delete'),
 
+    # /peminjam/fetchjson/
+    url(r'^json/$', views.fetchrecord, name='json'),
 ]

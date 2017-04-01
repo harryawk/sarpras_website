@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Peminjam
+from django.http import JsonResponse
 from django.urls import reverse
 
 
@@ -144,3 +145,7 @@ def formdelete(request, peminjam_id):
         'message': message,
     })
 
+
+def fetchrecord(request):
+    all_peminjam = Peminjam.objects.all().values()
+    return JsonResponse({'results': list(all_peminjam)})

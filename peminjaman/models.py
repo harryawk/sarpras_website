@@ -21,7 +21,11 @@ class Peminjaman(models.Model):
         return (new_time_start <= old_time_start <= new_time_finish) or (old_time_start <= new_time_start <= old_time_finish)
 
     def get_all_conflicted_set(self):
-        conflicted_candidates = Peminjaman.objects.filter(ruangan = self.ruangan)
+        if(self.waktu_akhir.year == self.waktu_awal.year):
+            conflicted_candidates = Peminjaman.objects.filter(ruangan = self.ruangan).filter(waktu_awal__year = self.waktu_awal.year)
+        else:
+            conflicted_candidates = Peminjaman.objects.filter(ruangan = self.ruangan).filter(waktu_awal__year = self.waktu_awal.year) | \
+                                    Peminjaman.objects.filter(ruangan = self.ruangan).filter(waktu_awal__year = self.waktu_akhir.year)
         conflicteds = []
 
         for candidate in conflicted_candidates:

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.http import HttpResponse, Http404
+from django.http import JsonResponse
 from .models import Pembayaran, Peminjaman
 from ruangan.models import Ruangan
 from peminjam.models import Peminjam
@@ -24,8 +24,8 @@ def formadd(request):
 
     input_peminjam = ''
     input_ruangan = ''
-    tanggal_awal = request.POST.get('waktu_awal_0', '2016-01-31') # format tanggal : %Y-%m-%d
-    tanggal_akhir = request.POST.get('waktu_akhir_0', '2017-01-31') # format tanggal : %Y-%m-%d
+    tanggal_awal = request.POST.get('waktu_awal_0', datetime.now().strftime("%Y-%m-%d")) # format tanggal : %Y-%m-%d
+    tanggal_akhir = request.POST.get('waktu_akhir_0', datetime.now().strftime("%Y-%m-%d")) # format tanggal : %Y-%m-%d
     pukul_awal = request.POST.get('waktu_awal_1', '00:00') # format waktu : %H:%M
     pukul_akhir = request.POST.get('waktu_akhir_1', '00:00') # format waktu : %H:%M
     input_deskripsi = request.POST.get('deskripsi', '')
@@ -221,3 +221,8 @@ def formdelete(request, peminjaman_id, errormsg=''):
         'error': errormsg,
     })
     # return render(request, 'peminjaman/delete.html', {})
+
+
+def fetchrecord(request, start_year = 2017):
+    selected_peminjaman = Peminjaman.objects.filter(waktu_awal__year = start_year).values()
+    return JsonResponse({'results': list(selected_peminjaman)})

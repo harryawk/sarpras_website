@@ -223,6 +223,6 @@ def formdelete(request, peminjaman_id, errormsg=''):
     # return render(request, 'peminjaman/delete.html', {})
 
 
-def fetchrecord(request, start_year):
+def fetchrecord(request, start_year = 2017):
     selected_peminjaman = Peminjaman.objects.filter(waktu_awal__year = start_year).values()
     return JsonResponse({'results': list(selected_peminjaman)})

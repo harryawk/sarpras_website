@@ -1,0 +1,42 @@
+<script>
+    var peminjamanCalendar = angular.module('peminjamanCalendar', []);
+    peminjamanCalendar.config(function($interpolateProvider) {
+  		$interpolateProvider.startSymbol('{[{');
+  		$interpolateProvider.endSymbol('}]}');
+	});
+
+	peminjamanCalendar.controller("peminjamanCalendarController", function($scope, $http) {
+
+		$http.get("{% url 'peminjam:json' %}").success(function(data, status, headers, config) {
+	      	$scope.peminjamList = data.results;
+	    }).error(function(data, status, headers, config) {
+	      	$scope.peminjamList = "ERROR";
+	    });
+
+	    $http.get("{% url 'ruangan:json' %}").success(function(data, status, headers, config) {
+	      	$scope.ruanganList = data.results;
+	    }).error(function(data, status, headers, config) {
+	      	$scope.ruanganList = "ERROR";
+	    });
+
+	    $scope.fetchPeminjaman = function(year){
+	      	$http.get("{% url 'peminjaman:jsonbase' %}" + year).success(function(data, status, headers, config) {
+	      		$scope.peminjamanList = data.results;
+	    	}).error(function(data, status, headers, config) {
+	      		$scope.peminjamanList = "ERROR";
+	    	});
+	    }
+	    $scope.fetchPeminjaman(2017);
+
+	});
+
+	angular.element(document).ready(function() {
+    	angular.bootstrap(document.getElementById("AppPeminjamanCallendar"), ["peminjamanCalendar"])
+  	});
+</script>
+
+<div id="AppPeminjamanCallendar" ng-controller="peminjamanCalendarController">
+
+{[{ peminjamanList }]}
+
+</div>

@@ -18,5 +18,6 @@ urlpatterns = [
     url(r'^delete/(?P<peminjaman_id>[0-9]+)/$', views.formdelete, name='delete'),
 
     # /peminjaman/json/2016
+    url(r'^json/$', views.fetchrecord, name='jsonbase'),
     url(r'^json/(?P<start_year>[0-9]+)/$', views.fetchrecord, name='json'),
 ]

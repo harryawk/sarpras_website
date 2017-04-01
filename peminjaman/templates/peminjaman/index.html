@@ -10,11 +10,12 @@
 <legend>Daftar peminjaman</legend>
 
 <script>
-    var peminjamanList = angular.module('peminjamanList', []);
-    peminjamanList.config(function($interpolateProvider) {
+  var peminjamanList = angular.module('peminjamanList', []);
+  peminjamanList.config(function($interpolateProvider) {
   		$interpolateProvider.startSymbol('{[{');
   		$interpolateProvider.endSymbol('}]}');
 	});
+
 	peminjamanList.controller("peminjamanListController", function($scope) {
 		
     $scope.toTimestamp = function(date) {
@@ -66,11 +67,14 @@
       nama:"{{ ruangan.nama }}",
     });
     {% endfor %}
-
 	});
+
+  angular.element(document).ready(function() {
+    angular.bootstrap(document.getElementById("AppPeminjamanList"), ["peminjamanList"])
+  });
 </script>
 
-<div ng-app="peminjamanList" ng-controller="peminjamanListController">
+<div id="AppPeminjamanList" ng-controller="peminjamanListController">
     <a href="{% url 'peminjaman:add' %}" style="text-decoration: none; color: black;"><button>ADD</button></a>
     <div class="row">
         <div class="col-lg-5" style="margin-bottom: 10px;width: 36.66666667%">
@@ -146,6 +150,8 @@
 </ul>
 
 </div>
+
+{% include "peminjaman/kalender.html" %}
 
 {% endblock %}
 

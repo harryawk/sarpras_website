@@ -113,3 +113,11 @@ i {
     font-weight: normal;
     padding-right: 5px;
 }
+
+#calendar .fc-license-message {
+    display: none;
+}
+
+#calendar .fc-widget-content, #calendar .fc-widget-header {
+    background-color: #ddd;
+}

@@ -158,9 +158,10 @@
 {% block calendar %}
 <script>
 /* Setup fullCalender framework*/
-	$(document).ready(function() { // document ready
+	$(function() { // document ready
 
 		$('#calendar').fullCalendar({
+            schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
 			now: '2017-04-01',
 			editable: false, // enable draggable events
 			aspectRatio: 1.8,
@@ -217,6 +218,9 @@
 				{ id: '5', resourceId: 'f', start: '2017-03-07T00:30:00', end: '2017-03-07T02:30:00', title: 'event 5' }
 			]
 		});
+
+		$('.fc-widget-content').attr("style","border-color:#ddd");
+		$('.fc-widget-header').attr("style","border-color:#ddd");
 
 	});
 </script>

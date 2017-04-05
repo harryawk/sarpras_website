@@ -119,5 +119,5 @@ i {
 }
 
 #calendar .fc-widget-content, #calendar .fc-widget-header {
-    background-color: #ddd;
+    border-color: #ddd;
 }

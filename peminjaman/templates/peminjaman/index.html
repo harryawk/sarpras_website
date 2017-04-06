@@ -7,8 +7,6 @@
 
 
 {% block body %}
-<legend>Daftar peminjaman</legend>
-
 <script>
   var peminjamanList = angular.module('peminjamanList', []);
   peminjamanList.config(function($interpolateProvider) {
@@ -74,70 +72,72 @@
   });
 </script>
 
+{% include "peminjaman/kalender.html" %}
+
 <div id="AppPeminjamanList" ng-controller="peminjamanListController">
-    <a href="{% url 'peminjaman:add' %}" style="text-decoration: none; color: black;"><button>ADD</button></a>
-    <div class="row">
-        <div class="col-lg-5" style="margin-bottom: 10px;width: 36.66666667%">
-          <div class="form-group">
-              <label class="col-lg-1" for="id_time_start" style="text-align: left;padding-left: 0px">From</label>
-              <div class="col-lg-4" style="padding: 0px">
-                  <input type="date" ng-model="filterTimeStart" id="id_time_start" class="form-control input-sm"/>
-              </div>
+    <div class="panel container-fluid">
+        <legend>Daftar peminjaman</legend>
+        <a href="{% url 'peminjaman:add' %}" style="text-decoration: none; color: black;"><button>ADD</button></a>
+        <div class="row">
+            <div class="col-lg-5" style="margin-bottom: 10px;width: 36.66666667%">
+              <div class="form-group">
+                  <label class="col-lg-1" for="id_time_start" style="text-align: left;padding-left: 0px">From</label>
+                  <div class="col-lg-4" style="padding: 0px">
+                      <input type="date" ng-model="filterTimeStart" id="id_time_start" class="form-control input-sm"/>
+                  </div>
 
-              <label class="control-label col-lg-1" for="id_time_end" style="text-align: center">to</label>
-              <div class="col-lg-4" style="padding: 0px">
-                  <input type="date" ng-model="filterTimeEnd" id="id_time_end" class="form-control input-sm"/>
+                  <label class="control-label col-lg-1" for="id_time_end" style="text-align: center">to</label>
+                  <div class="col-lg-4" style="padding: 0px">
+                      <input type="date" ng-model="filterTimeEnd" id="id_time_end" class="form-control input-sm"/>
+                  </div>
               </div>
-          </div>
-        </div>
-        <div class="col-lg-5" style="width: 46.66666667%">
-            <div class="form-group">
-                <label class="control-label col-lg-3" for="id_filter_peminjam">Filter Peminjam</label>
-                <div class="col-lg-3" style="padding: 0px">
-                    <select ng-model="filterPeminjam" id="id_filter_peminjam" class="form-control input-sm">
-                        <option value="" selected>Semua</option>
-                        <option value="{[{ peminjamData.string }]}" ng-repeat = "peminjamData in peminjamListData">{[{ peminjamData.nama }]}</option>
-                    </select>
-                </div>
+            </div>
+            <div class="col-lg-5" style="width: 46.66666667%">
+                <div class="form-group">
+                    <label class="control-label col-lg-3" for="id_filter_peminjam">Filter Peminjam</label>
+                    <div class="col-lg-3" style="padding: 0px">
+                        <select ng-model="filterPeminjam" id="id_filter_peminjam" class="form-control input-sm">
+                            <option value="" selected>Semua</option>
+                            <option value="{[{ peminjamData.string }]}" ng-repeat = "peminjamData in peminjamListData">{[{ peminjamData.nama }]}</option>
+                        </select>
+                    </div>
 
-                <label class="control-label col-lg-3" for="id_filter_ruangan">Filter Ruangan</label>
-                <div class="col-lg-3" style="padding: 0px">
-                    <select ng-model="filterRuangan" id="id_filter_ruangan" class="form-control input-sm">
-                        <option value="" selected>Semua</option>
-                        <option value="{[{ ruanganData.string }]}" ng-repeat = "ruanganData in ruanganListData">{[{ ruanganData.nama }]}</option>
-                    </select>
+                    <label class="control-label col-lg-3" for="id_filter_ruangan">Filter Ruangan</label>
+                    <div class="col-lg-3" style="padding: 0px">
+                        <select ng-model="filterRuangan" id="id_filter_ruangan" class="form-control input-sm">
+                            <option value="" selected>Semua</option>
+                            <option value="{[{ ruanganData.string }]}" ng-repeat = "ruanganData in ruanganListData">{[{ ruanganData.nama }]}</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered">
+               <tr>
+                  <th>Peminjam</th>
+                  <th>Ruangan</th>
+                  <th>Waktu Awal</th>
+                  <th>Waktu Akhir</th>
+                  <th>Description</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
+               </tr>
+
+               <tr ng-repeat = "peminjamanData in peminjamanListData | filter:{peminjam:filterPeminjam} | filter:{ruangan:filterRuangan} |
+                                filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd))">
+
+                  <td>{[{ peminjamanData.peminjam }]}</td>
+                  <td>{[{ peminjamanData.ruangan }]}</td>
+                  <td>{[{ peminjamanData.waktu_awal }]}</td>
+                  <td>{[{ peminjamanData.waktu_akhir }]}</td>
+                  <td>{[{ peminjamanData.deskripsi }]}</td>
+                  <td><a href="{[{ peminjamanData.edit_link }]}">EDIT</a></td>
+                  <td><a href="{[{ peminjamanData.delete_link }]}">DELETE</a></td>
+               </tr>
+            </table>
+        </div>
     </div>
-
-<div class="row">
-    <div class="col-lg-10">
-        <table class="table table-striped table-hover ">
-           <tr>
-              <th>Peminjam</th>
-              <th>Ruangan</th>
-              <th>Waktu Awal</th>
-              <th>Waktu Akhir</th>
-              <th>Description</th>
-              <th>Edit</th>
-              <th>Delete</th>
-           </tr>
-
-           <tr ng-repeat = "peminjamanData in peminjamanListData | filter:{peminjam:filterPeminjam} | filter:{ruangan:filterRuangan} |
-                            filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd))">
-
-              <td>{[{ peminjamanData.peminjam }]}</td>
-              <td>{[{ peminjamanData.ruangan }]}</td>
-              <td>{[{ peminjamanData.waktu_awal }]}</td>
-              <td>{[{ peminjamanData.waktu_akhir }]}</td>
-              <td>{[{ peminjamanData.deskripsi }]}</td>
-              <td><a href="{[{ peminjamanData.edit_link }]}">EDIT</a></td>
-              <td><a href="{[{ peminjamanData.delete_link }]}">DELETE</a></td>
-           </tr>
-        </table>
-    </div>
-</div>
 
 <ul>
 {% for error_item in error %}
@@ -150,7 +150,5 @@
 </ul>
 
 </div>
-
-{% include "peminjaman/kalender.html" %}
 
 {% endblock %}

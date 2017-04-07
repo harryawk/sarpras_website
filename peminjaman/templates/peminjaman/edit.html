@@ -53,6 +53,12 @@
             <fieldset>
                 <legend>Formulir Penambahan Peminjaman</legend>
                 <div class="form-group">
+                    <label for="id_nomor_surat" class="col-lg-2 control-label">Nomor Surat</label>
+                    <div class="col-lg-9">
+                        <input type="text" name="nomor_surat" id="id_nomor_surat" class="form-control" value="{{ nomor_surat }}"/>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="id_peminjam" class="col-md-2 control-label">Peminjam</label>
                     <div class="col-md-9">
                         <select name="peminjam" required id="id_peminjam" ng-model="peminjamID" class="form-control">
@@ -128,6 +134,13 @@
                     <label for="id_deskripsi" class="col-lg-2 control-label">Deskripsi</label>
                     <div class="col-lg-9">
                         <textarea name="deskripsi" id="id_deskripsi" maxlength="1000" class="form-control">{{ input_deskripsi }}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_harga" class="col-lg-2 control-label">Pembayaran</label>
+                    <div class="col-lg-9">
+                        <input type="text" name="harga" id="id_harga" class="form-control" value="{{ harga }}"/>
                     </div>
                 </div>
 

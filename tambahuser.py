@@ -8,7 +8,7 @@ def doQuery( conn ) :
   cur = conn.cursor()
   query = "drop user if exists 'admin_penjadwalan'@'localhost'; create user 'admin_penjadwalan'@'localhost'; grant all privileges on sarpras_peminjamanruang.* to 'admin_penjadwalan'@'localhost'; flush privileges;"
   cur.execute( query )
-  print "admin_penjadwalan creation has been success. Created at " + hostname + " by " + username
+  print ("admin_penjadwalan creation has been success. Created at " + hostname + " by " + username)
 
 if __name__ == '__main__':
 	import MySQLdb

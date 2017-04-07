@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'peminjam.apps.PeminjamConfig',
     'peminjaman.apps.PeminjamanConfig',
     'ruangan.apps.RuanganConfig',
+    'log.apps.LogConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

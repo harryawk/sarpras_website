@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import JsonResponse
-from .models import Pembayaran, Peminjaman
+from .models import Peminjaman
 from ruangan.models import Ruangan
 from peminjam.models import Peminjam
 from datetime import datetime

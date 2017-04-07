@@ -58,13 +58,9 @@
 </div>
 
 <div class="content" style="margin-top: 70px;">
-    <div class="container-fluid">
+    <div class="panel container-fluid">
         <div id="AppKalender" ng-controller="CalendarDemoCtrl" ng-init="loadEvents()">
-            <div class="alert alert-success" ng-show="event">Event selected:{{event.startTime|date:
-                'MMM/dd,yyyy,HH:mm'}} - {{event.endTime|date:'MMM/dd,yyyy,HH:mm'}}, {{event.title}}
-            </div>
-
-            <div class="btn-toolbar">
+            <div class="btn-toolbar" style="margin-bottom: 10px">
                 <div class="btn-group">
                     <button type="button" class="btn btn-default" ng-class="{active:mode==='month'}"
                             ng-click="changeMode('month')">
@@ -88,9 +84,9 @@
             </div>
             <div class="well well-sm">
                 <calendar ng-model="currentDate" calendar-mode="mode" event-source="eventSource"
-                          range-changed="reloadSource(startTime, endTime)"
-                          event-selected="onEventSelected(event)"
-                          time-selected="onTimeSelected(selectedTime)"></calendar>
+                      range-changed="reloadSource(startTime, endTime)"
+                      event-selected="onEventSelected(event)"
+                      time-selected="onTimeSelected(selectedTime)"></calendar>
             </div>
         </div>
     </div>

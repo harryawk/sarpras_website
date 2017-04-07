@@ -1,31 +1,14 @@
-/*!
- * Start Bootstrap - SB Admin (http://startbootstrap.com/)
- * Copyright 2013-2016 Start Bootstrap
- * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
- */
+/*Global Style*/
 
-/* Global Styles */
 @font-face {
     font-family: 'fontello';
-    src: url('../fonts/fontello/fontello.eot?56049164');
-    src: url('../fonts/fontello/fontello.eot?82787786#iefix') format('embedded-opentype'),
-       url('../fonts/fontello/fontello.woff?56049164') format('woff'),
-       url('../fonts/fontello/fontello.ttf?56049164') format('truetype'),
-       url('../fonts/fontello/fontello.svg?56049164#fontello') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-
-
-body {
-    margin-top: 100px;
-    background-color: #222;
-}
-
-@media(min-width:768px) {
-    body {
-        margin-top: 50px;
-    }
+      src: url('../fonts/fontello/fontello.eot?58072396');
+      src: url('../fonts/fontello/fontello.eot?58072396#iefix') format('embedded-opentype'),
+           url('../fonts/fontello/fontello.woff?58072396') format('woff'),
+           url('../fonts/fontello/fontello.ttf?58072396') format('truetype'),
+           url('../fonts/fontello/fontello.svg?58072396#fontello') format('svg');
+      font-weight: normal;
+      font-style: normal;
 }
 
 #wrapper {
@@ -35,83 +18,60 @@ body {
 #page-wrapper {
     width: 100%;
     padding: 0;
-    background-color: #fff;
-}
-
-.huge {
-    font-size: 50px;
-    line-height: normal;
+    padding-top: 80px;
+    background-color: #eaeaea;
 }
 
 @media(min-width:768px) {
-    #wrapper {
-        padding-left: 225px;
-    }
 
     #page-wrapper {
-        padding: 10px;
+        padding-left: 225px;
     }
 }
-
-/* Navbar */
-.navbar-default {
-    background-color: #222;
-    border-color: #222;
-}
-
-/* Top Navigation */
-
 
 /* Side Navigation */
 
 @media(min-width:768px) {
     .side-nav {
         position: fixed;
-        top: 51px;
+        top: 50px;
         left: 225px;
         width: 225px;
         margin-left: -225px;
         border: none;
         border-radius: 0;
         overflow-y: auto;
-        background-color: #222;
+        background-color: #ffffff;
         bottom: 0;
         overflow-x: hidden;
         padding-bottom: 40px;
+        padding-top: 40px;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        z-index: -1;
     }
 
-    .side-nav>li>a {
+    .navbar-inverse .side-nav>li>a {
+        color: black;
         width: 225px;
     }
 
-    .side-nav li a:hover,
-    .side-nav li a:focus {
-        outline: none;
-        color : white;
-        background-color: #222 !important;
+    .navbar-inverse .side-nav>li>a:hover,
+    .navbar-inverse .side-nav>li>a:focus {
+        color: black;
+        background-color: #f0f0f0 !important;
     }
-}
 
-.side-nav>li>ul {
-    padding: 0;
-}
-
-.side-nav>li>ul>li>a {
-    display: block;
-    padding: 10px 15px 10px 38px;
-    text-decoration: none;
-    color: #999;
-}
-
-.side-nav>li>ul>li>a:hover {
-    color: white;
+    .navbar-inverse .navbar-nav>.active>a {
+        color: black;
+        background-color: #f0f0f0;
+    }
 }
 
 i {
     font-family: "fontello";
     font-style: normal;
     font-weight: normal;
-    padding-right: 5px;
+    padding-right: 10px;
 }
 
 #calendar .fc-license-message {
@@ -120,4 +80,8 @@ i {
 
 #calendar .fc-widget-content, #calendar .fc-widget-header {
     border-color: #ddd;
+}
+
+.panel.container-fluid {
+    padding: 10px 15px;
 }

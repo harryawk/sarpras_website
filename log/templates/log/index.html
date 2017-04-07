@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+
+{% block head %}
+<title>Log Perubahan Data Peminjaman</title>
+{% endblock %}
+
+
+{% block body %}
+<legend>Log Perubahan Data Peminjaman</legend>
+
+<script>
+    var logList = angular.module('logList', []);
+    logList.config(function($interpolateProvider) {
+  		$interpolateProvider.startSymbol('{[{');
+  		$interpolateProvider.endSymbol('}]}');
+	});
+	logList.controller("logListController", function($scope) {
+		
+		$scope.logListData = [];
+		{% for log in all_log %}
+		$scope.logListData = $scope.logListData.concat({
+			id: "{{ log.id }}",
+			tanggal:"{{ log.tanggal }}",
+			peminjaman:"{% if log.peminjaman %} {{ log.peminjaman }} {% else %} {{ log.peminjaman_str }} {% endif %}",
+			aksi:"{{ log.aksi }}",
+			deskripsi:"{{ log.deskripsi }}"
+		});
+		{% endfor %}
+
+	});
+</script>
+
+<div ng-app="logList" ng-controller="logListController">
+    <div class="row">
+        <div class="col-lg-10">
+            <table class="table table-striped table-hover ">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Peminjaman</th>
+                        <th>Aksi</th>
+                        <th>Deskripsi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   <tr ng-repeat = "logData in logListData">
+                       <td>{[{ logData.tanggal }]}</td>
+                       <td>{[{ logData.peminjaman }]}</td>
+                       <td>{[{ logData.aksi }]}</td>
+                       <td>{[{ logData.deskripsi }]}</td>
+                   </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

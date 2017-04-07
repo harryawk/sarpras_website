@@ -8,6 +8,9 @@ urlpatterns = [
     # /peminjaman/
     url(r'^$', views.index, name='index'),
 
+    # /peminjaman/kalender
+    url(r'^kalender/$', views.kalender, name='kalender'),
+
     # /peminjaman/add/
     url(r'^add/$',views.formadd, name='add'),
 

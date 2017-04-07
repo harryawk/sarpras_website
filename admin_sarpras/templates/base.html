@@ -46,11 +46,11 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
           <ul class="nav navbar-nav side-nav">
-            <li class="active">
-                <a href="{% url 'peminjaman:index' %}"><i>&#xe800;</i> Peminjaman</a>
+            <li>
+                <a href="{% url 'peminjaman:kalender' %}"><i>&#xe800;</i> Kalender Peminjaman</a>
             </li>
             <li>
-                <a href="#"><i>&#xe802;</i> Pembayaraan</a>
+                <a href="{% url 'peminjaman:index' %}"><i>&#xe802;</i> Tabel Peminjaman</a>
             </li>
             <li>
                 <a href="{% url 'peminjam:index' %}"><i>&#xe801;</i> Peminjam</a>

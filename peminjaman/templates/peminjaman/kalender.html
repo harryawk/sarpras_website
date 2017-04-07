@@ -1,62 +1,8 @@
 <script>
-    var peminjamanCalendar = angular.module('peminjamanCalendar', []);
-    peminjamanCalendar.config(function($interpolateProvider) {
-  		$interpolateProvider.startSymbol('{[{');
-  		$interpolateProvider.endSymbol('}]}');
-	});
-
-	peminjamanCalendar.controller("peminjamanCalendarController", function($scope, $http) {
-
-		$scope.peminjamEdit = "{% url 'peminjam:editbase' %}"
-		$scope.peminjamDelete = "{% url 'peminjam:deletebase' %}"
-		$scope.peminjamJson = "{% url 'peminjam:json' %}"
-		$scope.peminjamanEdit = "{% url 'peminjaman:editbase' %}"
-		$scope.peminjamanDelete = "{% url 'peminjaman:deletebase' %}"
-		$scope.peminjamanJson = "{% url 'peminjaman:jsonbase' %}"
-		$scope.ruanganEdit = "{% url 'ruangan:editbase' %}"
-		$scope.ruanganDelete = "{% url 'ruangan:deletebase' %}"
-		$scope.ruanganJson = "{% url 'ruangan:json' %}"
-
-
-		$http.get($scope.peminjamJson).success(function(data, status, headers, config) {
-	      	$scope.peminjamList = data.results;
-	    }).error(function(data, status, headers, config) {
-	      	$scope.peminjamList = "ERROR";
-	    });
-
-	    $http.get($scope.ruanganJson).success(function(data, status, headers, config) {
-	      	$scope.ruanganList = data.results;
-	    }).error(function(data, status, headers, config) {
-	      	$scope.ruanganList = "ERROR";
-	    });
-
-	    $scope.fetchPeminjaman = function(year){
-	      	$http.get($scope.peminjamanJson + year).success(function(data, status, headers, config) {
-	      		$scope.peminjamanList = data.results;
-	    	}).error(function(data, status, headers, config) {
-	      		$scope.peminjamanList = "ERROR";
-	    	});
-	    }
-	    $scope.fetchPeminjaman(2017);
-
-	});
-
-	angular.element(document).ready(function() {
-    	angular.bootstrap(document.getElementById("AppPeminjamanCallendar"), ["peminjamanCalendar"])
-  	});
-
     angular.element(document).ready(function() {
     	angular.bootstrap(document.getElementById("AppKalender"), ["calendarDemoApp"])
   	});
-
 </script>
-
-<div id="AppPeminjamanCallendar" ng-controller="peminjamanCalendarController">
-
-{[{ peminjamanList }]}
-
-</div>
-
 <div class="content" style="margin-top: 70px;">
     <div class="panel container-fluid">
         <div id="AppKalender" ng-controller="CalendarDemoCtrl" ng-init="loadEvents()">

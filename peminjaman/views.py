@@ -17,7 +17,8 @@ def index(request, errormsg=''):
         'all_peminjam' : all_peminjam,
         'error' : errormsg
     })
-
+def kalender(request, errormsg=''):
+    return render(request, 'peminjaman/kalender_admin.html', {})
 
 # Return a form which'll be used to add new Peminjaman object to model
 def formadd(request):

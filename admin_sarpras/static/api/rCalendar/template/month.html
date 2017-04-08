@@ -1,7 +1,7 @@
 <div>
     <table class="table table-bordered table-fixed monthview-datetable monthview-datetable">
         <thead>
-        <tr>
+        <tr style="background-color: white">
             <th ng-show="showWeeks" class="calendar-week-column text-center">#</th>
             <th ng-repeat="label in labels track by $index" class="text-center">
                 <small>{{label}}</small>
@@ -14,9 +14,15 @@
                 <small><em>{{ weekNumbers[$index] }}</em></small>
             </td>
             <td ng-repeat="dt in row track by dt.date" class="monthview-dateCell" ng-click="select(dt.date)"
-                ng-class="{'text-center':true, 'monthview-current': dt.current&&!dt.selected&&!dt.hasEvent,'monthview-secondary-with-event': dt.secondary&&dt.hasEvent, 'monthview-primary-with-event':!dt.secondary&&dt.hasEvent&&!dt.selected, 'monthview-selected': dt.selected}">
+                class=""
+                ng-class="{'text-center':true}">
                 <div ng-class="{'text-muted':dt.secondary}">
-                    {{dt.label}}
+                    <b>{{dt.label}}</b>
+                    <div ng-repeat="event in dt.events | orderBy : event.title" style="margin: 2px;" class="panel"
+                    ng-class="{'monthview-current': dt.current&&!dt.selected&&!dt.hasEvent,'monthview-secondary-with-event': dt.secondary&&dt.hasEvent, 'monthview-primary-with-event':!dt.secondary&&dt.hasEvent&&!dt.selected, 'monthview-selected': dt.selected}">
+                        <p style="margin-bottom: 0">{{event.title}}</p>
+                        <p style="font-size: 70%;margin-bottom: 0">{{event.startTime | date:'HH:mm'}} - {{event.endTime | date:'HH:mm'}}</p>
+                    </div>
                 </div>
             </td>
         </tr>

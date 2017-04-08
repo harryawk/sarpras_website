@@ -3,7 +3,7 @@
         <thead>
         <tr>
             <th class="calendar-hour-column"></th>
-            <th ng-repeat="dt in dates" class="text-center weekview-header-label">{{dt.date| date:
+            <th ng-repeat="dt in dates" class="text-center weekview-header-label" style="background-color: white">{{dt.date| date:
                 formatWeekViewDayHeader}}
             </th>
             <th ng-if="gutterWidth>0" class="gutter-column" ng-style="{width: gutterWidth+'px'}"></th>
@@ -24,7 +24,7 @@
                             <div ng-repeat="displayEvent in day.events" class="calendar-event"
                                  ng-click="eventSelected({event:displayEvent.event})"
                                  ng-style="{top: 25*displayEvent.position+'px', width: 100*(displayEvent.endIndex-displayEvent.startIndex)+'%', height: '25px'}">
-                                <div class="calendar-event-inner">{{displayEvent.event.title}}</div>
+                                <div class="calendar-event-inner panel">{{displayEvent.event.title}}</div>
                             </div>
                         </div>
                     </td>
@@ -47,7 +47,7 @@
                         <div ng-repeat="displayEvent in tm.events" class="calendar-event"
                              ng-click="eventSelected({event:displayEvent.event})"
                              ng-style="{left: 100/displayEvent.overlapNumber*displayEvent.position+'%', width: 100/displayEvent.overlapNumber+'%', height: 37*(displayEvent.endIndex-displayEvent.startIndex)+'px'}">
-                            <div class="calendar-event-inner">{{displayEvent.event.title}}</div>
+                            <div class="calendar-event-inner panel">{{displayEvent.event.title}}</div>
                         </div>
                     </div>
                 </td>

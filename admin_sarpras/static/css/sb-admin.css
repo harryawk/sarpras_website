@@ -85,3 +85,7 @@ i {
 .panel.container-fluid {
     padding: 10px 15px;
 }
+
+.table>tbody>tr>td {
+    padding: 8px 0;
+}

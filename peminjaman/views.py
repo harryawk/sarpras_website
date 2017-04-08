@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import JsonResponse
-from .models import Pembayaran, Peminjaman
+from .models import Peminjaman
 from ruangan.models import Ruangan
 from peminjam.models import Peminjam
 from datetime import datetime
@@ -17,7 +17,8 @@ def index(request, errormsg=''):
         'all_peminjam' : all_peminjam,
         'error' : errormsg
     })
-
+def kalender(request, errormsg=''):
+    return render(request, 'peminjaman/kalender_admin.html', {})
 
 # Return a form which'll be used to add new Peminjaman object to model
 def formadd(request):
@@ -29,11 +30,23 @@ def formadd(request):
     pukul_awal = request.POST.get('waktu_awal_1', '00:00') # format waktu : %H:%M
     pukul_akhir = request.POST.get('waktu_akhir_1', '00:00') # format waktu : %H:%M
     input_deskripsi = request.POST.get('deskripsi', '')
+    input_tagihan = request.POST.get('harga', 0.00)
+    input_tagihan = float(input_tagihan)
+    input_nomor_surat = request.POST.get('nomor_surat', '')
+    input_diskon = request.POST.get('discount', 0) # only for minus of input_tagihan
 
     errormsg = []
     messages = []
 
     if request.method == 'POST':
+
+        # Ambil input tagihan dan Olah tagihan setelah dikurangi diskon
+        input_tagihan = request.POST['harga']
+        input_tagihan = float(input_tagihan)
+        decimal_diskon = float(input_diskon) / float(100)
+        input_tagihan = (1-decimal_diskon) * input_tagihan
+        if input_tagihan < 0:
+            input_tagihan = 0
 
         # Ambil data hasil input dari user
         input_peminjam = request.POST['peminjam']
@@ -63,8 +76,10 @@ def formadd(request):
         if not errormsg:
 
             # Membuat object peminjaman yang sesuai, BELUM DI-SAVE
-            new_peminjaman = Peminjaman(peminjam=obj_peminjam,
+            new_peminjaman = Peminjaman(no_laporan=input_nomor_surat,
+                                        peminjam=obj_peminjam,
                                         ruangan=obj_ruangan,
+                                        jumlah_tagihan=input_tagihan,
                                         waktu_awal=tanggal_mulai_pinjam,
                                         waktu_akhir=tanggal_selesai_pinjam,
                                         deskripsi=input_deskripsi)
@@ -102,6 +117,9 @@ def formadd(request):
         'pukul_awal': pukul_awal,
         'tanggal_akhir': tanggal_akhir,
         'pukul_akhir': pukul_akhir,
+        'harga': input_tagihan.__str__(),
+        'diskon': input_diskon,
+        'nomor_surat': input_nomor_surat,
     })
 
 
@@ -121,11 +139,17 @@ def formedit(request, peminjaman_id = 0):
     pukul_awal = request.POST.get('waktu_awal_1', selected_peminjaman.waktu_awal.time().strftime("%H:%M"))  # format waktu : %H:%M
     pukul_akhir = request.POST.get('waktu_akhir_1', selected_peminjaman.waktu_awal.time().strftime("%H:%M"))  # format waktu : %H:%M
     input_deskripsi = request.POST.get('deskripsi', selected_peminjaman.deskripsi)
+    input_tagihan = request.POST.get('harga', selected_peminjaman.jumlah_tagihan)
+    input_nomor_surat = request.POST.get('nomor_surat', selected_peminjaman.no_laporan)
 
     errormsg = []
     messages = []
 
     if request.method == 'POST':
+
+        # Ambil data pascaedit
+        input_tagihan = request.POST['harga']
+        input_tagihan = float(input_tagihan)
 
         # Ambil data hasil input dari user
         input_peminjam = request.POST['peminjam']
@@ -159,7 +183,9 @@ def formedit(request, peminjaman_id = 0):
                                         ruangan=obj_ruangan,
                                         waktu_awal=tanggal_mulai_pinjam,
                                         waktu_akhir=tanggal_selesai_pinjam,
-                                        deskripsi=input_deskripsi)
+                                        deskripsi=input_deskripsi,
+                                        jumlah_tagihan=input_tagihan,
+                                        no_laporan=input_nomor_surat)
 
             # Mengecek apakah ada peminjaman yang bentrok,
             collision = new_peminjaman.get_all_conflicted_set()
@@ -182,6 +208,8 @@ def formedit(request, peminjaman_id = 0):
                     selected_peminjaman.waktu_awal = tanggal_mulai_pinjam
                     selected_peminjaman.waktu_akhir = tanggal_selesai_pinjam
                     selected_peminjaman.deskripsi = input_deskripsi
+                    selected_peminjaman.jumlah_tagihan = input_tagihan
+                    selected_peminjaman.no_laporan = input_nomor_surat
                     selected_peminjaman.save()
                 except Exception as e:
                     messages += ["Unhandled Exception", ]
@@ -204,6 +232,8 @@ def formedit(request, peminjaman_id = 0):
         'pukul_awal': pukul_awal,
         'tanggal_akhir': tanggal_akhir,
         'pukul_akhir': pukul_akhir,
+        'harga': input_tagihan.__str__(),
+        'nomor_surat': input_nomor_surat,
     })
 
 

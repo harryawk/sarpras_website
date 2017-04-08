@@ -7,6 +7,7 @@
 
 
 {% block body %}
+
 <script>
   var peminjamanList = angular.module('peminjamanList', []);
   peminjamanList.config(function($interpolateProvider) {
@@ -71,9 +72,6 @@
     angular.bootstrap(document.getElementById("AppPeminjamanList"), ["peminjamanList"])
   });
 </script>
-
-{% include "peminjaman/kalender.html" %}
-
 <div id="AppPeminjamanList" ng-controller="peminjamanListController">
     <div class="panel container-fluid">
         <legend>Daftar peminjaman</legend>

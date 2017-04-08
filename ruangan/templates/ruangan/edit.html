@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block body %}
+<div class="panel container-fluid">
 <div class="row">
 	<div class="col-lg-10">
 		<form enctype="multipart/form-data" action="{% url 'ruangan:edit' selected_ruangan.id %}" method="post" id="ruangan_form" novalidate class="form-horizontal">
@@ -58,9 +59,16 @@
 						<input type="submit" value="Save" class="btn btn-primary"/>
 					</div>
 				</div>
+				<div class="form-group">
+					<div class="col-lg-10 col-lg-offset-2">
+						<input type="button" value="Delete" class="btn btn-primary" onclick="javascript:window.location='{% url 'ruangan:delete' selected_ruangan.id %}';" />
+					</div>
+				</div>
+
 			</fieldset>
 		</form>
 	</div>
+</div>
 </div>
 {% endblock %}
 

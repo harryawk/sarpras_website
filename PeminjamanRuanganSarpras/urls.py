@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^peminjam/', include('peminjam.urls')),
     url(r'^peminjaman/', include('peminjaman.urls')),
     url(r'^ruangan/', include('ruangan.urls')),
+    url(r'^log/', include('log.urls')),
     url(r'^admin/', admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

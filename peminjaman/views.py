@@ -44,7 +44,6 @@ def formadd(request):
         input_tagihan = request.POST['harga']
         input_tagihan = float(input_tagihan)
         decimal_diskon = float(input_diskon) / float(100)
-        print decimal_diskon
         input_tagihan = (1-decimal_diskon) * input_tagihan
         if input_tagihan < 0:
             input_tagihan = 0
@@ -151,7 +150,6 @@ def formedit(request, peminjaman_id = 0):
         # Ambil data pascaedit
         input_tagihan = request.POST['harga']
         input_tagihan = float(input_tagihan)
-        print input_tagihan
 
         # Ambil data hasil input dari user
         input_peminjam = request.POST['peminjam']

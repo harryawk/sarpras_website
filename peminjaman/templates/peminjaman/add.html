@@ -46,6 +46,8 @@
 
 	});
 </script>
+
+<div class="panel container-fluid">
 <div class="row">
     <div class="col-lg-10">
         <form enctype="multipart/form-data" action="{% url 'peminjaman:add' %}" method="post" id="peminjaman_form" novalidate ng-app="peminjamList" ng-controller="peminjamListController" class="form-horizontal">
@@ -179,5 +181,6 @@
             </fieldset>
         </form>
     </div>
+</div>
 </div>
 {% endblock %}

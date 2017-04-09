@@ -80,10 +80,16 @@
 
                 <div class="form-group">
                     <label for="id_ruangan" class="col-lg-2 control-label">Ruangan</label>
-                    <div class="col-lg-9">
+                    <div class="col-lg-9">                          
+                        <select  ng-model="filterTipe" id="id_tipe" class="form-control input-sm">
+                            <option value="" selected>Semua</option>
+                            <option value="Ruang">Ruangan</option>
+                            <option value="Lapangan">Lapangan</option>
+                            <option value="Selasar">Selasar</option>
+                        </select>                        
                         <select name="ruangan" required id="id_ruangan" ng-model="ruanganID" class="form-control">
                             <option value="" selected>---------</option>
-                            <option value="{[{ ruanganData.id }]}" ng-repeat = "ruanganData in ruanganListData">{[{ ruanganData.nama }]}</option>
+                            <option value="{[{ ruanganData.id }]}" ng-repeat = "ruanganData in ruanganListData | filter:{tipe:filterTipe}">{[{ ruanganData.nama }]}</option>
                         </select>
                     </div>
                     <div class="col-lg-1">

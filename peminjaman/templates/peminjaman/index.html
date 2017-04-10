@@ -15,7 +15,7 @@
   		$interpolateProvider.endSymbol('}]}');
 	});
 
-	peminjamanList.controller("peminjamanListController", function($scope) {
+	peminjamanList.controller("peminjamanListController", function($scope, $http) {
 		
         $scope.toTimestamp = function(date) {
           return new Date(date).getTime()/1000;
@@ -39,6 +39,8 @@
         $scope.peminjamanListData = [];
         {% for peminjaman in all_peminjaman %}
         $scope.peminjamanListData = $scope.peminjamanListData.concat({
+            id: "{{ peminjaman.id }}",
+
             no_laporan: "{{ peminjaman.no_laporan }}",
             peminjam:   "{{ peminjaman.peminjam }}",
             ruangan:    "{{ peminjaman.ruangan }}",
@@ -75,6 +77,15 @@
 
         $scope.go = function ( path ) {
             location.href = path;
+        };
+
+        $scope.togglePembayaran = function ( peminjaman ) {
+            url = "{% url 'peminjaman:bayarbase' %}" + peminjaman.id
+            $http.get(url).success(function(data, status, headers, config) {
+                peminjaman.waktu_bayar = data.result;
+            }).error(function(data, status, headers, config) {
+                $scope.hasil = "ERROR";
+            });
         };
 
 	});
@@ -134,10 +145,9 @@
                    <th>Description</th>
                </tr>
 
-               <tr ng-repeat = "peminjamanData in peminjamanListData | filter:{peminjam:filterPeminjam} | filter:{ruangan:filterRuangan} | filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd))"
-                   ng-click="go(peminjamanData.edit_link)">
+               <tr ng-repeat = "peminjamanData in peminjamanListData | filter:{peminjam:filterPeminjam} | filter:{ruangan:filterRuangan} | filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd))">
 
-                   <td>{[{ peminjamanData.no_laporan }]}</td>
+                   <td ng-click="go(peminjamanData.edit_link)">{[{ peminjamanData.no_laporan }]}</td>
                    <td>{[{ peminjamanData.peminjam }]}</td>
                    <td>{[{ peminjamanData.ruangan }]}</td>
 
@@ -145,7 +155,7 @@
                    <td>{[{ peminjamanData.waktu_akhir }]}</td>
 
                    <td>{[{ peminjamanData.jumlah_tagihan }]}</td>
-                   <td>{[{ peminjamanData.waktu_bayar }]}</td>
+                   <td ng-click="togglePembayaran(peminjamanData)">{[{ peminjamanData.waktu_bayar }]}</td>
                    <td>{[{ peminjamanData.deskripsi }]}</td>
 
                </tr>

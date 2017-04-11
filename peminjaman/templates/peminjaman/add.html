@@ -29,7 +29,7 @@
 
 		$scope.peminjamID = {% if input_peminjam %} "{{input_peminjam}}" {% else %} "" {% endif %};
 
-		$scope.ruanganID = {% if input_ruangan %} "{{input_ruangan}}" {% else %} "-" {% endif %}
+		$scope.ruanganID = {% if input_ruangan %} "{{input_ruangan}}" {% else %} "-" {% endif %};
 
 		$scope.ruanganListData = [];
 		{% for ruangan in all_ruangan %}
@@ -141,7 +141,7 @@
                 <div class="form-group">
                     <label for="id_deskripsi" class="col-lg-2 control-label">Deskripsi</label>
                     <div class="col-lg-9">
-                        <textarea name="deskripsi" id="id_deskripsi" maxlength="1000" class="form-control">{{ input_deskripsi }}</textarea>
+                        <textarea name="deskripsi" id="id_deskripsi" maxlength="1000" class="form-control" >{{ input_deskripsi }}</textarea>
                     </div>
                 </div>
 
@@ -159,7 +159,7 @@
                 <div class="form-group">
                     <label for="id_discount" class="col-lg-2 control-label">Diskon</label>
                     <div class="col-lg-1">
-                        <input type="text" name="discount" id="id_discount" class="form-control" value="{{ diskon }}"/>
+                        <input type="text" name="discount" id="id_discount" class="form-control" value="{{ diskon }}" />
                     </div>
                     <div class="col-lg-1">
                         %

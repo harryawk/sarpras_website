@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from .models import Peminjaman
 from ruangan.models import Ruangan
 from peminjam.models import Peminjam
-import datetime
+from datetime import datetime
 
 # Peminjaman index view, mostly for debugging purpose
 def index(request, errormsg=''):
@@ -42,9 +42,14 @@ def formadd(request):
 
         # Ambil input tagihan dan Olah tagihan setelah dikurangi diskon
         input_tagihan = request.POST['harga']
+        input_diskon = request.POST['discount']
+        if input_diskon > 0 and input_deskripsi != '':
+            input_deskripsi = input_deskripsi + '\nDiskon : ' + input_diskon + ' %'
         input_tagihan = float(input_tagihan)
         decimal_diskon = float(input_diskon) / float(100)
+        print input_tagihan
         input_tagihan = (1-decimal_diskon) * input_tagihan
+        print input_tagihan, decimal_diskon
         if input_tagihan < 0:
             input_tagihan = 0
 

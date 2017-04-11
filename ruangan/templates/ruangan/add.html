@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block body %}
+<div class="panel container-fluid">
 <div class="row">
 	<div class="col-lg-10">
 		<form enctype="multipart/form-data" action="{% url 'ruangan:add' %}" method="post" id="ruangan_form" novalidate class="form-horizontal">
@@ -61,6 +62,7 @@
 			</fieldset>
 		</form>
 	</div>
+</div>
 </div>
 {% endblock %}
 

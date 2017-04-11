@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from .models import Peminjaman
 from ruangan.models import Ruangan
 from peminjam.models import Peminjam
-from datetime import datetime
+import datetime
 
 # Peminjaman index view, mostly for debugging purpose
 def index(request, errormsg=''):
@@ -44,7 +44,6 @@ def formadd(request):
         input_tagihan = request.POST['harga']
         input_tagihan = float(input_tagihan)
         decimal_diskon = float(input_diskon) / float(100)
-        print decimal_diskon
         input_tagihan = (1-decimal_diskon) * input_tagihan
         if input_tagihan < 0:
             input_tagihan = 0
@@ -151,7 +150,6 @@ def formedit(request, peminjaman_id = 0):
         # Ambil data pascaedit
         input_tagihan = request.POST['harga']
         input_tagihan = float(input_tagihan)
-        print input_tagihan
 
         # Ambil data hasil input dari user
         input_peminjam = request.POST['peminjam']
@@ -258,3 +256,21 @@ def formdelete(request, peminjaman_id = 0, errormsg=''):
 def fetchrecord(request, start_year = 2017):
     selected_peminjaman = Peminjaman.objects.filter(waktu_awal__year = start_year).values()
     return JsonResponse({'results': list(selected_peminjaman)})
+
+def togglepembayaran(request, peminjaman_id = 0):
+
+    # Berusaha mendapat model peminjam yang ingin diubah data pembayarannya
+    try:
+        selected_peminjaman = Peminjaman.objects.get(id=peminjaman_id)
+    except Exception as e:
+        return JsonResponse({'result': ""})
+
+    if selected_peminjaman.waktu_bayar:
+        selected_peminjaman.waktu_bayar = None
+        selected_peminjaman.save()
+        return JsonResponse({'result': "Belum Lunas"})
+
+    else:
+        selected_peminjaman.waktu_bayar = datetime.date.today()
+        selected_peminjaman.save()
+        return JsonResponse({'result': selected_peminjaman.waktu_bayar})

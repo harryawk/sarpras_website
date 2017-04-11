@@ -1,11 +1,112 @@
 <script>
+    angular.module('calendarDemoApp', ['ui.rCalendar']);
+
+    angular.module('calendarDemoApp').config(function($interpolateProvider) {
+  		$interpolateProvider.startSymbol('{[{');
+  		$interpolateProvider.endSymbol('}]}');
+	}).controller('CalendarDemoCtrl',['$scope','$http',function ($scope, $http) {
+        'use strict';
+        $scope.changeMode = function (mode) {
+            $scope.mode = mode;
+        };
+
+        $scope.today = function () {
+            $scope.currentDate = new Date();
+        };
+
+        $scope.isToday = function () {
+            var today = new Date(),
+                currentCalendarDate = new Date($scope.currentDate);
+
+            today.setHours(0, 0, 0, 0);
+            currentCalendarDate.setHours(0, 0, 0, 0);
+            return today.getTime() === currentCalendarDate.getTime();
+        };
+
+        $scope.loadEvents = function () {
+            $scope.eventSource = fetchPeminjaman(2017);
+        };
+
+        $scope.onEventSelected = function (event) {
+            $scope.event = event;
+        };
+
+        $scope.onTimeSelected = function (selectedTime) {
+            console.log('Selected time: ' + selectedTime);
+        };
+
+        /*Fetching*/
+        $scope.peminjamEdit = "{% url 'peminjam:editbase' %}"
+		$scope.peminjamDelete = "{% url 'peminjam:deletebase' %}"
+		$scope.peminjamJson = "{% url 'peminjam:json' %}"
+		$scope.peminjamanEdit = "{% url 'peminjaman:editbase' %}"
+		$scope.peminjamanDelete = "{% url 'peminjaman:deletebase' %}"
+		$scope.peminjamanJson = "{% url 'peminjaman:jsonbase' %}"
+		$scope.ruanganEdit = "{% url 'ruangan:editbase' %}"
+		$scope.ruanganDelete = "{% url 'ruangan:deletebase' %}"
+		$scope.ruanganJson = "{% url 'ruangan:json' %}"
+
+		$http.get($scope.peminjamJson).success(function(data, status, headers, config) {
+	      	$scope.peminjamList = data.results;
+	    }).error(function(data, status, headers, config) {
+	      	$scope.peminjamList = "ERROR";
+	    });
+
+	    $http.get($scope.ruanganJson).success(function(data, status, headers, config) {
+	      	$scope.ruanganList = data.results;
+	    }).error(function(data, status, headers, config) {
+	      	$scope.ruanganList = "ERROR";
+	    });
+
+	    function peminjamTampil(e) {
+            for (var i in $scope.peminjamList) {
+                if (e == $scope.peminjamList[i].id) {
+                    return $scope.peminjamList[i].nama;
+                }
+            }
+            return ;
+        };
+
+	    function ruanganTampil(e) {
+            for (var i in $scope.ruanganList) {
+                if (e == $scope.ruanganList[i].id) {
+                    return $scope.ruanganList[i].nama;
+                }
+            }
+            return;
+        };
+
+	    function fetchPeminjaman(year){
+            var events = [];
+            $http.get($scope.peminjamanJson + year).success(function(data, status, headers, config) {
+                $scope.peminjamanList = data.results;
+                for (var indeksPeminjaman in $scope.peminjamanList) {
+                    var waktuAwal = new Date($scope.peminjamanList[indeksPeminjaman].waktu_awal);
+                    var waktuAkhir = new Date($scope.peminjamanList[indeksPeminjaman].waktu_akhir);
+                    events.push({
+                        title: ruanganTampil($scope.peminjamanList[indeksPeminjaman].ruangan_id),
+                        startTime: waktuAwal,
+                        endTime: waktuAkhir,
+                        allDay: false,
+                        borrower: peminjamTampil($scope.peminjamanList[indeksPeminjaman].peminjam_id),
+                        description: $scope.peminjamanList[indeksPeminjaman].deskripsi,
+                    });
+                }
+            }).error(function(data, status, headers, config) {
+                $scope.peminjamanList = "ERROR";
+            });
+            return events;
+        };
+    }]);
     angular.element(document).ready(function() {
     	angular.bootstrap(document.getElementById("AppKalender"), ["calendarDemoApp"])
   	});
 </script>
+
 <div class="content" style="margin-top: 70px;">
     <div class="panel container-fluid">
         <div id="AppKalender" ng-controller="CalendarDemoCtrl" ng-init="loadEvents()">
+            {[{eventSource}]}
             <div class="btn-toolbar" style="margin-bottom: 10px">
                 <div class="btn-group">
                     <button type="button" class="btn btn-default" ng-class="{active:mode==='month'}"

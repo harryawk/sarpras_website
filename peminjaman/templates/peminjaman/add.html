@@ -88,7 +88,7 @@
                             <option value="Selasar">Selasar</option>
                         </select>                        
                         <select name="ruangan" required id="id_ruangan" ng-model="ruanganID" class="form-control">
-                            <option value="" selected>---------</option>
+                            <option value="-" selected>---------</option>
                             <option value="{[{ ruanganData.id }]}" ng-repeat = "ruanganData in ruanganListData | filter:{tipe:filterTipe}">{[{ ruanganData.nama }]}</option>
                         </select>
                     </div>

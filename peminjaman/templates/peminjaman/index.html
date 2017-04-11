@@ -9,116 +9,135 @@
 {% block body %}
 
 <script>
-  var peminjamanList = angular.module('peminjamanList', []);
-  peminjamanList.config(function($interpolateProvider) {
-  		$interpolateProvider.startSymbol('{[{');
-  		$interpolateProvider.endSymbol('}]}');
-	});
+var peminjamanList = angular.module('peminjamanList', []);
+peminjamanList.config(function($interpolateProvider) {
+    $interpolateProvider.startSymbol('{[{');
+    $interpolateProvider.endSymbol('}]}');
+});
 
-	peminjamanList.controller("peminjamanListController", function($scope, $http, $filter) {
-		
-        $scope.toTimestamp = function(date) {
-          return new Date(date).getTime()/1000;
-        };
+peminjamanList.controller("peminjamanListController", function($scope, $http, $filter) {
 
-        $scope.inRange = function(start,end){
-          return function(item){
-            return item.unix_timestamp_awal > start && item.unix_timestamp_akhir < end;
-          }
-        }
+    $scope.toTimestamp = function(date) {
+      return new Date(date).getTime()/1000;
+    };
 
-        $scope.filterTimeStart = new Date();
-        $scope.filterTimeStart.setMonth(0);
-        $scope.filterTimeStart.setDate(1);
+    $scope.inRange = function(start,end){
+      return function(item){
+        return item.unix_timestamp_awal > start && item.unix_timestamp_akhir < end;
+      }
+    }
 
-        $scope.filterTimeEnd = new Date();
-        $scope.filterTimeEnd.setMonth(0);
-        $scope.filterTimeEnd.setDate(1);
-        $scope.filterTimeEnd.setFullYear(1+$scope.filterTimeStart.getFullYear());
+    $scope.peminjamListData = [];
+    {% for peminjam in all_peminjam %}
+    $scope.peminjamListData = $scope.peminjamListData.concat({
+      id: {{ peminjam.id }},
+      string: "{{ peminjam }}",
+      nama: "{{ peminjam.nama }}",
+    });
+    {% endfor %}
+
+    $scope.ruanganListData = [];
+    {% for ruangan in all_ruangan %}
+    $scope.ruanganListData = $scope.ruanganListData.concat({
+      id: {{ ruangan.id }},
+      string: "{{ ruangan }}",
+      nama:"{{ ruangan.nama }}",
+    });
+    {% endfor %}
+
+    $scope.go = function ( path ) {
+        location.href = path;
+    };
+
+    $scope.filterTimeStart = new Date();
+    $scope.filterTimeStart.setMonth(0);
+    $scope.filterTimeStart.setDate(1);
+
+    $scope.filterTimeEnd = new Date();
+    $scope.filterTimeEnd.setMonth(0);
+    $scope.filterTimeEnd.setDate(1);
+    $scope.filterTimeEnd.setFullYear(1+$scope.filterTimeStart.getFullYear());
+
+    $scope.peminjamanListData = [];
+
+    $scope.fetchPeminjaman = function(year) {
 
         $scope.peminjamanListData = [];
+        var url = "{% url 'peminjaman:jsonbase' %}" + year;
 
-        $scope.fetchPeminjaman = function(year) {
+        $http.get(url).success(function(data, status, headers, config) {
+            var temp = data.results;
+            angular.forEach(temp, function(value, key){
 
-            $scope.peminjamanListData = [];
-            var url = "{% url 'peminjaman:jsonbase' %}" + year;
+                 var start_date = new Date(value.waktu_awal);
+                 var end_date = new Date(value.waktu_akhir);
+                 if(angular.isUndefined(value.waktu_bayar) || value.waktu_bayar === null) {
+                    value.waktu_bayar = "Belum Lunas"
+                 }
+                 var peminjam_selected = "";
+                 angular.forEach($scope.peminjamListData, function(peminjam, key){
+                    if(peminjam.id == value.peminjam_id) {
+                        peminjam_selected = peminjam.string;
+                        return;
+                    }
+                 });
+                 var ruangan_selected = "";
+                 angular.forEach($scope.ruanganListData, function(ruangan, key){
+                    if(ruangan.id == value.ruangan_id) {
+                        ruangan_selected = ruangan.string;
+                        return;
+                    }
+                 });
 
-            $http.get(url).success(function(data, status, headers, config) {
-                var temp = data.results;
-                angular.forEach(temp, function(value, key){
+                 $scope.peminjamanListData = $scope.peminjamanListData.concat({
+                    id: value.id,
 
-                     var start_date = new Date(value.waktu_awal);
-                     var end_date = new Date(value.waktu_akhir);
-                     if(angular.isUndefined(value.waktu_bayar) || value.waktu_bayar === null) {
-                        value.waktu_bayar = "Belum Lunas"
-                     }
+                    no_laporan: value.no_laporan,
+                    peminjam:   peminjam_selected,
+                    ruangan:    ruangan_selected,
 
-                     $scope.peminjamanListData = $scope.peminjamanListData.concat({
-                        id: value.id,
+                    waktu_awal:             start_date,
+                    unix_timestamp_awal:    start_date.getTime()/1000,
+                    waktu_akhir:            end_date,
+                    unix_timestamp_akhir:   end_date.getTime()/1000,
 
-                        no_laporan: value.no_laporan,
-                        peminjam:   value.peminjam_id,
-                        ruangan:    value.ruangan_id,
+                    jumlah_tagihan: value.jumlah_tagihan,
+                    waktu_bayar:    value.waktu_bayar,
+                    deskripsi:      value.deskripsi,
 
-                        waktu_awal:             start_date,
-                        unix_timestamp_awal:    start_date.getTime()/1000,
-                        waktu_akhir:            end_date,
-                        unix_timestamp_akhir:   end_date.getTime()/1000,
-
-                        jumlah_tagihan: value.jumlah_tagihan,
-                        waktu_bayar:    value.waktu_bayar,
-                        deskripsi:      value.deskripsi,
-
-                        edit_link:      "{% url 'peminjaman:editbase' %}" + value.id,
-                        delete_link:    "{% url 'peminjaman:deletebase' %}" + value.id
-                    });
-
+                    edit_link:      "{% url 'peminjaman:editbase' %}" + value.id,
+                    delete_link:    "{% url 'peminjaman:deletebase' %}" + value.id
                 });
-            }).error(function(data, status, headers, config) {
-                $scope.peminjamanListData = "ERROR";
-
             });
-        };
 
-        $scope.fetchPeminjaman(new Date().getFullYear());
+        }).error(function(data, status, headers, config) {
+            $scope.peminjamanListData = "ERROR";
 
-        $scope.peminjamListData = [];
-        {% for peminjam in all_peminjam %}
-        $scope.peminjamListData = $scope.peminjamListData.concat({
-          string: "{{ peminjam }}",
-          nama:"{{ peminjam.nama }}",
         });
-        {% endfor %}
+    };
 
-        $scope.ruanganListData = [];
-        {% for ruangan in all_ruangan %}
-        $scope.ruanganListData = $scope.ruanganListData.concat({
-          string: "{{ ruangan }}",
-          nama:"{{ ruangan.nama }}",
+    $scope.fetchPeminjaman(new Date().getFullYear());
+
+    $scope.togglePembayaran = function ( peminjaman ) {
+        url = "{% url 'peminjaman:bayarbase' %}" + peminjaman.id
+        $http.get(url).success(function(data, status, headers, config) {
+            peminjaman.waktu_bayar = data.result;
+        }).error(function(data, status, headers, config) {
+            $scope.hasil = "ERROR";
         });
-        {% endfor %}
+    };
 
-        $scope.go = function ( path ) {
-            location.href = path;
-        };
+});
 
-        $scope.togglePembayaran = function ( peminjaman ) {
-            url = "{% url 'peminjaman:bayarbase' %}" + peminjaman.id
-            $http.get(url).success(function(data, status, headers, config) {
-                peminjaman.waktu_bayar = data.result;
-            }).error(function(data, status, headers, config) {
-                $scope.hasil = "ERROR";
-            });
-        };
-
-	});
-
-  angular.element(document).ready(function() {
+angular.element(document).ready(function() {
     angular.bootstrap(document.getElementById("AppPeminjamanList"), ["peminjamanList"])
-  });
+});
+
 </script>
 
 <div id="AppPeminjamanList" ng-controller="peminjamanListController">
+    {[{ peminjamListData }]}
+    {[{ ruanganListData }]}
     <div class="panel container-fluid">
         <legend>Daftar peminjaman</legend>
         <a href="{% url 'peminjaman:add' %}" style="text-decoration: none; color: black;"><button>ADD</button></a>

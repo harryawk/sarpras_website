@@ -1,0 +1,18 @@
+<form action="{% url 'login' %}" method="post" accept-charset="utf-8">
+    {% csrf_token %}
+
+    <label>Nama pengguna</label>
+
+    <input autofocus="" id="id_username" maxlength="254" name="username" type="text" required />
+
+    <label>Sandi</label>
+
+    <input id="id_password" name="password" type="password" required />
+
+    {% for error_item in form.errors %}
+        <li>{{ error_item }}</li>
+    {% endfor %}
+
+    <input type="hidden" name="next" value="{{ next }}" />
+    <input class="button small" type="submit" value="Submit"/>
+</form>

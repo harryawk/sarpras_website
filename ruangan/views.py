@@ -2,9 +2,11 @@ from django.shortcuts import render, redirect
 from .models import Ruangan
 from django.http import JsonResponse
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 
 # Ruangan index view, mostly for debugging purpose
+@login_required
 def index(request):
     all_ruangan = Ruangan.objects.all()
     return render(request, 'ruangan/index.html', {
@@ -13,6 +15,7 @@ def index(request):
 
 
 # Return a form which'll be used to add new Ruangan object to model
+@login_required
 def formadd(request):
 
 	# Inisiasi variabel berdasarkan post jika ada
@@ -68,6 +71,7 @@ def formadd(request):
 
 
 # Return a form which'll be used to edit Ruangan object to model
+@login_required
 def formedit(request, ruangan_id = 0):
 	
 	# Berusaha mendapat model ruangan yang ingin diubah
@@ -125,6 +129,7 @@ def formedit(request, ruangan_id = 0):
 
 
 # Return a form which'll be used to delete Ruangan object to model
+@login_required
 def formdelete(request, ruangan_id = 0):
     
 	# Berusaha mendapat model peminjam yang ingin diubah

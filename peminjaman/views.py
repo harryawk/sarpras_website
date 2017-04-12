@@ -5,8 +5,11 @@ from .models import Peminjaman
 from ruangan.models import Ruangan
 from peminjam.models import Peminjam
 from datetime import datetime, date
+from django.contrib.auth.decorators import login_required
+
 
 # Peminjaman index view, mostly for debugging purpose
+@login_required
 def index(request, errormsg=''):
     all_peminjaman = Peminjaman.objects.all()
     all_ruangan = Ruangan.objects.all()
@@ -17,10 +20,15 @@ def index(request, errormsg=''):
         'all_peminjam' : all_peminjam,
         'error' : errormsg
     })
+
+
+@login_required
 def kalender(request, errormsg=''):
     return render(request, 'peminjaman/kalender_admin.html', {})
 
+
 # Return a form which'll be used to add new Peminjaman object to model
+@login_required
 def formadd(request):
 
     input_peminjam = ''
@@ -43,14 +51,11 @@ def formadd(request):
         # Ambil input tagihan dan Olah tagihan setelah dikurangi diskon
         input_tagihan = request.POST['harga']
         input_diskon = request.POST['discount']
-        print input_deskripsi
         if input_diskon > 0 and input_deskripsi == '':
             input_deskripsi = input_deskripsi + '\nDiskon : ' + input_diskon + ' %'
         input_tagihan = float(input_tagihan)
         decimal_diskon = float(input_diskon) / float(100)
-        print input_tagihan
         input_tagihan = (1-decimal_diskon) * input_tagihan
-        print input_tagihan, decimal_diskon
         if input_tagihan < 0:
             input_tagihan = 0
 
@@ -130,6 +135,7 @@ def formadd(request):
 
 
 # Return a form which'll be used to edit peminjaman object to model
+@login_required
 def formedit(request, peminjaman_id = 0):
 
     # Berusaha mendapat model peminjam yang ingin diubah
@@ -244,6 +250,7 @@ def formedit(request, peminjaman_id = 0):
 
 
 # Return a form which'll be used to delete peminjaman object to model
+@login_required
 def formdelete(request, peminjaman_id = 0, errormsg=''):
     try:
         object_peminjaman = Peminjaman.objects.get(id=peminjaman_id)
@@ -259,10 +266,8 @@ def formdelete(request, peminjaman_id = 0, errormsg=''):
     # return render(request, 'peminjaman/delete.html', {})
 
 
-def fetchrecord(request, start_year = 2017):
-    selected_peminjaman = Peminjaman.objects.filter(waktu_awal__year = start_year).values()
-    return JsonResponse({'results': list(selected_peminjaman)})
-
+# AJAX Service to toggle pembayaran status
+@login_required
 def togglepembayaran(request, peminjaman_id = 0):
 
     # Berusaha mendapat model peminjam yang ingin diubah data pembayarannya
@@ -280,3 +285,8 @@ def togglepembayaran(request, peminjaman_id = 0):
         selected_peminjaman.waktu_bayar = date.today()
         selected_peminjaman.save()
         return JsonResponse({'result': selected_peminjaman.waktu_bayar})
+
+
+def fetchrecord(request, start_year = 2017):
+    selected_peminjaman = Peminjaman.objects.filter(waktu_awal__year = start_year).values()
+    return JsonResponse({'results': list(selected_peminjaman)})

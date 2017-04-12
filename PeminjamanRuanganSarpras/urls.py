@@ -17,6 +17,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url(r'^peminjam/', include('peminjam.urls')),
@@ -24,4 +25,6 @@ urlpatterns = [
     url(r'^ruangan/', include('ruangan.urls')),
     url(r'^log/', include('log.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^login/$', auth_views.login, kwargs={'template_name': 'login.html'}, name='login'),
+    url(r'^logout/$', auth_views.logout, kwargs={'next_page': '/login/'}, name='logout'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

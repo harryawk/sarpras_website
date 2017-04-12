@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from .models import Peminjaman
 from ruangan.models import Ruangan
 from peminjam.models import Peminjam
-from datetime import datetime
+from datetime import datetime, date
 
 # Peminjaman index view, mostly for debugging purpose
 def index(request, errormsg=''):
@@ -277,6 +277,6 @@ def togglepembayaran(request, peminjaman_id = 0):
         return JsonResponse({'result': "Belum Lunas"})
 
     else:
-        selected_peminjaman.waktu_bayar = datetime.date.today()
+        selected_peminjaman.waktu_bayar = date.today()
         selected_peminjaman.save()
         return JsonResponse({'result': selected_peminjaman.waktu_bayar})

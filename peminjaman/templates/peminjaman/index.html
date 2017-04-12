@@ -119,8 +119,12 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
     $scope.fetchPeminjaman(new Date().getFullYear());
 
     $scope.togglePembayaran = function ( peminjaman ) {
-        url = "{% url 'peminjaman:bayarbase' %}" + peminjaman.id
-        $http.get(url).success(function(data, status, headers, config) {
+        var req = {
+            method: 'POST',
+            url: "{% url 'peminjaman:bayarbase' %}" + peminjaman.id + "/"
+        }
+
+        $http(req).success(function(data, status, headers, config) {
             peminjaman.waktu_bayar = data.result;
         }).error(function(data, status, headers, config) {
             $scope.hasil = "ERROR";

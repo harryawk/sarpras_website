@@ -6,6 +6,7 @@ from ruangan.models import Ruangan
 from peminjam.models import Peminjam
 from datetime import datetime, date
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 
 # Peminjaman index view, mostly for debugging purpose
@@ -273,23 +274,26 @@ def formdelete(request, peminjaman_id = 0, errormsg=''):
 
 # AJAX Service to toggle pembayaran status
 @login_required
+@csrf_exempt
 def togglepembayaran(request, peminjaman_id = 0):
+    if request.method == 'POST':
+        # Berusaha mendapat model peminjam yang ingin diubah data pembayarannya
+        try:
+            selected_peminjaman = Peminjaman.objects.get(id=peminjaman_id)
+        except Exception as e:
+            return JsonResponse({'result': ""})
 
-    # Berusaha mendapat model peminjam yang ingin diubah data pembayarannya
-    try:
-        selected_peminjaman = Peminjaman.objects.get(id=peminjaman_id)
-    except Exception as e:
-        return JsonResponse({'result': ""})
+        if selected_peminjaman.waktu_bayar:
+            selected_peminjaman.waktu_bayar = None
+            selected_peminjaman.save()
+            return JsonResponse({'result': "Belum Lunas"})
 
-    if selected_peminjaman.waktu_bayar:
-        selected_peminjaman.waktu_bayar = None
-        selected_peminjaman.save()
-        return JsonResponse({'result': "Belum Lunas"})
+        else:
+            selected_peminjaman.waktu_bayar = date.today()
+            selected_peminjaman.save()
+            return JsonResponse({'result': selected_peminjaman.waktu_bayar})
 
-    else:
-        selected_peminjaman.waktu_bayar = date.today()
-        selected_peminjaman.save()
-        return JsonResponse({'result': selected_peminjaman.waktu_bayar})
+    return JsonResponse({'result': 'Nope'})
 
 
 def fetchrecord(request, start_year = 2017):

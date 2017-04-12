@@ -111,7 +111,6 @@ def formadd(request):
                 try:
                     if input_diskon > 0:
                         input_deskripsi = input_deskripsi + '\nDiskon : ' + input_diskon + ' %'
-                        print 'input deskripsi', input_deskripsi
                         new_peminjaman.deskripsi = input_deskripsi
                     new_peminjaman.save()
                 except Exception as e:

@@ -13,6 +13,6 @@
         <li>{{ error_item }}</li>
     {% endfor %}
 
-    <input type="hidden" name="next" value="{{ next }}" />
+    <input type="hidden" name="next" value="{% if input_peminjam %} {{ next }} {% else %} {% url 'peminjaman:index' %} {% endif %}" />
     <input class="button small" type="submit" value="Submit"/>
 </form>

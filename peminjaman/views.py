@@ -4,9 +4,13 @@ from django.http import JsonResponse
 from .models import Peminjaman
 from ruangan.models import Ruangan
 from peminjam.models import Peminjam
-from datetime import datetime
+from datetime import datetime, date
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+
 
 # Peminjaman index view, mostly for debugging purpose
+@login_required
 def index(request, errormsg=''):
     all_peminjaman = Peminjaman.objects.all()
     all_ruangan = Ruangan.objects.all()
@@ -17,10 +21,15 @@ def index(request, errormsg=''):
         'all_peminjam' : all_peminjam,
         'error' : errormsg
     })
+
+
+@login_required
 def kalender(request, errormsg=''):
     return render(request, 'peminjaman/kalender_admin.html', {})
 
+
 # Return a form which'll be used to add new Peminjaman object to model
+@login_required
 def formadd(request):
 
     input_peminjam = ''
@@ -42,6 +51,11 @@ def formadd(request):
 
         # Ambil input tagihan dan Olah tagihan setelah dikurangi diskon
         input_tagihan = request.POST['harga']
+        input_diskon = request.POST['discount']
+
+        if input_diskon > 0 and input_deskripsi == '':
+            input_deskripsi = input_deskripsi + '\nDiskon : ' + input_diskon + ' %'
+
         input_tagihan = float(input_tagihan)
         decimal_diskon = float(input_diskon) / float(100)
         input_tagihan = (1-decimal_diskon) * input_tagihan
@@ -96,6 +110,9 @@ def formadd(request):
             # Jika tidak, maka simpan peminjaman, dan kembali ke index
             else:
                 try:
+                    if input_diskon > 0:
+                        input_deskripsi = input_deskripsi + '\nDiskon : ' + input_diskon + ' %'
+                        new_peminjaman.deskripsi = input_deskripsi
                     new_peminjaman.save()
                 except Exception as e:
                     messages += ["Unhandled Exception", ]
@@ -124,6 +141,7 @@ def formadd(request):
 
 
 # Return a form which'll be used to edit peminjaman object to model
+@login_required
 def formedit(request, peminjaman_id = 0):
 
     # Berusaha mendapat model peminjam yang ingin diubah
@@ -238,6 +256,7 @@ def formedit(request, peminjaman_id = 0):
 
 
 # Return a form which'll be used to delete peminjaman object to model
+@login_required
 def formdelete(request, peminjaman_id = 0, errormsg=''):
     try:
         object_peminjaman = Peminjaman.objects.get(id=peminjaman_id)
@@ -251,6 +270,30 @@ def formdelete(request, peminjaman_id = 0, errormsg=''):
         'error': errormsg,
     })
     # return render(request, 'peminjaman/delete.html', {})
+
+
+# AJAX Service to toggle pembayaran status
+@login_required
+@csrf_exempt
+def togglepembayaran(request, peminjaman_id = 0):
+    if request.method == 'POST':
+        # Berusaha mendapat model peminjam yang ingin diubah data pembayarannya
+        try:
+            selected_peminjaman = Peminjaman.objects.get(id=peminjaman_id)
+        except Exception as e:
+            return JsonResponse({'result': ""})
+
+        if selected_peminjaman.waktu_bayar:
+            selected_peminjaman.waktu_bayar = None
+            selected_peminjaman.save()
+            return JsonResponse({'result': "Belum Lunas"})
+
+        else:
+            selected_peminjaman.waktu_bayar = date.today()
+            selected_peminjaman.save()
+            return JsonResponse({'result': selected_peminjaman.waktu_bayar})
+
+    return JsonResponse({'result': 'Nope'})
 
 
 def fetchrecord(request, start_year = 2017):

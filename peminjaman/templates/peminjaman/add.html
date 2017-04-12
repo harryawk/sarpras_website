@@ -29,7 +29,7 @@
 
 		$scope.peminjamID = {% if input_peminjam %} "{{input_peminjam}}" {% else %} "" {% endif %};
 
-		$scope.ruanganID = {% if input_ruangan %} "{{input_ruangan}}" {% else %} "" {% endif %}
+		$scope.ruanganID = {% if input_ruangan %} "{{input_ruangan}}" {% else %} "-" {% endif %};
 
 		$scope.ruanganListData = [];
 		{% for ruangan in all_ruangan %}
@@ -88,7 +88,7 @@
                             <option value="Selasar">Selasar</option>
                         </select>                        
                         <select name="ruangan" required id="id_ruangan" ng-model="ruanganID" class="form-control">
-                            <option value="" selected>---------</option>
+                            <option value="-" selected>---------</option>
                             <option value="{[{ ruanganData.id }]}" ng-repeat = "ruanganData in ruanganListData | filter:{tipe:filterTipe}">{[{ ruanganData.nama }]}</option>
                         </select>
                     </div>
@@ -141,7 +141,7 @@
                 <div class="form-group">
                     <label for="id_deskripsi" class="col-lg-2 control-label">Deskripsi</label>
                     <div class="col-lg-9">
-                        <textarea name="deskripsi" id="id_deskripsi" maxlength="1000" class="form-control">{{ input_deskripsi }}</textarea>
+                        <textarea name="deskripsi" id="id_deskripsi" maxlength="1000" class="form-control" >{{ input_deskripsi }}</textarea>
                     </div>
                 </div>
 
@@ -150,15 +150,16 @@
                     <div class="col-lg-1">
                         Rp.
                     </div>
-                    <div class="col-lg-8">
-                        <input type="text" name="harga" id="id_harga" class="form-control" value="{{ harga }}"/>
+                    <div class="col-lg-8" ng-model="ruanganID">
+                        <input type="text" name="harga" id="id_harga" class="form-control" value="{[{ (ruanganListData | filter:{id: ruanganID})[0].harga }]}" ng-if="ruanganID!='-'"/>
+                        <input type="text" name="harga" id="id_harga" class="form-control" value="0" ng-if="ruanganID=='-'"/>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="id_discount" class="col-lg-2 control-label">Diskon</label>
                     <div class="col-lg-1">
-                        <input type="text" name="discount" id="id_discount" class="form-control" value="{{ diskon }}"/>
+                        <input type="text" name="discount" id="id_discount" class="form-control" value="{{ diskon }}" />
                     </div>
                     <div class="col-lg-1">
                         %

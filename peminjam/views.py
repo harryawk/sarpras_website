@@ -2,9 +2,11 @@ from django.shortcuts import render, redirect
 from .models import Peminjam
 from django.http import JsonResponse
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 
 # Peminjam index view, mostly for debugging purpose
+@login_required
 def index(request, message='', error=''):
     all_peminjam = Peminjam.objects.all()
     return render(request, 'peminjam/index.html', {
@@ -15,6 +17,7 @@ def index(request, message='', error=''):
 
 
 # Return a form which'll be used to add new Peminjam object to model
+@login_required
 def formadd(request):
 
     # Inisiasi variabel berdasarkan post jika ada
@@ -59,6 +62,7 @@ def formadd(request):
 
 
 # Return a form which'll be used to edit Peminjam object to model
+@login_required
 def formedit(request, peminjam_id = 0):
 
     # Berusaha mendapat model peminjam yang ingin diubah
@@ -107,6 +111,7 @@ def formedit(request, peminjam_id = 0):
 
 
 # Return a form which'll be used to delete Peminjam object to model
+@login_required
 def formdelete(request, peminjam_id = 0):
 
     # Berusaha mendapat model peminjam yang ingin diubah

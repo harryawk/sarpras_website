@@ -49,6 +49,15 @@
         $scope.go = function ( path ) {
             location.href = path;
         };
+
+        $scope.order = 'nama';
+        $scope.sort = function ( coll ) {
+            if($scope.order == coll) {
+                $scope.order = "-" + coll;
+            } else {
+                $scope.order = coll;
+            }
+        };
 	});
 </script>
 
@@ -83,13 +92,13 @@
                 <div class="table-responsive">
                     <table class="table table-striped table-hover table-bordered ">
                        <tr>
-                          <th>Name</th>
-                          <th>Price</th>
-                          <th>Description</th>
-                          <th>Type</th>
+                          <th ng-click="sort('nama')">Name</th>
+                          <th ng-click="sort('harga')">Price</th>
+                          <th ng-click="sort('deskripsi')">Description</th>
+                          <th ng-click="sort('tipe')">Type</th>
                        </tr>
 
-                       <tr ng-repeat = "ruanganData in ruanganListData | filter:{tipe:filterTipe} | filter:{nama:filterNama}" ng-click="go(ruanganData.edit_link)">
+                       <tr ng-repeat = "ruanganData in ruanganListData | orderBy : order | filter:{tipe:filterTipe} | filter:{nama:filterNama}" ng-click="go(ruanganData.edit_link)">
                           <td>{[{ ruanganData.nama }]}</td>
                           <td>{[{ ruanganData.harga }]}</td>
                           <td>{[{ ruanganData.deskripsi }]}</td>

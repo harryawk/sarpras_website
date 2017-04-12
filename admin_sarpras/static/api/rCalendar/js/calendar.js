@@ -29,6 +29,8 @@ angular.module('ui.rCalendar', [])
             self.onEventSourceChanged(value);
         });
 
+        $scope.eventSource
+
         $scope.calendarMode = $scope.calendarMode || calendarConfig.calendarMode;
         if (angular.isDefined($attrs.initDate)) {
             self.currentCalendarDate = $scope.$parent.$eval($attrs.initDate);
@@ -239,7 +241,8 @@ angular.module('ui.rCalendar', [])
                 calendarMode: '=',
                 rangeChanged: '&',
                 eventSelected: '&',
-                timeSelected: '&'
+                timeSelected: '&',
+                eventSource: '='
             },
             require: ['calendar', '?^ngModel'],
             controller: 'ui.rCalendar.CalendarController',

@@ -1,5 +1,5 @@
 <div>
-    <table class="table table-bordered table-fixed monthview-datetable monthview-datetable">
+    <table class="table table-bordered table-fixed monthview-datetable monthview-datetable" id="monthTable">
         <thead>
         <tr style="background-color: white">
             <th ng-show="showWeeks" class="calendar-week-column text-center">#</th>
@@ -17,11 +17,17 @@
                 class=""
                 ng-class="{'text-center':true}">
                 <div ng-class="{'text-muted':dt.secondary}">
-                    <b>{{dt.label}}</b>
-                    <div ng-repeat="event in dt.events | orderBy : event.title" style="margin: 2px;" class="panel"
+                    <b class="hidden-xs hidden-sm">{{dt.label}}</b>
+                    <div ng-repeat="event in dt.events | orderBy : event.title" style="margin: 2px;" class="hidden-xs hidden-sm"
                     ng-class="{'monthview-current': dt.current&&!dt.selected&&!dt.hasEvent,'monthview-secondary-with-event': dt.secondary&&dt.hasEvent, 'monthview-primary-with-event':!dt.secondary&&dt.hasEvent&&!dt.selected, 'monthview-selected': dt.selected}">
                         <p style="margin-bottom: 0">{{event.title}}</p>
                         <p style="font-size: 70%;margin-bottom: 0">{{event.startTime | date:'HH:mm'}} - {{event.endTime | date:'HH:mm'}}</p>
+                    </div>
+                    <div class="hidden-md hidden-lg" style="display:block;margin: 1px;height: 100%"
+                    ng-class="{'monthview-current': dt.current&&!dt.selected&&!dt.hasEvent,'monthview-secondary-with-event': dt.secondary&&dt.hasEvent, 'monthview-primary-with-event':!dt.secondary&&dt.hasEvent&&!dt.selected, 'monthview-selected': dt.selected}">
+                        <b>{{dt.label}}</b>
+                        <p style="margin-bottom: 0;font-size: 6px" ng-show="dt.events.length">{{dt.events.length}} Ruang</p>
+                        <p style="margin-bottom: 0;font-size: 6px" ng-hide="dt.events.length"><br></p>
                     </div>
                 </div>
             </td>
@@ -30,16 +36,28 @@
     </table>
     <div ng-if="showEventDetail" class="event-detail-container">
         <div class="scrollable" style="height: 200px">
-            <table class="table table-bordered table-striped table-fixed">
-                <tr ng-repeat="event in selectedDate.events" ng-if="selectedDate.events">
-                    <td ng-if="!event.allDay" class="monthview-eventdetail-timecolumn">{{event.startTime|date: 'HH:mm'}}
-                        -
-                        {{event.endTime|date: 'HH:mm'}}
-                    </td>
-                    <td ng-if="event.allDay" class="monthview-eventdetail-timecolumn">All day</td>
-                    <td class="event-detail" ng-click="eventSelected({event:event})">{{event.title}}</td>
-                </tr>
-                <tr ng-if="!selectedDate.events"><td class="no-event-label">No Events</td></tr>
+            <div class="row" ng-if="selectedDate.events" style="margin-top: 10px">
+                <div class="col-md-4 col-sm-6" ng-repeat="event in selectedDate.events">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><b>{{event.title}}</b></div>
+                      <div class="panel-body">
+                        <p style="margin-bottom: 0">
+                            <b>Peminjam, </b>{{event.borrower}}
+                        </p>
+                        <p ng-if="!event.allDay" style="margin-bottom: 0">
+                            <b>Waktu, </b>{{event.startTime|date: 'HH:mm'}} - {{event.endTime|date: 'HH:mm'}}
+                        </p>
+                        <p ng-if="event.allDay" style="margin-bottom: 0">
+                            <b>Waktu, </b>Satu hari penuh</p>
+                        <p style="margin-bottom: 0">
+                            <b>Deskripsi, </b>{{event.description}}
+                        </p>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-bordered table-striped table-fixed" ng-if="!selectedDate.events">
+                <tr><td class="no-event-label">No Events</td></tr>
             </table>
         </div>
     </div>

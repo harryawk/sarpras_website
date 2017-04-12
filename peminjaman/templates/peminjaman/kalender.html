@@ -23,10 +23,6 @@
             return today.getTime() === currentCalendarDate.getTime();
         };
 
-        $scope.loadEvents = function () {
-            $scope.eventSource = fetchPeminjaman(2017);
-        };
-
         $scope.onEventSelected = function (event) {
             $scope.event = event;
         };
@@ -97,17 +93,22 @@
             });
             return events;
         };
+	    $scope.loadEvents = function () {
+            $scope.eventSource = fetchPeminjaman(2017);
+	    };
+        $scope.$broadcast('eventSourceChanged',$scope.eventSource);
+
     }]);
     angular.element(document).ready(function() {
     	angular.bootstrap(document.getElementById("AppKalender"), ["calendarDemoApp"])
   	});
 </script>
 
-<div class="content" style="margin-top: 70px;">
+<div class="content">
     <div class="panel container-fluid">
         <div id="AppKalender" ng-controller="CalendarDemoCtrl" ng-init="loadEvents()">
-            {[{eventSource}]}
             <div class="btn-toolbar" style="margin-bottom: 10px">
+                <!--
                 <div class="btn-group">
                     <button type="button" class="btn btn-default" ng-class="{active:mode==='month'}"
                             ng-click="changeMode('month')">
@@ -121,7 +122,7 @@
                             ng-click="changeMode('day')">
                         Day
                     </button>
-                </div>
+                </div> -->
                 <div class="btn-group">
                     <button type="button" class="btn btn-default" ng-disabled="isToday()"
                             ng-click="today()">

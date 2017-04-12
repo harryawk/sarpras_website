@@ -44,8 +44,6 @@ def formadd(request):
         input_tagihan = request.POST['harga']
         input_diskon = request.POST['discount']
         print input_deskripsi
-        if input_diskon > 0 and input_deskripsi == '':
-            input_deskripsi = input_deskripsi + '\nDiskon : ' + input_diskon + ' %'
         input_tagihan = float(input_tagihan)
         decimal_diskon = float(input_diskon) / float(100)
         print input_tagihan
@@ -102,6 +100,10 @@ def formadd(request):
             # Jika tidak, maka simpan peminjaman, dan kembali ke index
             else:
                 try:
+                    if input_diskon > 0:
+                        input_deskripsi = input_deskripsi + '\nDiskon : ' + input_diskon + ' %'
+                        print 'input deskripsi', input_deskripsi
+                        new_peminjaman.deskripsi = input_deskripsi
                     new_peminjaman.save()
                 except Exception as e:
                     messages += ["Unhandled Exception", ]

@@ -5,19 +5,47 @@
 <title>Daftar ruangan</title>
 
 <style>
-   table, th , td {
-      border: 1px solid grey;
-      border-collapse: collapse;
-      padding: 5px;
-   }
-   
-   table tr:nth-child(odd) {
-      background-color: #f2f2f2;
-   }
 
-   table tr:nth-child(even) {
-      background-color: #ffffff;
-   }
+	table, th , td {
+		border: 1px solid grey;
+		border-collapse: collapse;
+		padding: 5px;
+	}
+
+	table th:hover {
+		cursor: pointer;
+	}
+	
+	table tr:nth-child(odd) {
+		background-color: #f2f2f2;
+	}
+
+	table tr:nth-child(even) {
+		background-color: #ffffff;
+	}
+   
+	 
+	.arrow-down:after,.arrow-up:after {
+		content: ' ';
+		position: relative;
+		left: 2px;
+		border: 8px solid transparent;
+	}
+
+	.arrow-down:after {
+		top: 10px;
+		border-top-color: black;
+	}
+
+	.arrow-up:after {
+		bottom: 15px;
+		border-bottom-color: black;
+	}
+
+	.arrow-down,.arrow-up {
+		padding-right: 0px;
+	}
+
 </style>
 {% endblock %}
 
@@ -50,7 +78,10 @@
             location.href = path;
         };
 
-        $scope.order = 'nama';
+        //$scope.order = 'nama';
+
+		// ORIGINAL CODE
+		/*
         $scope.sort = function ( coll ) {
             if($scope.order == coll) {
                 $scope.order = "-" + coll;
@@ -58,6 +89,44 @@
                 $scope.order = coll;
             }
         };
+		*/
+		
+		
+		/* EXPERIMENTAL CODE (Add arrow-down and arrow-up) */
+
+		// column state
+		$scope.column = 'nama';
+		
+		// sort ordering (Ascending or Descending). True for Descending
+		$scope.reverse = false; 
+		
+		$scope.sort = function ( coll ) {
+		
+			$scope.column = coll;
+		
+			if ($scope.reverse) {
+				$scope.reverse = false;
+				$scope.reverseclass = 'arrow-up';
+			} else {
+				$scope.reverse = true;
+				$scope.reverseclass = 'arrow-down';
+			}
+			
+        };
+		
+		// change the arrow direction
+		$scope.sortClass = function(col) {
+			if ($scope.column == col) {
+				if ($scope.reverse) {
+					return 'arrow-down'; 
+				} else {
+					return 'arrow-up';
+				}
+			} else {
+				return '';
+			}
+		}; 
+ 
 	});
 </script>
 
@@ -69,7 +138,7 @@
             </div>
             <div class="col-lg-6">
                 <div class="form-group" style="text-align: right;">
-                    <label for="id_tipe" class="control-label col-lg-3" style="text-align: right">Filter Tipe</label>
+                    <label for="id_tipe" class="control-label col-lg-3" style="text-align: right">Filter Type</label>
                     <div class="col-lg-3">
                         <select  ng-model="filterTipe" id="id_tipe" class="form-control input-sm">
                             <option value="" selected>Semua</option>
@@ -91,19 +160,21 @@
             <div class="col-lg-10">
                 <div class="table-responsive">
                     <table class="table table-striped table-hover table-bordered ">
-                       <tr>
-                          <th ng-click="sort('nama')">Name</th>
-                          <th ng-click="sort('harga')">Price</th>
-                          <th ng-click="sort('deskripsi')">Description</th>
-                          <th ng-click="sort('tipe')">Type</th>
-                       </tr>
-
-                       <tr ng-repeat = "ruanganData in ruanganListData | orderBy : order | filter:{tipe:filterTipe} | filter:{nama:filterNama}" ng-click="go(ruanganData.edit_link)">
-                          <td>{[{ ruanganData.nama }]}</td>
-                          <td>{[{ ruanganData.harga }]}</td>
-                          <td>{[{ ruanganData.deskripsi }]}</td>
-                          <td>{[{ ruanganData.tipe }]}</td>
-                       </tr>
+                       
+						<tr>
+							<th ng-click="sort('nama')" ng-class="sortClass('nama')">Name</th>
+							<th ng-click="sort('harga')" ng-class="sortClass('harga')">Price</th>
+							<th ng-click="sort('deskripsi')" ng-class="sortClass('deskripsi')">Description</th>
+							<th ng-click="sort('tipe')" ng-class="sortClass('tipe')">Type</th>
+						</tr>
+					
+						<tr ng-repeat = "ruanganData in ruanganListData | orderBy : column : reverse | filter:{tipe:filterTipe} | filter:{nama:filterNama}" ng-click="go(ruanganData.edit_link)">
+                      
+							<td>{[{ ruanganData.nama }]}</td>
+							<td>{[{ ruanganData.harga }]}</td>
+							<td>{[{ ruanganData.deskripsi }]}</td>
+							<td>{[{ ruanganData.tipe }]}</td>
+						</tr>
                     </table>
                 </div>
             </div>

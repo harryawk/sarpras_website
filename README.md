@@ -1,5 +1,7 @@
 # SarprasI
 
+<br />
+
 ### Programming Language
 
 <ul>
@@ -29,10 +31,10 @@
 **Solution:**
 <ul>
 	<li>Go to your project root directory</li>
-	<li>Run **python tambahuser.py**</li>
+	<li>Run <b>python tambahuser.py</b></li>
 	<li>Go to MySQL prompt (mysql -u root)</li>
-	<li>Run **SELECT host,user,password,Grant_priv,Super_priv FROM mysql.user;**</li>
-	<li>You should see the new user **admin_penjadwalan** with host **localhost**</li>
-	<li>If the value of Grant_priv or Super_priv is set to 'N', run this: **UPDATE mysql.user SET Grant_priv='Y', Super_priv='Y' WHERE User='admin_penjadwalan';**</li>
-	<li>Quit from the MySQL prompt. Execute **python manage.py runserver** and everything should be OK</li>
+	<li>Run <b>SELECT host,user,password,Grant_priv,Super_priv FROM mysql.user;</b></li>
+	<li>You should see the new user <b>admin_penjadwalan</b> with host <b>localhost</b></li>
+	<li>If the value of Grant_priv or Super_priv is set to 'N', run this: <b>UPDATE mysql.user SET Grant_priv='Y', Super_priv='Y' WHERE User='admin_penjadwalan';</b></li>
+	<li>Quit from the MySQL prompt. Execute <b>python manage.py runserver</b> and everything should be OK</li>
 </ul>

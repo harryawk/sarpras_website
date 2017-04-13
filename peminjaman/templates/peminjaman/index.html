@@ -127,7 +127,6 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
         $http(req).success(function(data, status, headers, config) {
             peminjaman.waktu_bayar = data.result;
         }).error(function(data, status, headers, config) {
-            $scope.hasil = "ERROR";
         });
     };
 
@@ -205,8 +204,8 @@ angular.element(document).ready(function() {
                    <td>{[{ peminjamanData.peminjam }]}</td>
                    <td>{[{ peminjamanData.ruangan }]}</td>
 
-                   <td>{[{ peminjamanData.waktu_awal | date:'dd MMM yyyy; HH:mm' }]}</td>
-                   <td>{[{ peminjamanData.waktu_akhir | date:'dd MMM yyyy; HH:mm' }]}</td>
+                   <td>{[{ peminjamanData.waktu_awal | date:'dd MMM yyyy; HH:mm' : 'UTC' }]}</td>
+                   <td>{[{ peminjamanData.waktu_akhir | date:'dd MMM yyyy; HH:mm' : 'UTC' }]}</td>
 
                    <td>{[{ peminjamanData.jumlah_tagihan }]}</td>
                    <td ng-click="togglePembayaran(peminjamanData)">{[{ peminjamanData.waktu_bayar | date:'dd MMM yyyy' }]}</td>

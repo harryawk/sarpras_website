@@ -1,5 +1,6 @@
 from django.db import models
 from peminjaman.models import Peminjaman
+from datetime import date
 
 class Log(models.Model):
     peminjaman = models.ForeignKey(Peminjaman, blank=True, null=True, on_delete=models.SET_NULL)
@@ -16,5 +17,6 @@ class Log(models.Model):
         (DELETE, 'Hapus'),
     )
     aksi = models.CharField(max_length=50, choices=PILIHAN_TIPE_AKSI, default=UPDATE)
+
 
 

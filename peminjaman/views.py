@@ -230,6 +230,24 @@ def formedit(request, peminjaman_id = 0):
 
             # Jika tidak, maka simpan peminjaman, dan kembali ke index
             else:
+
+                # Mencatat perubahan yang dilakukan ke log
+                logmsg = ""
+                if selected_peminjaman.no_laporan != input_nomor_surat:
+                    logmsg += "Ubah no laporan dari " + selected_peminjaman.no_laporan.__str__() + " ke " + input_nomor_surat.__str__() + "\n"
+                if selected_peminjaman.peminjam != obj_peminjam:
+                    logmsg += "Ubah peminjam dari " + selected_peminjaman.peminjam.__str__() + " ke " + obj_peminjam.__str__() + "\n"
+                if selected_peminjaman.ruangan != obj_ruangan:
+                    logmsg += "Ubah ruangan dari " + selected_peminjaman.ruangan.__str__() + " ke " + obj_ruangan.__str__() + "\n"
+                if selected_peminjaman.waktu_awal != tanggal_mulai_pinjam:
+                    logmsg += "Ubah waktu mulai dari " + selected_peminjaman.waktu_awal.__str__() + " ke " + tanggal_mulai_pinjam.__str__() + "\n"
+                if selected_peminjaman.waktu_akhir != tanggal_selesai_pinjam:
+                    logmsg += "Ubah waktu akhir dari " + selected_peminjaman.waktu_akhir.__str__() + " ke " + tanggal_selesai_pinjam.__str__() + "\n"
+                if selected_peminjaman.deskripsi != input_deskripsi:
+                    logmsg += "Ubah isi deskripsi\n"
+                if selected_peminjaman.jumlah_tagihan != input_tagihan:
+                    logmsg += "Ubah jumlah tagihan dari " + selected_peminjaman.jumlah_tagihan.__str__() + " ke " + input_tagihan.__str__() + "\n"
+
                 try:
                     selected_peminjaman.peminjam = obj_peminjam
                     selected_peminjaman.ruangan = obj_ruangan
@@ -242,7 +260,7 @@ def formedit(request, peminjaman_id = 0):
                     new_log = Log(peminjaman=selected_peminjaman,
                                   peminjaman_str=selected_peminjaman.__str__(),
                                   tanggal=date.today(),
-                                  deskripsi="",
+                                  deskripsi=logmsg,
                                   aksi="Ubah")
                     new_log.save()
                 except Exception as e:
@@ -301,20 +319,28 @@ def togglepembayaran(request, peminjaman_id = 0):
             return JsonResponse({'result': ""})
 
         if selected_peminjaman.jumlah_tagihan > 0:
-            new_log = Log(peminjaman=selected_peminjaman,
-                          peminjaman_str=selected_peminjaman.__str__(),
-                          tanggal=date.today(),
-                          deskripsi="Ubah status Pembayaran",
-                          aksi="Ubah")
-            new_log.save()
             if selected_peminjaman.waktu_bayar:
                 selected_peminjaman.waktu_bayar = None
                 selected_peminjaman.save()
+
+                new_log = Log(peminjaman=selected_peminjaman,
+                              peminjaman_str=selected_peminjaman.__str__(),
+                              tanggal=date.today(),
+                              deskripsi="Ubah status pembayaran ke 'Belum Lunas'",
+                              aksi="Ubah")
+                new_log.save()
                 return JsonResponse({'result': "Belum Lunas"})
 
             else:
                 selected_peminjaman.waktu_bayar = date.today()
                 selected_peminjaman.save()
+
+                new_log = Log(peminjaman=selected_peminjaman,
+                              peminjaman_str=selected_peminjaman.__str__(),
+                              tanggal=date.today(),
+                              deskripsi="Ubah status pembayaran ke 'Lunas pada " + selected_peminjaman.waktu_bayar.__str__() + "'",
+                              aksi="Ubah")
+                new_log.save()
                 return JsonResponse({'result': selected_peminjaman.waktu_bayar})
         else:
             return JsonResponse({'result': selected_peminjaman.waktu_bayar})

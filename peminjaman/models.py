@@ -18,7 +18,7 @@ class Peminjaman(models.Model):
     deskripsi = models.CharField(max_length=1000, blank=True)
 
     def __str__(self):
-        return (self.peminjam.__str__() +' : '+ self.ruangan.__str__() +', '+ self.waktu_awal.strftime("%Y-%m-%d"))
+        return (self.peminjam.__str__() +' : '+ self.ruangan.__str__() +', '+ self.waktu_awal.__str__() +' -> '+ self.waktu_akhir.__str__())
 
     def is_collision(self, Peminjaman_new):
         new_time_start = Peminjaman_new.waktu_awal.replace(tzinfo=None)

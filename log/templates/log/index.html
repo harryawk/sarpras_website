@@ -143,7 +143,7 @@
                        <td>{[{ logData.tanggal | date:'dd MMM yyyy' : 'UTC' }]}</td>
                        <td ng-click="openPeminjaman(logData)">{[{ logData.peminjaman_str }]}</td>
                        <td>{[{ logData.aksi }]}</td>
-                       <td>{[{ logData.deskripsi }]}</td>
+                       <td><pre>{[{ logData.deskripsi }]}</pre></td>
                    </tr>
                 </tbody>
             </table>

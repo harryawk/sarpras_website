@@ -127,7 +127,6 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
         $http(req).success(function(data, status, headers, config) {
             peminjaman.waktu_bayar = data.result;
         }).error(function(data, status, headers, config) {
-            $scope.hasil = "ERROR";
         });
     };
 

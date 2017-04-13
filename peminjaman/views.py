@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import JsonResponse
+
 from .models import Peminjaman
 from ruangan.models import Ruangan
 from peminjam.models import Peminjam
+from log.models import Log
+
 from datetime import datetime, date
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -106,11 +109,17 @@ def formadd(request):
 
             # Jika tidak, maka simpan peminjaman, dan kembali ke index
             else:
+                if int(input_diskon) > 0:
+                    input_deskripsi = input_deskripsi + '\nDiskon : ' + input_diskon + ' %'
+                    new_peminjaman.deskripsi = input_deskripsi
                 try:
-                    if int(input_diskon) > 0:
-                        input_deskripsi = input_deskripsi + '\nDiskon : ' + input_diskon + ' %'
-                        new_peminjaman.deskripsi = input_deskripsi
                     new_peminjaman.save()
+                    new_log = Log(peminjaman=new_peminjaman,
+                                  peminjaman_str=new_peminjaman.__str__(),
+                                  tanggal=date.today(),
+                                  deskripsi="",
+                                  aksi="Buat")
+                    new_log.save()
                 except Exception as e:
                     messages += ["Unhandled Exception", ]
                 else:
@@ -226,6 +235,12 @@ def formedit(request, peminjaman_id = 0):
                     selected_peminjaman.jumlah_tagihan = input_tagihan
                     selected_peminjaman.no_laporan = input_nomor_surat
                     selected_peminjaman.save()
+                    new_log = Log(peminjaman=selected_peminjaman,
+                                  peminjaman_str=selected_peminjaman.__str__(),
+                                  tanggal=date.today(),
+                                  deskripsi="",
+                                  aksi="Ubah")
+                    new_log.save()
                 except Exception as e:
                     messages += ["Unhandled Exception", ]
                 else:
@@ -257,16 +272,17 @@ def formedit(request, peminjaman_id = 0):
 def formdelete(request, peminjaman_id = 0, errormsg=''):
     try:
         object_peminjaman = Peminjaman.objects.get(id=peminjaman_id)
+        new_log = Log(peminjaman=None,
+                      peminjaman_str=object_peminjaman.__str__(),
+                      tanggal=date.today(),
+                      deskripsi="",
+                      aksi="Hapus")
+        new_log.save()
         object_peminjaman.delete()
     except Peminjaman.DoesNotExist:
         pass
-    all_peminjaman = Peminjaman.objects.all()
-    pass
-    return render(request, 'peminjaman/index.html', {
-        'all_peminjaman': all_peminjaman,
-        'error': errormsg,
-    })
-    # return render(request, 'peminjaman/delete.html', {})
+
+    return redirect(reverse('peminjaman:index'))
 
 
 # AJAX Service to toggle pembayaran status
@@ -280,14 +296,23 @@ def togglepembayaran(request, peminjaman_id = 0):
         except Exception as e:
             return JsonResponse({'result': ""})
 
-        if selected_peminjaman.waktu_bayar:
-            selected_peminjaman.waktu_bayar = None
-            selected_peminjaman.save()
-            return JsonResponse({'result': "Belum Lunas"})
+        if selected_peminjaman.jumlah_tagihan > 0:
+            new_log = Log(peminjaman=selected_peminjaman,
+                          peminjaman_str=selected_peminjaman.__str__(),
+                          tanggal=date.today(),
+                          deskripsi="Ubah status Pembayaran",
+                          aksi="Ubah")
+            new_log.save()
+            if selected_peminjaman.waktu_bayar:
+                selected_peminjaman.waktu_bayar = None
+                selected_peminjaman.save()
+                return JsonResponse({'result': "Belum Lunas"})
 
+            else:
+                selected_peminjaman.waktu_bayar = date.today()
+                selected_peminjaman.save()
+                return JsonResponse({'result': selected_peminjaman.waktu_bayar})
         else:
-            selected_peminjaman.waktu_bayar = date.today()
-            selected_peminjaman.save()
             return JsonResponse({'result': selected_peminjaman.waktu_bayar})
 
     return JsonResponse({'result': 'Nope'})

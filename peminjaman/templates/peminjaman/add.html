@@ -28,7 +28,7 @@
 		{% endfor %}
 
 		$scope.peminjamID = {% if input_peminjam %} "{{input_peminjam}}" {% else %} "" {% endif %};
-
+        $scope.givenprice = {% if input_peminjam %} "{{input_peminjam}}" {% else %} "" {% endif %}
 		$scope.ruanganID = {% if input_ruangan %} "{{input_ruangan}}" {% else %} "-" {% endif %};
 
 		$scope.ruanganListData = [];

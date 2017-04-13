@@ -4,6 +4,35 @@
 {% block head %}
 <title>Daftar Peminjam</title>
 
+<style>
+
+	table th:hover {
+		cursor: pointer;
+	}
+	
+	.arrow-down:after,.arrow-up:after {
+		content: ' ';
+		position: relative;
+		left: 2px;
+		border: 8px solid transparent;
+	}
+
+	.arrow-down:after {
+		top: 10px;
+		border-top-color: black;
+	}
+
+	.arrow-up:after {
+		bottom: 15px;
+		border-bottom-color: black;
+	}
+
+	.arrow-down,.arrow-up {
+		padding-right: 0px;
+	}
+
+</style>
+
 {% endblock %}
 
 
@@ -30,6 +59,7 @@
             location.href = path;
         };
 
+		/* ORIGINAL CODE
         $scope.order = 'id';
         $scope.sort = function ( coll ) {
             if($scope.order == coll) {
@@ -38,6 +68,42 @@
                 $scope.order = coll;
             }
         };
+		*/
+		
+		/* EXPERIMENTAL CODE (Add arrow-down and arrow-up) */
+		
+		// column state
+		$scope.column = 'id';
+		
+		// sort ordering (Ascending or Descending). True for Descending
+		$scope.reverse = false; 
+		
+		$scope.sort = function ( coll ) {
+		
+			$scope.column = coll;
+		
+			if ($scope.reverse) {
+				$scope.reverse = false;
+				$scope.reverseclass = 'arrow-up';
+			} else {
+				$scope.reverse = true;
+				$scope.reverseclass = 'arrow-down';
+			}
+			
+        };
+		
+		// change the arrow direction
+		$scope.sortClass = function(col) {
+			if ($scope.column == col) {
+				if ($scope.reverse) {
+					return 'arrow-down'; 
+				} else {
+					return 'arrow-up';
+				}
+			} else {
+				return '';
+			}
+		};
 
 	});
 </script>
@@ -65,17 +131,22 @@
                     <table class="table table-striped table-hover table-bordered">
                         <thead>
                             <tr>
-                                <th ng-click="sort('id')">ID</th>
-                                <th ng-click="sort('nama')">Name</th>
-                                <th ng-click="sort('deskripsi')">Description</th>
-                            </tr>
+                                <th ng-click="sort('id')" ng-class="sortClass('id')">ID</th>
+                                <th ng-click="sort('nama')" ng-class="sortClass('nama')">Name</th>
+                                <th ng-click="sort('deskripsi')" ng-class="sortClass('deskripsi')">Description</th>
+                            </tr> 
                         </thead>
                         <tbody>
+						<!--
                            <tr ng-repeat = "peminjamData in peminjamListData | orderBy : order | filter:{id:filterId} | filter:{nama:filterNama}" ng-click="go(peminjamData.edit_link)">
-                               <td>{[{ peminjamData.id }]}</td>
+                        -->
+							<tr ng-repeat = "peminjamData in peminjamListData | orderBy : column : reverse | filter:{id:filterId} | filter:{nama:filterNama}" ng-click="go(peminjamData.edit_link)">
+                        						
+							   <td>{[{ peminjamData.id }]}</td>
                                <td>{[{ peminjamData.nama }]}</td>
                                <td>{[{ peminjamData.deskripsi }]}</td>
-                           </tr>
+							
+							</tr>
                         </tbody>
                     </table>
                 </div>

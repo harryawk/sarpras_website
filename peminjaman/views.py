@@ -61,6 +61,9 @@ def formadd(request):
         input_tagihan = (1-decimal_diskon) * input_tagihan
         if input_tagihan < 0:
             input_tagihan = 0
+            waktu_bayar_t = date.today()
+        else:
+            waktu_bayar_t = None
 
         # Ambil data hasil input dari user
         input_peminjam = request.POST['peminjam']
@@ -94,6 +97,7 @@ def formadd(request):
                                         peminjam=obj_peminjam,
                                         ruangan=obj_ruangan,
                                         jumlah_tagihan=input_tagihan,
+                                        waktu_bayar = waktu_bayar_t,
                                         waktu_awal=tanggal_mulai_pinjam,
                                         waktu_akhir=tanggal_selesai_pinjam,
                                         deskripsi=input_deskripsi)

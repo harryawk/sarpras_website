@@ -53,9 +53,6 @@ def formadd(request):
         input_tagihan = request.POST['harga']
         input_diskon = request.POST['discount']
 
-        if input_diskon > 0 and input_deskripsi == '':
-            input_deskripsi = input_deskripsi + '\nDiskon : ' + input_diskon + ' %'
-
         input_tagihan = float(input_tagihan)
         decimal_diskon = float(input_diskon) / float(100)
         input_tagihan = (1-decimal_diskon) * input_tagihan
@@ -110,7 +107,7 @@ def formadd(request):
             # Jika tidak, maka simpan peminjaman, dan kembali ke index
             else:
                 try:
-                    if input_diskon > 0:
+                    if int(input_diskon) > 0:
                         input_deskripsi = input_deskripsi + '\nDiskon : ' + input_diskon + ' %'
                         new_peminjaman.deskripsi = input_deskripsi
                     new_peminjaman.save()
@@ -155,7 +152,7 @@ def formedit(request, peminjaman_id = 0):
     tanggal_awal = request.POST.get('waktu_awal_0', selected_peminjaman.waktu_awal.date().isoformat())  # format tanggal : %Y-%m-%d
     tanggal_akhir = request.POST.get('waktu_akhir_0', selected_peminjaman.waktu_akhir.date().isoformat())  # format tanggal : %Y-%m-%d
     pukul_awal = request.POST.get('waktu_awal_1', selected_peminjaman.waktu_awal.time().strftime("%H:%M"))  # format waktu : %H:%M
-    pukul_akhir = request.POST.get('waktu_akhir_1', selected_peminjaman.waktu_awal.time().strftime("%H:%M"))  # format waktu : %H:%M
+    pukul_akhir = request.POST.get('waktu_akhir_1', selected_peminjaman.waktu_akhir.time().strftime("%H:%M"))  # format waktu : %H:%M
     input_deskripsi = request.POST.get('deskripsi', selected_peminjaman.deskripsi)
     input_tagihan = request.POST.get('harga', selected_peminjaman.jumlah_tagihan)
     input_nomor_surat = request.POST.get('nomor_surat', selected_peminjaman.no_laporan)

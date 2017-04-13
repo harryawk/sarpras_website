@@ -72,7 +72,7 @@
                 </thead>
                 <tbody>
                    <tr ng-repeat = "logData in logListData | orderBy : order">
-                       <td>{[{ logData.tanggal | date:'dd MMM yyyy' }]}</td>
+                       <td>{[{ logData.tanggal | date:'dd MMM yyyy' : 'UTC' }]}</td>
                        <td ng-click="openPeminjaman(logData)">{[{ logData.peminjaman_str }]}</td>
                        <td>{[{ logData.aksi }]}</td>
                        <td>{[{ logData.deskripsi }]}</td>

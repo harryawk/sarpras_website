@@ -21,7 +21,7 @@
                     <div ng-repeat="event in dt.events | orderBy : event.title" style="margin: 2px;" class="hidden-xs hidden-sm"
                     ng-class="{'monthview-current': dt.current&&!dt.selected&&!dt.hasEvent,'monthview-secondary-with-event': dt.secondary&&dt.hasEvent, 'monthview-primary-with-event':!dt.secondary&&dt.hasEvent&&!dt.selected, 'monthview-selected': dt.selected}">
                         <p style="margin-bottom: 0">{{event.title}}</p>
-                        <p style="font-size: 70%;margin-bottom: 0">{{event.startTime | date:'HH:mm'}} - {{event.endTime | date:'HH:mm'}}</p>
+                        <p style="font-size: 70%;margin-bottom: 0">{{event.startTime | date:'HH:mm':'UTC'}} - {{event.endTime | date:'HH:mm':'UTC'}}</p>
                     </div>
                     <div class="hidden-md hidden-lg" style="display:block;margin: 1px;height: 100%"
                     ng-class="{'monthview-current': dt.current&&!dt.selected&&!dt.hasEvent,'monthview-secondary-with-event': dt.secondary&&dt.hasEvent, 'monthview-primary-with-event':!dt.secondary&&dt.hasEvent&&!dt.selected, 'monthview-selected': dt.selected}">
@@ -45,13 +45,10 @@
                             <b>Peminjam, </b>{{event.borrower}}
                         </p>
                         <p ng-if="!event.allDay" style="margin-bottom: 0">
-                            <b>Waktu, </b>{{event.startTime|date: 'HH:mm'}} - {{event.endTime|date: 'HH:mm'}}
+                            <b>Waktu, </b>{{event.startTime|date: 'HH:mm':'UTC'}} - {{event.endTime|date: 'HH:mm':'UTC'}}
                         </p>
                         <p ng-if="event.allDay" style="margin-bottom: 0">
                             <b>Waktu, </b>Satu hari penuh</p>
-                        <p style="margin-bottom: 0">
-                            <b>Deskripsi, </b>{{event.description}}
-                        </p>
                       </div>
                     </div>
                 </div>

@@ -3,6 +3,36 @@
 
 {% block head %}
 <title>Daftar peminjaman</title>
+
+<style>
+
+	table th:hover {
+		cursor: pointer;
+	}
+	
+	.arrow-down:after,.arrow-up:after {
+		content: ' ';
+		position: relative;
+		left: 2px;
+		border: 8px solid transparent;
+	}
+
+	.arrow-down:after {
+		top: 10px;
+		border-top-color: black;
+	}
+
+	.arrow-up:after {
+		bottom: 15px;
+		border-bottom-color: black;
+	}
+
+	.arrow-down,.arrow-up {
+		padding-right: 0px;
+	}
+
+</style>
+
 {% endblock %}
 
 
@@ -130,6 +160,7 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
         });
     };
 
+	/* ORIGINAL CODE
     $scope.order = 'no_laporan';
     $scope.sort = function ( coll ) {
         if($scope.order == coll) {
@@ -138,6 +169,43 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
             $scope.order = coll;
         }
     };
+	*/
+	
+	/* EXPERIMENTAL CODE (Add arrow-down and arrow-up) */
+	
+	// column state
+	$scope.column = 'no_laporan';
+	
+	// sort ordering (Ascending or Descending). True for Descending
+	$scope.reverse = false; 
+	
+	$scope.sort = function ( coll ) {
+	
+		$scope.column = coll;
+	
+		if ($scope.reverse) {
+			$scope.reverse = false;
+			$scope.reverseclass = 'arrow-up';
+		} else {
+			$scope.reverse = true;
+			$scope.reverseclass = 'arrow-down';
+		}
+		
+	};
+	
+	// change the arrow direction
+	$scope.sortClass = function(col) {
+		if ($scope.column == col) {
+			if ($scope.reverse) {
+				return 'arrow-down'; 
+			} else {
+				return 'arrow-up';
+			}
+		} else {
+			return '';
+		}
+	};
+	
 });
 
 angular.element(document).ready(function() {
@@ -187,17 +255,17 @@ angular.element(document).ready(function() {
         <div class="table-responsive">
             <table class="table table-striped table-hover table-bordered">
                <tr>
-                   <th ng-click="sort('no_laporan')">No Laporan</th>
-                   <th ng-click="sort('peminjam')">Peminjam</th>
-                   <th ng-click="sort('ruangan')">Ruangan</th>
-                   <th ng-click="sort('waktu_awal')">Waktu Awal</th>
-                   <th ng-click="sort('waktu_akhir')">Waktu Akhir</th>
-                   <th ng-click="sort('jumlah_tagihan')">Tagihan</th>
-                   <th ng-click="sort('waktu_bayar')">Waktu Bayar</th>
-                   <th ng-click="sort('deskripsi')">Description</th>
+                   <th ng-click="sort('no_laporan')" ng-class="sortClass('no_laporan')">No Laporan</th>
+                   <th ng-click="sort('peminjam')" ng-class="sortClass('peminjam')">Peminjam</th>
+                   <th ng-click="sort('ruangan')" ng-class="sortClass('ruangan')">Ruangan</th>
+                   <th ng-click="sort('waktu_awal')" ng-class="sortClass('waktu_awal')">Waktu Awal</th>
+                   <th ng-click="sort('waktu_akhir')" ng-class="sortClass('waktu_akhir')">Waktu Akhir</th>
+                   <th ng-click="sort('jumlah_tagihan')" ng-class="sortClass('jumlah_tagihan')">Tagihan</th>
+                   <th ng-click="sort('waktu_bayar')" ng-class="sortClass('waktu_bayar')">Waktu Bayar</th>
+                   <th ng-click="sort('deskripsi')" ng-class="sortClass('deskripsi')">Description</th>
                </tr>
 
-               <tr ng-repeat = "peminjamanData in peminjamanListData | orderBy : order | filter:{peminjam:filterPeminjam}
+               <tr ng-repeat = "peminjamanData in peminjamanListData | orderBy : column : reverse | filter:{peminjam:filterPeminjam}
                | filter:{ruangan:filterRuangan} | filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd))">
 
                    <td ng-click="go(peminjamanData.edit_link)">{[{ peminjamanData.no_laporan }]}</td>

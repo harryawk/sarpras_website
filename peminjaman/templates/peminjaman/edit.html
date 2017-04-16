@@ -146,6 +146,17 @@
                     </div>
                 </div>
 
+				<div class="form-group">
+					<label for="id_lunas" class="col-lg-2 control-label">Sudah Bayar</label>
+                    <div class="col-lg-1" style="margin-top: 8px">
+                        <input type="checkbox" name="lunas" id="id_lunas" class="" value="" ng-model="lunas"/>
+                    </div>
+                    <label for="id_harga" class="col-lg-2 control-label">Waktu Pembayaran</label>
+                    <div class="col-lg-7">
+                        <input type="date" name="tanggal_bayar" id="id_bayar" class="form-control" value="" ng-disabled="!lunas"/>
+                    </div>
+                </div>                
+
                 <ul>
                 {% for error_item in error %}
                 <li>{{ error_item }}</li>

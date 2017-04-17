@@ -31,7 +31,10 @@
             console.log('Selected time: ' + selectedTime);
         };
 
-        /*Fetching*/
+		/* Global Variables */
+		$scope.peminjamanList_GLOBAL = null;
+		
+        /* Fetching */
         $scope.peminjamEdit = "{% url 'peminjam:editbase' %}"
 		$scope.peminjamDelete = "{% url 'peminjam:deletebase' %}"
 		$scope.peminjamJson = "{% url 'peminjam:json' %}"
@@ -54,6 +57,7 @@
 	      	$scope.ruanganList = "ERROR";
 	    });
 
+		// get the name of borrower
 	    function peminjamTampil(e) {
             for (var i in $scope.peminjamList) {
                 if (e == $scope.peminjamList[i].id) {
@@ -62,8 +66,9 @@
             }
             return ;
         };
-
-	    function ruanganTampil(e) {
+		
+		// get the name of room
+		function ruanganTampil(e) {
             for (var i in $scope.ruanganList) {
                 if (e == $scope.ruanganList[i].id) {
                     return $scope.ruanganList[i].nama;
@@ -72,10 +77,16 @@
             return;
         };
 
+		// get all borrowed room in particular year
 	    function fetchPeminjaman(year){
             var events = [];
             $http.get($scope.peminjamanJson + year).success(function(data, status, headers, config) {
-                $scope.peminjamanList = data.results;
+                
+				// EXPERIMENT CODE
+				$scope.peminjamanList_GLOBAL = data.results;
+				// END OF EXPERIMENT CODE
+				
+				$scope.peminjamanList = data.results;
                 for (var indeksPeminjaman in $scope.peminjamanList) {
                     var waktuAwal = new Date($scope.peminjamanList[indeksPeminjaman].waktu_awal);
                     var waktuAkhir = new Date($scope.peminjamanList[indeksPeminjaman].waktu_akhir);
@@ -93,11 +104,112 @@
             });
             return events;
         };
+		
+		// fetch the data for the current year
 	    $scope.loadEvents = function () {
-            $scope.eventSource = fetchPeminjaman(2017);
+            
+			$scope.eventSource = fetchPeminjaman(2017);
+	
 	    };
-        $scope.$broadcast('eventSourceChanged',$scope.eventSource);
 
+		/* Filtering */		
+		$scope.filterRuangan = "";
+		//$scope.filterPeminjam = "";
+		
+		$scope.filterEvents = function() {
+		
+			var events = [];
+			
+			for (var indeksPeminjaman in $scope.peminjamanList_GLOBAL) {
+				
+				var filterByRuangan = ruanganTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].ruangan_id);
+				//var filterByPeminjam = peminjamTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id);
+                				
+				var waktuAwal = new Date($scope.peminjamanList_GLOBAL[indeksPeminjaman].waktu_awal);
+				var waktuAkhir = new Date($scope.peminjamanList_GLOBAL[indeksPeminjaman].waktu_akhir);
+				
+				if (filterByRuangan == $scope.filterRuangan) {
+				
+					events.push({
+						title: filterByRuangan,
+						startTime: waktuAwal,
+						endTime: waktuAkhir,
+						allDay: false,
+						borrower: peminjamTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id),
+						description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
+					});
+			
+				}
+				
+				/*
+				if ($scope.filterRuangan && $scope.filterPeminjam == "") {
+					
+					if (filterByRuangan == $scope.filterRuangan) {
+					
+						events.push({
+							title: filterByRuangan,
+							startTime: waktuAwal,
+							endTime: waktuAkhir,
+							allDay: false,
+							borrower: filterByPeminjam,
+							description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
+						});
+						
+					}
+				} else {
+				
+					if ($scope.filterRuangan == "" && $scope.filterPeminjam) {
+				
+						if (filterByPeminjam == $scope.filterPeminjam) {
+						
+							events.push({
+								title: filterByRuangan,
+								startTime: waktuAwal,
+								endTime: waktuAkhir,
+								allDay: false,
+								borrower: filterByPeminjam,
+								description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
+							});
+							
+						}
+					}
+				
+				}
+				} else if ($scope.filterRuangan && $scope.filterPeminjam) {
+						
+					if (filterByRuangan == $scope.filterRuangan && filterByPeminjam == $scope.filterPeminjam) {
+					
+						events.push({
+							title: filterByRuangan,
+							startTime: waktuAwal,
+							endTime: waktuAkhir,
+							allDay: false,
+							borrower: filterByPeminjam,
+							description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
+						});
+						
+					}
+				} else {
+					
+					events.push({
+						title: filterByRuangan,
+						startTime: waktuAwal,
+						endTime: waktuAkhir,
+						allDay: false,
+						borrower: filterByPeminjam,
+						description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
+					});
+			
+				}
+				*/
+				
+			}
+			
+			$scope.eventSource = events;
+		}
+		
+		$scope.$broadcast('eventSourceChanged',$scope.eventSource);
+		
     }]);
     angular.element(document).ready(function() {
     	angular.bootstrap(document.getElementById("AppKalender"), ["calendarDemoApp"])
@@ -130,6 +242,27 @@
                     </button>
                 </div>
             </div>
+			
+			<!-- FILTERER -->
+			<div class="btn-toolbar" style="margin-bottom: 10px">
+            
+				<div class="btn-group">
+					<input type="text" id="txtFilterRuangan" placeholder="Filter by ruangan" ng-model="filterRuangan" />
+                    
+					<!--
+					<input type="text" id="txtFilterPeminjam" placeholder="Filter by peminjam" ng-model="filterPeminjam" />
+                    
+					<input type="text" id="txtFilterRuangan" placeholder="Filter by ruangan" ng-model="TEST" />
+                    -->
+					
+					<button type="button" class="btn btn-default" ng-click="filterEvents()">
+                        Filter
+                    </button>
+                </div>
+            	
+			</div>
+			<!-- END OF FILTERER -->
+			
             <div class="well well-sm">
                 <calendar ng-model="currentDate" calendar-mode="mode" event-source="eventSource"
                       range-changed="reloadSource(startTime, endTime)"

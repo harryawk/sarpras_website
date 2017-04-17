@@ -59,7 +59,7 @@ def formadd(request):
         input_tagihan = float(input_tagihan)
         decimal_diskon = float(input_diskon) / float(100)
         input_tagihan = (1-decimal_diskon) * input_tagihan
-        if input_tagihan < 0:
+        if input_tagihan <= 0:
             input_tagihan = 0
             waktu_bayar_t = date.today()
         else:
@@ -169,15 +169,40 @@ def formedit(request, peminjaman_id = 0):
     input_deskripsi = request.POST.get('deskripsi', selected_peminjaman.deskripsi)
     input_tagihan = request.POST.get('harga', selected_peminjaman.jumlah_tagihan)
     input_nomor_surat = request.POST.get('nomor_surat', selected_peminjaman.no_laporan)
+    input_tanggal_lunas = request.POST.get('tanggal_bayar', selected_peminjaman.waktu_bayar)
+    if input_tagihan <= 0:
+        input_lunas = 'already'
+    else:
+        input_lunas = ''
 
     errormsg = []
     messages = []
 
     if request.method == 'POST':
 
+        input_lunas = request.POST['lunas']
+        if input_tanggal_lunas == None:
+            input_tanggal_lunas = request.POST['tanggal_bayar']
+        print "input tanggal lunas : ", input_tanggal_lunas
+        if input_lunas == 'already' and input_tanggal_lunas != '':
+            waktu_bayar_t = datetime.strptime(input_tanggal_lunas, "%Y-%m-%d")
+        elif input_lunas == 'already' and input_tanggal_lunas == '':
+            waktu_bayar_t = date.today()
+        else:
+            waktu_bayar_t = None
+
         # Ambil data pascaedit
         input_tagihan = request.POST['harga']
         input_tagihan = float(input_tagihan)
+        if input_tagihan <= 0 and waktu_bayar_t == None:
+            waktu_bayar_t = date.today()
+        # else:
+        #     waktu_bayar_t = None
+
+        if waktu_bayar_t != None:
+            input_tagihan = 0.00
+
+        print "waktu_bayar_t : ", waktu_bayar_t
 
         # Ambil data hasil input dari user
         input_peminjam = request.POST['peminjam']
@@ -211,6 +236,7 @@ def formedit(request, peminjaman_id = 0):
                                         ruangan=obj_ruangan,
                                         waktu_awal=tanggal_mulai_pinjam,
                                         waktu_akhir=tanggal_selesai_pinjam,
+                                        waktu_bayar=waktu_bayar_t,
                                         deskripsi=input_deskripsi,
                                         jumlah_tagihan=input_tagihan,
                                         no_laporan=input_nomor_surat)
@@ -253,6 +279,7 @@ def formedit(request, peminjaman_id = 0):
                     selected_peminjaman.ruangan = obj_ruangan
                     selected_peminjaman.waktu_awal = tanggal_mulai_pinjam
                     selected_peminjaman.waktu_akhir = tanggal_selesai_pinjam
+                    selected_peminjaman.waktu_bayar = waktu_bayar_t
                     selected_peminjaman.deskripsi = input_deskripsi
                     selected_peminjaman.jumlah_tagihan = input_tagihan
                     selected_peminjaman.no_laporan = input_nomor_surat
@@ -286,6 +313,7 @@ def formedit(request, peminjaman_id = 0):
         'pukul_akhir': pukul_akhir,
         'harga': input_tagihan.__str__(),
         'nomor_surat': input_nomor_surat,
+        'input_lunas': input_lunas,
     })
 
 

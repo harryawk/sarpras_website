@@ -31,6 +31,16 @@
 
         $scope.ruanganID = {% if input_ruangan %} "{{input_ruangan}}" {% else %} "" {% endif %}
 
+        $scope.lunas = {% if input_lunas == 'already' %}
+        {
+            value1 : true
+        };
+        {% else %}
+        {
+            value1 : false
+        };
+        {% endif %}
+
         $scope.ruanganListData = [];
         {% for ruangan in all_ruangan %}
         $scope.ruanganListData = $scope.ruanganListData.concat({
@@ -149,11 +159,11 @@
 				<div class="form-group">
 					<label for="id_lunas" class="col-lg-2 control-label">Sudah Bayar</label>
                     <div class="col-lg-1" style="margin-top: 8px">
-                        <input type="checkbox" name="lunas" id="id_lunas" class="" value="" ng-model="lunas"/>
+                        <input type="checkbox" name="lunas" id="id_lunas" class="" value="already" ng-model="lunas.value1"/>
                     </div>
                     <label for="id_harga" class="col-lg-2 control-label">Waktu Pembayaran</label>
                     <div class="col-lg-7">
-                        <input type="date" name="tanggal_bayar" id="id_bayar" class="form-control" value="" ng-disabled="!lunas"/>
+                        <input type="date" name="tanggal_bayar" id="id_bayar" class="form-control" value="" ng-disabled="!lunas.value1"/>
                     </div>
                 </div>                
 

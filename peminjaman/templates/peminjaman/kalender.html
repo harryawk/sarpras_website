@@ -128,7 +128,7 @@
 				var waktuAwal = new Date($scope.peminjamanList_GLOBAL[indeksPeminjaman].waktu_awal);
 				var waktuAkhir = new Date($scope.peminjamanList_GLOBAL[indeksPeminjaman].waktu_akhir);
 				
-				if (filterByRuangan == $scope.filterRuangan) {
+				if (!$scope.filterRuangan) {
 				
 					events.push({
 						title: filterByRuangan,
@@ -138,7 +138,20 @@
 						borrower: peminjamTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id),
 						description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
 					});
-			
+
+				} else {
+					if (filterByRuangan == $scope.filterRuangan) {
+					
+						events.push({
+							title: filterByRuangan,
+							startTime: waktuAwal,
+							endTime: waktuAkhir,
+							allDay: false,
+							borrower: peminjamTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id),
+							description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
+						});
+				
+					}
 				}
 				
 				/*

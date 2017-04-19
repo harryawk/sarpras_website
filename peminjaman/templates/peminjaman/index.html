@@ -8,7 +8,7 @@
 	table th:hover {
 		cursor: pointer;
 	}
-	
+
 	.arrow-down:after,.arrow-up:after {
 		content: ' ';
 		position: relative;
@@ -46,15 +46,6 @@ peminjamanList.config(function($interpolateProvider) {
 
 peminjamanList.controller("peminjamanListController", function($scope, $http, $filter) {
 
-    $scope.toTimestamp = function(date) {
-      return new Date(date).getTime()/1000;
-    };
-
-    $scope.inRange = function(start,end){
-      return function(item){
-        return item.unix_timestamp_awal > start && item.unix_timestamp_akhir < end;
-      }
-    }
 
     $scope.peminjamListData = [];
     {% for peminjam in all_peminjam %}
@@ -73,6 +64,11 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
       nama:"{{ ruangan.nama }}",
     });
     {% endfor %}
+
+    $scope.waktu_bayarListData = [];
+    $scope.waktu_bayarListData = $scope.waktu_bayarListData.concat({
+        string: "Belum Lunas",
+    });
 
     $scope.go = function ( path ) {
         location.href = path;
@@ -169,19 +165,19 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
         }
     };
 	*/
-	
+
 	/* EXPERIMENTAL CODE (Add arrow-down and arrow-up) */
-	
+
 	// column state
 	$scope.column = 'no_laporan';
-	
+
 	// sort ordering (Ascending or Descending). True for Descending
-	$scope.reverse = false; 
-	
+	$scope.reverse = false;
+
 	$scope.sort = function ( coll ) {
-	
+
 		$scope.column = coll;
-	
+
 		if ($scope.reverse) {
 			$scope.reverse = false;
 			$scope.reverseclass = 'arrow-up';
@@ -189,14 +185,14 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
 			$scope.reverse = true;
 			$scope.reverseclass = 'arrow-down';
 		}
-		
+
 	};
-	
+
 	// change the arrow direction
 	$scope.sortClass = function(col) {
 		if ($scope.column == col) {
 			if ($scope.reverse) {
-				return 'arrow-down'; 
+				return 'arrow-down';
 			} else {
 				return 'arrow-up';
 			}
@@ -204,7 +200,7 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
 			return '';
 		}
 	};
-	
+
 });
 
 angular.element(document).ready(function() {
@@ -248,6 +244,14 @@ angular.element(document).ready(function() {
                             <option value="{[{ ruanganData.string }]}" ng-repeat = "ruanganData in ruanganListData">{[{ ruanganData.nama }]}</option>
                         </select>
                     </div>
+
+				    <label class="control-label col-lg-3" for="id_filter_bayaran">Filter Status Bayar</label>
+                    <div class="col-lg-3" style="padding: 0px">
+                        <select ng-model="filterBayar" id="id_filter_bayaran" class="form-control input-sm">
+                            <option value="" selected>Semua</option>
+                            <option value="{[{ bayarData.string }]}" ng-repeat = "bayarData in waktu_bayarListData">{[{ bayarData.string }]}</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -265,7 +269,7 @@ angular.element(document).ready(function() {
                </tr>
 
                <tr ng-repeat = "peminjamanData in peminjamanListData | orderBy : column : reverse | filter:{peminjam:filterPeminjam}
-               | filter:{ruangan:filterRuangan} | filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd))">
+               | filter:{ruangan:filterRuangan} | filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd)) | filter:{waktu_bayar:filterBayar}">
 
                    <td ng-click="go(peminjamanData.edit_link)">{[{ peminjamanData.no_laporan }]}</td>
                    <td>{[{ peminjamanData.peminjam }]}</td>

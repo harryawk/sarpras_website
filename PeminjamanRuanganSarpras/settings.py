@@ -128,3 +128,6 @@ USE_L10N = True
 STATIC_URL = '/static/'
 
 LOGIN_URL = '/login/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'photos')
+MEDIA_URL = '/img/'

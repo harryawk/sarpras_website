@@ -48,8 +48,12 @@ def formadd(request):
                 nama = new_nama,
 				harga = new_harga,
                 deskripsi = new_deskripsi,
-				tipe = new_tipe
+				tipe = new_tipe,
             )
+            if len(request.FILES) != 0:
+                new_ruangan.foto = request.FILES['foto']
+            else:
+                new_ruangan.foto = None
 
             # Berusaha menyimpan perubahan dan redirect ke Index jika berhasil
             try:
@@ -110,6 +114,9 @@ def formedit(request, ruangan_id = 0):
             selected_ruangan.harga = new_harga
             selected_ruangan.deskripsi = new_deskripsi
             selected_ruangan.tipe = new_tipe
+            if len(request.FILES) != 0:
+                selected_ruangan.foto.delete()
+                selected_ruangan.foto = request.FILES['foto']
 			
             # Berusaha menyimpan perubahan dan redirect ke Index jika berhasil
             try:
@@ -155,6 +162,8 @@ def formdelete(request, ruangan_id = 0):
 
             # Berusaha menyimpan perubahan dan redirect ke Index jika berhasil
             try:
+                if selected_ruangan.foto:
+                    selected_ruangan.foto.delete()
                 selected_ruangan.delete()
             except Exception as e:
                 message += ["Unhandled Exception", ]

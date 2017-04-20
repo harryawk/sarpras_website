@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import JsonResponse
+from django.db.models import Q
 
 from .models import Peminjaman
 from ruangan.models import Ruangan
@@ -377,5 +378,7 @@ def togglepembayaran(request, peminjaman_id = 0):
 
 
 def fetchrecord(request, start_year = 2017):
-    selected_peminjaman = Peminjaman.objects.filter(waktu_awal__year = start_year).values()
+    prev_year = int(start_year)-1
+    after_year = int(start_year)+1
+    selected_peminjaman = Peminjaman.objects.filter(Q(waktu_awal__year = prev_year) | Q(waktu_awal__year = start_year) | Q(waktu_awal__year = after_year)).values()
     return JsonResponse({'results': list(selected_peminjaman)})

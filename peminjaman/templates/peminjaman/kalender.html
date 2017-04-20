@@ -135,6 +135,7 @@
 			}
 
 			$scope.eventSource = events;
+			$scope.$broadcast('eventSourceChanged',$scope.eventSource);
 		}
 		$timeout(function() {
             angular.element(document.getElementById("calendarFilter")).triggerHandler('click');

@@ -38,6 +38,7 @@
 {% block body %}
 
 <script>
+
 var peminjamanList = angular.module('peminjamanList', []);
 peminjamanList.config(function($interpolateProvider) {
     $interpolateProvider.startSymbol('{[{');
@@ -46,6 +47,7 @@ peminjamanList.config(function($interpolateProvider) {
 
 peminjamanList.controller("peminjamanListController", function($scope, $http, $filter) {
 
+    $scope.total = 0;
 
     $scope.peminjamListData = [];
     {% for peminjam in all_peminjam %}
@@ -85,9 +87,12 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
 
     $scope.peminjamanListData = [];
 
+    $scope.total = 0;
+
     $scope.fetchPeminjaman = function(year) {
 
         $scope.peminjamanListData = [];
+      
         var url = "{% url 'peminjaman:jsonbase' %}" + year;
 
         $http.get(url).success(function(data, status, headers, config) {
@@ -201,6 +206,19 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
 		}
 	};
 
+})
+.filter('getTotal', function(){
+  return function(data, key) {
+    if (typeof(data) === 'isUndefined' || typeof(key) === 'isUndefined') {
+      return 0;
+    }
+    var sum = 0;
+    for (var i = data.length - 1; i >= 0; i--) {
+      sum += parseInt(data[i][key]);
+    }
+
+    return sum;
+  };
 });
 
 angular.element(document).ready(function() {
@@ -269,21 +287,24 @@ angular.element(document).ready(function() {
                </tr>
 
                <tr ng-repeat = "peminjamanData in peminjamanListData | orderBy : column : reverse | filter:{peminjam:filterPeminjam}
-               | filter:{ruangan:filterRuangan} | filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd)) | filter:{waktu_bayar:filterBayar}">
+               | filter:{ruangan:filterRuangan} | filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd)) | filter:{waktu_bayar:filterBayar}" >
 
-                   <td ng-click="go(peminjamanData.edit_link)">{[{ peminjamanData.no_laporan }]}</td>
-                   <td>{[{ peminjamanData.peminjam }]}</td>
-                   <td>{[{ peminjamanData.ruangan }]}</td>
+                <td ng-click="go(peminjamanData.edit_link)">{[{ peminjamanData.no_laporan }]}</td>
+                <td>{[{ peminjamanData.peminjam }]}</td>
+                <td>{[{ peminjamanData.ruangan }]}</td>
 
-                   <td>{[{ peminjamanData.waktu_awal | date:'dd MMM yyyy; HH:mm' : 'UTC' }]}</td>
-                   <td>{[{ peminjamanData.waktu_akhir | date:'dd MMM yyyy; HH:mm' : 'UTC' }]}</td>
+                <td>{[{ peminjamanData.waktu_awal | date:'dd MMM yyyy; HH:mm' : 'UTC' }]}</td>
+                <td>{[{ peminjamanData.waktu_akhir | date:'dd MMM yyyy; HH:mm' : 'UTC' }]}</td>
 
-                   <td>{[{ peminjamanData.jumlah_tagihan }]}</td>
-                   <td ng-click="togglePembayaran(peminjamanData)">{[{ peminjamanData.waktu_bayar | date:'dd MMM yyyy' }]}</td>
-                   <td>{[{ peminjamanData.deskripsi }]}</td>
+                <td>{[{ peminjamanData.jumlah_tagihan }]}</td>
+                <td ng-click="togglePembayaran(peminjamanData)">{[{ peminjamanData.waktu_bayar | date:'dd MMM yyyy' }]}</td>
+                <td>{[{ peminjamanData.deskripsi }]}</td>
 
                </tr>
             </table>
+            <h6 id="rekap">Nilai: {[{ peminjamanListData | orderBy : column : reverse | filter:{peminjam:filterPeminjam}
+               | filter:{ruangan:filterRuangan} | filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd)) | filter:{waktu_bayar:filterBayar} | getTotal: 'jumlah_tagihan'}]}</h6>
+            
         </div>
     </div>
 

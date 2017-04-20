@@ -27,4 +27,4 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^login/$', auth_views.login, kwargs={'template_name': 'login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout, kwargs={'next_page': '/login/'}, name='logout'),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

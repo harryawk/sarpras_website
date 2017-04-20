@@ -1,4 +1,18 @@
 from django.db import models
+from datetime import datetime
+import os
+
+def ruangan_foto_dir(instance, filename):
+    if instance.id is None:
+        try:
+            nextid = (Ruangan.objects.latest('id')).id + 1
+        except(Ruangan.DoesNotExist):
+            nextid = 0
+    else:
+        nextid = instance.id
+
+    fname, file_extension = os.path.splitext(filename)
+    return 'ruangan/{0}_{1}{2}'.format(nextid, instance.nama, file_extension)
 
 class Ruangan(models.Model):
 
@@ -15,6 +29,8 @@ class Ruangan(models.Model):
         (LAPANGAN, 'Lapangan'),
     )
     tipe = models.CharField(max_length=50, choices=PILIHAN_TIPE_RUANG, default=SELASAR)
+
+    foto = models.ImageField(upload_to=ruangan_foto_dir, max_length=500, blank=True)
 
 
     def __str__(self):

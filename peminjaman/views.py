@@ -116,6 +116,11 @@ def formadd(request):
                 if int(input_diskon) > 0:
                     input_deskripsi = input_deskripsi + '\nDiskon : ' + input_diskon + ' %'
                     new_peminjaman.deskripsi = input_deskripsi
+
+                    if len(request.FILES) != 0:
+                        new_peminjaman.foto = request.FILES['foto']
+                    else:
+                        new_peminjaman.foto = None
                 try:
                     new_peminjaman.save()
                     new_log = Log(peminjaman=new_peminjaman,
@@ -183,7 +188,6 @@ def formedit(request, peminjaman_id = 0):
         input_lunas = request.POST['lunas']
         if input_tanggal_lunas == None:
             input_tanggal_lunas = request.POST['tanggal_bayar']
-        print "input tanggal lunas : ", input_tanggal_lunas
         if input_lunas == 'already' and input_tanggal_lunas != '':
             waktu_bayar_t = datetime.strptime(input_tanggal_lunas, "%Y-%m-%d")
         elif input_lunas == 'already' and input_tanggal_lunas == '':
@@ -201,8 +205,6 @@ def formedit(request, peminjaman_id = 0):
 
         if waktu_bayar_t != None:
             input_tagihan = 0.00
-
-        print "waktu_bayar_t : ", waktu_bayar_t
 
         # Ambil data hasil input dari user
         input_peminjam = request.POST['peminjam']
@@ -283,6 +285,9 @@ def formedit(request, peminjaman_id = 0):
                     selected_peminjaman.deskripsi = input_deskripsi
                     selected_peminjaman.jumlah_tagihan = input_tagihan
                     selected_peminjaman.no_laporan = input_nomor_surat
+                    if len(request.FILES) != 0:
+                        selected_peminjaman.foto.delete()
+                        selected_peminjaman.foto = request.FILES['foto']
                     selected_peminjaman.save()
                     new_log = Log(peminjaman=selected_peminjaman,
                                   peminjaman_str=selected_peminjaman.__str__(),
@@ -328,6 +333,8 @@ def formdelete(request, peminjaman_id = 0, errormsg=''):
                       deskripsi="",
                       aksi="Hapus")
         new_log.save()
+        if object_peminjaman.foto:
+            object_peminjaman.foto.delete()
         object_peminjaman.delete()
     except Peminjaman.DoesNotExist:
         pass

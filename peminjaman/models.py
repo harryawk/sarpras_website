@@ -13,7 +13,7 @@ def peminjaman_foto_dir(instance, filename):
         nextid = instance.id
 
     fname, file_extension = os.path.splitext(filename)
-    return 'ruangan/{0}_{1}{2}'.format(nextid, instance.no_laporan, file_extension)
+    return 'peminjaman/{0}_{1}{2}'.format(nextid, instance.no_laporan, file_extension)
 
 class Peminjaman(models.Model):
     no_laporan = models.CharField(blank=True, max_length=500, db_index=True)

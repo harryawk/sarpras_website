@@ -213,7 +213,7 @@ angular.element(document).ready(function() {
     <div class="panel container-fluid">
         <legend>Daftar peminjaman</legend>
         <a href="{% url 'peminjaman:add' %}" style="text-decoration: none; color: black;"><button>ADD</button></a>
-        <div class="row">
+        <div class="row" style="margin-bottom: 10px;margin-top: 10px">
             <div class="col-lg-5" style="margin-bottom: 10px;width: 36.66666667%">
               <div class="form-group">
                   <label class="col-lg-1" for="id_time_start" style="text-align: left;padding-left: 0px">From</label>
@@ -227,7 +227,7 @@ angular.element(document).ready(function() {
                   </div>
               </div>
             </div>
-            <div class="col-lg-5" style="width: 46.66666667%">
+            <div class="col-lg-7" style="">
                 <div class="form-group">
                     <label class="control-label col-lg-3" for="id_filter_peminjam">Filter Peminjam</label>
                     <div class="col-lg-3" style="padding: 0px">
@@ -245,7 +245,7 @@ angular.element(document).ready(function() {
                         </select>
                     </div>
 
-				    <label class="control-label col-lg-3" for="id_filter_bayaran">Filter Status Bayar</label>
+				            <label class="control-label col-lg-3" for="id_filter_bayaran">Filter Status Bayar</label>
                     <div class="col-lg-3" style="padding: 0px">
                         <select ng-model="filterBayar" id="id_filter_bayaran" class="form-control input-sm">
                             <option value="" selected>Semua</option>

@@ -1,9 +1,11 @@
 from django.db import models
 from ruangan.models import Ruangan
 from peminjam.models import Peminjam
+from datetime import datetime
 import os
 
 def peminjaman_foto_dir(instance, filename):
+    now = datetime.datetime.now().date()
     if instance.id is None:
         try:
             nextid = (Ruangan.objects.latest('id')).id + 1
@@ -13,7 +15,7 @@ def peminjaman_foto_dir(instance, filename):
         nextid = instance.id
 
     fname, file_extension = os.path.splitext(filename)
-    return 'peminjaman/{0}_{1}{2}'.format(nextid, instance.no_laporan, file_extension)
+    return 'peminjaman/{0}/{1}_{2}{3}'.format(now.year, nextid, instance.no_laporan, file_extension)
 
 class Peminjaman(models.Model):
     no_laporan = models.CharField(blank=True, max_length=500, db_index=True)

@@ -141,6 +141,10 @@
 		};
 
 	});
+	$(document).ready(function () {
+        $(".nav li").removeClass("active");
+        $('#log').addClass('active');
+    });
 </script>
 
 <div ng-app="logList" ng-controller="logListController">

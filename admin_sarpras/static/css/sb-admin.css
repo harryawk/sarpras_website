@@ -19,7 +19,7 @@
     width: 100%;
     padding: 0;
     padding-top: 80px;
-    background-color: #eaeaea;
+    background-color: #f4f4f4;
 }
 
 @media(min-width:768px) {
@@ -34,7 +34,7 @@
 @media(min-width:768px) {
     .side-nav {
         position: fixed;
-        top: 50px;
+        top: 25px;
         left: 225px;
         width: 225px;
         margin-left: -225px;
@@ -46,7 +46,7 @@
         overflow-x: hidden;
         padding-bottom: 40px;
         padding-top: 40px;
-        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        box-shadow: 0 3px 6px rgba(0,0,0,0.07), 0 3px 6px rgba(0,0,0,0.1);
         z-index: -1;
     }
 

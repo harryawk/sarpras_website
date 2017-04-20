@@ -206,7 +206,10 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
 angular.element(document).ready(function() {
     angular.bootstrap(document.getElementById("AppPeminjamanList"), ["peminjamanList"])
 });
-
+$(document).ready(function () {
+    $(".nav li").removeClass("active");
+    $('#peminjaman').addClass('active');
+});
 </script>
 
 <div id="AppPeminjamanList" ng-controller="peminjamanListController">

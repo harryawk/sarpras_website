@@ -1,4 +1,8 @@
 <script>
+    $(document).ready(function () {
+        $(".nav li").removeClass("active");
+        $('#kalenderPeminjaman').addClass('active');
+    });
     angular.module('calendarDemoApp', ['ui.rCalendar']);
 
     angular.module('calendarDemoApp').config(function($interpolateProvider) {
@@ -147,6 +151,9 @@
 </script>
 
 <div class="content">
+    <ul class="breadcrumb" style="margin-bottom: 10px;">
+        <li class="active">Kalender Peminjaman</li>
+    </ul>
     <div class="panel container-fluid">
         <div id="AppKalender" ng-controller="CalendarDemoCtrl" ng-init="filterEvents()">
             <div class="btn-toolbar" style="margin-bottom: 10px">

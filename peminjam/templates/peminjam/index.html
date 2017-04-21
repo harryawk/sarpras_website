@@ -137,9 +137,6 @@
                             </tr> 
                         </thead>
                         <tbody>
-						<!--
-                           <tr ng-repeat = "peminjamData in peminjamListData | orderBy : order | filter:{id:filterId} | filter:{nama:filterNama}" ng-click="go(peminjamData.edit_link)">
-                        -->
 							<tr ng-repeat = "peminjamData in peminjamListData | orderBy : column : reverse | filter:{id:filterId} | filter:{nama:filterNama}" ng-click="go(peminjamData.edit_link)">
                         						
 							   <td>{[{ peminjamData.id }]}</td>

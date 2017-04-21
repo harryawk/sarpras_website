@@ -166,6 +166,7 @@
 							<th ng-click="sort('harga')" ng-class="sortClass('harga')">Price</th>
 							<th ng-click="sort('deskripsi')" ng-class="sortClass('deskripsi')">Description</th>
 							<th ng-click="sort('tipe')" ng-class="sortClass('tipe')">Type</th>
+						
 						</tr>
 					
 						<tr ng-repeat = "ruanganData in ruanganListData | orderBy : column : reverse | filter:{tipe:filterTipe} | filter:{nama:filterNama}" ng-click="go(ruanganData.edit_link)">
@@ -174,6 +175,7 @@
 							<td>{[{ ruanganData.harga }]}</td>
 							<td>{[{ ruanganData.deskripsi }]}</td>
 							<td>{[{ ruanganData.tipe }]}</td>
+						
 						</tr>
                     </table>
                 </div>

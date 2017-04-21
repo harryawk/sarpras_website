@@ -38,3 +38,12 @@
 	<li>If the value of Grant_priv or Super_priv is set to 'N', run this: <b>UPDATE mysql.user SET Grant_priv='Y', Super_priv='Y' WHERE User='admin_penjadwalan';</b></li>
 	<li>Quit from the MySQL prompt. Execute <b>python manage.py runserver</b> and everything should be OK</li>
 </ul>
+
+---
+
+**Prob:**
+After the image requirement (for logo, etc) was added, you might encounter this issue:
+<b>Cannot use ImageField because Pillow is not installed.</b>
+
+**Solution:**
+Just execute this command: pip install Pillow

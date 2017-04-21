@@ -69,6 +69,7 @@
 			harga:"{{ ruangan.harga }}",
 			deskripsi:"{{ ruangan.deskripsi }}",
 			tipe:"{{ ruangan.tipe }}",
+			foto:"{{ ruangan.foto }}",
 			edit_link: "{% url 'ruangan:edit' ruangan.id %}",
 			delete_link: "{% url 'ruangan:delete' ruangan.id %}"
 		});
@@ -128,6 +129,10 @@
 		}; 
  
 	});
+	$(document).ready(function () {
+        $(".nav li").removeClass("active");
+        $('#ruangan').addClass('active');
+    });
 </script>
 
 <div ng-app="ruanganList" ng-controller="ruanganListController">
@@ -166,21 +171,58 @@
 							<th ng-click="sort('harga')" ng-class="sortClass('harga')">Price</th>
 							<th ng-click="sort('deskripsi')" ng-class="sortClass('deskripsi')">Description</th>
 							<th ng-click="sort('tipe')" ng-class="sortClass('tipe')">Type</th>
-						
+							<th ng-click="sort('foto')" ng-class="sortClass('foto')">Foto</th>
 						</tr>
 					
-						<tr ng-repeat = "ruanganData in ruanganListData | orderBy : column : reverse | filter:{tipe:filterTipe} | filter:{nama:filterNama}" ng-click="go(ruanganData.edit_link)">
-                      
-							<td>{[{ ruanganData.nama }]}</td>
-							<td>{[{ ruanganData.harga }]}</td>
-							<td>{[{ ruanganData.deskripsi }]}</td>
-							<td>{[{ ruanganData.tipe }]}</td>
-						
+						<tr ng-repeat = "ruanganData in ruanganListData | orderBy : column : reverse | filter:{tipe:filterTipe} | filter:{nama:filterNama}" >
+
+							<td ng-click="go(ruanganData.edit_link)">{[{ ruanganData.nama }]}</td>
+							<td ng-click="go(ruanganData.edit_link)">{[{ ruanganData.harga }]}</td>
+							<td ng-click="go(ruanganData.edit_link)">{[{ ruanganData.deskripsi }]}</td>
+							<td ng-click="go(ruanganData.edit_link)">{[{ ruanganData.tipe }]}</td>
+                            <td data-toggle="modal" data-target="#modalFoto" data-img-source="/img/{[{ ruanganData.foto }]}" data-nama="{[{ ruanganData.nama }]}"><img src="/img/{[{ ruanganData.foto }]}" alt="{[{ ruanganData.nama }]}" height="100" width="100"></td>
+
 						</tr>
                     </table>
                 </div>
             </div>
         </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modalFoto" role="dialog" tabindex="-1">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" name="namaRuangan">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <img src="" alt="" name="fotoRuangan" style="display: block; min-width: 0%; max-width: 100%; height: auto; margin: auto;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+                </div>
+
+            </div>
+        </div>
+
+        <style>
+            @media screen and (min-width: 768px) { #modalFoto .modal-dialog { min-width: 25%; max-width: 75%; } }
+            @media screen and (max-width: 767px) { #modalFoto .modal-dialog { min-width: 80%; max-width: 100%; align-self: center; } }
+        </style>
+
+        <script type="text/javascript">
+            $('#modalFoto').on('show.bs.modal', function(e) {
+                var src = $(e.relatedTarget).data('img-source');
+                var name = $(e.relatedTarget).data('nama');
+                $(e.currentTarget).find('h4[name="namaRuangan"]').text(name);
+                $(e.currentTarget).find('img[name="fotoRuangan"]').attr('src', src);
+                $(e.currentTarget).find('img[name="fotoRuangan"]').attr('alt', name);
+            });
+        </script>
 
         <ul>
         {% for error_item in error %}

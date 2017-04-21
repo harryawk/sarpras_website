@@ -106,6 +106,10 @@
 		};
 
 	});
+	$(document).ready(function () {
+        $(".nav li").removeClass("active");
+        $('#peminjam').addClass('active');
+    });
 </script>
 
 <div ng-app="peminjamList" ng-controller="peminjamListController">

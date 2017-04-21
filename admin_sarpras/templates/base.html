@@ -1,5 +1,5 @@
 {% load staticfiles %}
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,6 +22,12 @@
     <script src="{% static 'api/rCalendar/js/calendar.js' %}"></script>
     <script src="{% static 'api/rCalendar/js/calendarCostum.js' %}"></script>
 
+    <!-- jQuery -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'js/bootstrap.min.js' %}" ></script>
+
     {% block head %}
     <title>SB Admin - Bootstrap Admin Template</title>
     {% endblock %}
@@ -41,24 +47,27 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Admin Ruangan</a>
+          <div>
+	          <img src='{% static "images/itb.png" %}' alt="Logo ITB" style="height: 50px; margin: 7px;float: left">
+	          <a class="navbar-brand" href="#">Admin Ruangan</a>
+          </div>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
           <ul class="nav navbar-nav side-nav">
-            <li>
-                <a href="{% url 'peminjaman:kalender' %}"><i>&#xe800;</i> Kalender Peminjaman</a>
+            <li id="kalenderPeminjaman">
+                <a href="{% url 'peminjaman:kalender' %}"><i>&#xe800;</i> Kalender</a>
             </li>
-            <li>
-                <a href="{% url 'peminjaman:index' %}"><i>&#xe802;</i> Tabel Peminjaman</a>
+            <li id="peminjaman">
+                <a href="{% url 'peminjaman:index' %}"><i>&#xe802;</i>Peminjaman</a>
             </li>
-            <li>
+            <li id="peminjam">
                 <a href="{% url 'peminjam:index' %}"><i>&#xe801;</i> Peminjam</a>
             </li>
-            <li>
+            <li id="ruangan">
                 <a href="{% url 'ruangan:index' %}"><i>&#xe804;</i> Ruangan</a>
             </li>
-            <li>
+            <li id="log">
                 <a href="{% url 'log:index' %}"><i>&#xe804;</i> Log</a>
             </li>
           </ul>
@@ -82,12 +91,6 @@
             {% endblock %}
         </div>
     </div>
-
-    <!-- jQuery -->
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="{% static 'js/bootstrap.min.js' %}" ></script>
 
 </body>
 

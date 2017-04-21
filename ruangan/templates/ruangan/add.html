@@ -44,6 +44,20 @@
 					</div>
 				</div>
 
+				<div class="form-group">
+					<label for="id_harga" class="control-label col-lg-2">Unggah foto ruangan jika ada</label>
+					<div class="col-lg-9">
+						<input type="file" name="foto" class="form-control">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="id_warna" class="control-label col-lg-2">Warna Ruangan</label>
+					<div class="col-lg-1">
+						<input name="warna" id="id_warna" type="color" class="form-control" value="{{ warna }}" />
+					</div>
+				</div>
+
 				<ul>
 				{% for error_item in error %}
 					<li>{{ error_item }}</li>

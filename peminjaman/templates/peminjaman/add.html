@@ -46,14 +46,16 @@
 
 	});
 </script>
-
+<ul class="breadcrumb" style="margin-bottom: 10px;">
+    <li>Peminjaman</li>
+    <li class="active">Tambah Peminjaman</li>
+</ul>
 <div class="panel container-fluid">
 <div class="row">
-    <div class="col-lg-10">
+    <div class="col-lg-10" style="margin-top: 20px;">
         <form enctype="multipart/form-data" action="{% url 'peminjaman:add' %}" method="post" id="peminjaman_form" novalidate ng-app="peminjamList" ng-controller="peminjamListController" class="form-horizontal">
             {% csrf_token %}
             <fieldset>
-                <legend>Formulir Penambahan Peminjaman</legend>
                 <div class="form-group">
                     <label for="id_nomor_surat" class="col-lg-2 control-label">Nomor Surat</label>
                     <div class="col-lg-9">
@@ -165,6 +167,13 @@
                         %
                     </div>
                 </div>
+
+                <div class="form-group">
+					<label for="id_harga" class="control-label col-lg-2">Unggah foto ruangan jika ada</label>
+					<div class="col-lg-9">
+						<input type="file" name="foto" class="form-control">
+					</div>
+				</div>
 
                 <ul>
                 {% for error_item in error %}

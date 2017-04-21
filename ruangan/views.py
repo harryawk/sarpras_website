@@ -23,6 +23,7 @@ def formadd(request):
     new_harga = request.POST.get("harga",0)
     new_deskripsi = request.POST.get("deskripsi", '')
     new_tipe = request.POST.get("tipe",'Selasar')
+    new_warna = request.POST.get('warna', '#000000')
 
     error = []
     message = []
@@ -48,8 +49,13 @@ def formadd(request):
                 nama = new_nama,
 				harga = new_harga,
                 deskripsi = new_deskripsi,
-				tipe = new_tipe
+				tipe = new_tipe,
+                warna = new_warna,
             )
+            if len(request.FILES) != 0:
+                new_ruangan.foto = request.FILES['foto']
+            else:
+                new_ruangan.foto = None
 
             # Berusaha menyimpan perubahan dan redirect ke Index jika berhasil
             try:
@@ -66,7 +72,8 @@ def formadd(request):
         'nama': new_nama,
 		'harga': new_harga,
         'deskripsi': new_deskripsi,
-		'tipe': new_tipe
+		'tipe': new_tipe,
+        'warna': new_warna,
     })
 
 
@@ -85,6 +92,7 @@ def formedit(request, ruangan_id = 0):
     new_harga = request.POST.get("harga", 0)
     new_deskripsi = request.POST.get("deskripsi", '')
     new_tipe = request.POST.get("tipe", 'Selasar')
+    new_warna = request.POST.get('warna', '#000000')
 
     error = []
     message = []
@@ -110,6 +118,10 @@ def formedit(request, ruangan_id = 0):
             selected_ruangan.harga = new_harga
             selected_ruangan.deskripsi = new_deskripsi
             selected_ruangan.tipe = new_tipe
+            selected_ruangan.warna = new_warna
+            if len(request.FILES) != 0:
+                selected_ruangan.foto.delete()
+                selected_ruangan.foto = request.FILES['foto']
 			
             # Berusaha menyimpan perubahan dan redirect ke Index jika berhasil
             try:
@@ -155,6 +167,8 @@ def formdelete(request, ruangan_id = 0):
 
             # Berusaha menyimpan perubahan dan redirect ke Index jika berhasil
             try:
+                if selected_ruangan.foto:
+                    selected_ruangan.foto.delete()
                 selected_ruangan.delete()
             except Exception as e:
                 message += ["Unhandled Exception", ]

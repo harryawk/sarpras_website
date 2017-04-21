@@ -8,7 +8,7 @@
 	table th:hover {
 		cursor: pointer;
 	}
-	
+
 	.arrow-down:after,.arrow-up:after {
 		content: ' ';
 		position: relative;
@@ -38,6 +38,7 @@
 {% block body %}
 
 <script>
+
 var peminjamanList = angular.module('peminjamanList', []);
 peminjamanList.config(function($interpolateProvider) {
     $interpolateProvider.startSymbol('{[{');
@@ -46,15 +47,7 @@ peminjamanList.config(function($interpolateProvider) {
 
 peminjamanList.controller("peminjamanListController", function($scope, $http, $filter) {
 
-    $scope.toTimestamp = function(date) {
-      return new Date(date).getTime()/1000;
-    };
-
-    $scope.inRange = function(start,end){
-      return function(item){
-        return item.unix_timestamp_awal > start && item.unix_timestamp_akhir < end;
-      }
-    }
+    $scope.total = 0;
 
     $scope.peminjamListData = [];
     {% for peminjam in all_peminjam %}
@@ -74,6 +67,11 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
     });
     {% endfor %}
 
+    $scope.waktu_bayarListData = [];
+    $scope.waktu_bayarListData = $scope.waktu_bayarListData.concat({
+        string: "Belum Lunas",
+    });
+
     $scope.go = function ( path ) {
         location.href = path;
     };
@@ -89,9 +87,12 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
 
     $scope.peminjamanListData = [];
 
+    $scope.total = 0;
+
     $scope.fetchPeminjaman = function(year) {
 
         $scope.peminjamanListData = [];
+      
         var url = "{% url 'peminjaman:jsonbase' %}" + year;
 
         $http.get(url).success(function(data, status, headers, config) {
@@ -169,19 +170,19 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
         }
     };
 	*/
-	
+
 	/* EXPERIMENTAL CODE (Add arrow-down and arrow-up) */
-	
+
 	// column state
 	$scope.column = 'no_laporan';
-	
+
 	// sort ordering (Ascending or Descending). True for Descending
-	$scope.reverse = false; 
-	
+	$scope.reverse = false;
+
 	$scope.sort = function ( coll ) {
-	
+
 		$scope.column = coll;
-	
+
 		if ($scope.reverse) {
 			$scope.reverse = false;
 			$scope.reverseclass = 'arrow-up';
@@ -189,14 +190,14 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
 			$scope.reverse = true;
 			$scope.reverseclass = 'arrow-down';
 		}
-		
+
 	};
-	
+
 	// change the arrow direction
 	$scope.sortClass = function(col) {
 		if ($scope.column == col) {
 			if ($scope.reverse) {
-				return 'arrow-down'; 
+				return 'arrow-down';
 			} else {
 				return 'arrow-up';
 			}
@@ -204,51 +205,84 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
 			return '';
 		}
 	};
-	
+
+})
+.filter('getTotal', function(){
+  return function(data, key) {
+    if (typeof(data) === 'isUndefined' || typeof(key) === 'isUndefined') {
+      return 0;
+    }
+    var sum = 0;
+    for (var i = data.length - 1; i >= 0; i--) {
+      sum += parseInt(data[i][key]);
+    }
+
+    return sum;
+  };
 });
 
 angular.element(document).ready(function() {
     angular.bootstrap(document.getElementById("AppPeminjamanList"), ["peminjamanList"])
 });
-
+$(document).ready(function () {
+    $(".nav li").removeClass("active");
+    $('#peminjaman').addClass('active');
+});
 </script>
 
 <div id="AppPeminjamanList" ng-controller="peminjamanListController">
+    <ul class="breadcrumb" style="margin-bottom: 10px;">
+        <li class="active">Peminjaman</li>
+    </ul>
     <div class="panel container-fluid">
-        <legend>Daftar peminjaman</legend>
         <a href="{% url 'peminjaman:add' %}" style="text-decoration: none; color: black;"><button>ADD</button></a>
-        <div class="row">
-            <div class="col-lg-5" style="margin-bottom: 10px;width: 36.66666667%">
-              <div class="form-group">
-                  <label class="col-lg-1" for="id_time_start" style="text-align: left;padding-left: 0px">From</label>
-                  <div class="col-lg-4" style="padding: 0px">
-                      <input type="date" ng-model="filterTimeStart" id="id_time_start" class="form-control input-sm"/>
+        <div class="container-fluid" style="margin-bottom: 10px;margin-top: 10px">
+            <div class="row well well-sm">
+                <div class="col-lg-5">
+                  <div class="form-group">
+                      <span><b>Filter Tanggal</b></span>
+                      <div class="input-group">
+                          <span class="input-group-addon">From</span>
+                          <input type="date" ng-model="filterTimeStart" id="id_time_start" class="form-control input-sm"/>
+                          <span class="input-group-addon">to</span>
+                          <input type="date" ng-model="filterTimeEnd" id="id_time_end" class="form-control input-sm"/>
+                      </div>
                   </div>
-
-                  <label class="control-label col-lg-1" for="id_time_end" style="text-align: center">to</label>
-                  <div class="col-lg-4" style="padding: 0px">
-                      <input type="date" ng-model="filterTimeEnd" id="id_time_end" class="form-control input-sm"/>
-                  </div>
-              </div>
-            </div>
-            <div class="col-lg-5" style="width: 46.66666667%">
-                <div class="form-group">
-                    <label class="control-label col-lg-3" for="id_filter_peminjam">Filter Peminjam</label>
-                    <div class="col-lg-3" style="padding: 0px">
-                        <select ng-model="filterPeminjam" id="id_filter_peminjam" class="form-control input-sm">
-                            <option value="" selected>Semua</option>
-                            <option value="{[{ peminjamData.string }]}" ng-repeat = "peminjamData in peminjamListData">{[{ peminjamData.nama }]}</option>
-                        </select>
-                    </div>
-
-                    <label class="control-label col-lg-3" for="id_filter_ruangan">Filter Ruangan</label>
-                    <div class="col-lg-3" style="padding: 0px">
-                        <select ng-model="filterRuangan" id="id_filter_ruangan" class="form-control input-sm">
-                            <option value="" selected>Semua</option>
-                            <option value="{[{ ruanganData.string }]}" ng-repeat = "ruanganData in ruanganListData">{[{ ruanganData.nama }]}</option>
-                        </select>
+                </div>
+                <div class="col-lg-7">
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <span><b>Filter Peminjam</b></span>
+                            <select ng-model="filterPeminjam" class="form-control input-sm">
+                                <option value="" selected>Semua</option>
+                                <option value="{[{ peminjamData.string }]}" ng-repeat = "peminjamData in peminjamListData">{[{ peminjamData.nama }]}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <span><b>Filter Ruangan</b></span>
+                            <select ng-model="filterPeminjam" class="form-control input-sm">
+                                <option value="" selected>Semua</option>
+                                <option value="{[{ ruanganData.string }]}" ng-repeat = "ruanganData in ruanganListData">{[{ ruanganData.nama }]}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <span><b>Filter Status Bayar</b></span>
+                            <select ng-model="filterPeminjam" class="form-control input-sm">
+                                <option value="" selected>Semua</option>
+                                <option value="{[{ bayarData.string }]}" ng-repeat = "bayarData in waktu_bayarListData">{[{ bayarData.string }]}</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
+            </div>
+            <div class="col-lg-8"></div>
+            <div class="col-lg-4">
+            <h6 class="rekap">Total tagihan yang ditampilkan: {[{ peminjamanListData | orderBy : column : reverse | filter:{peminjam:filterPeminjam}
+               | filter:{ruangan:filterRuangan} | filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd)) | filter:{waktu_bayar:filterBayar} | getTotal: 'jumlah_tagihan'}]}</h6>
+            </div>
+            <div class="col-lg-8"></div>
+            <div class="col-lg-4">
+            <h6 class="rekap">Total tagihan belum lunas: {[{ peminjamanListData | filter:{waktu_bayar:"Belum Lunas"} | getTotal: 'jumlah_tagihan'}]}</h6>
             </div>
         </div>
         <div class="table-responsive">
@@ -265,21 +299,21 @@ angular.element(document).ready(function() {
                </tr>
 
                <tr ng-repeat = "peminjamanData in peminjamanListData | orderBy : column : reverse | filter:{peminjam:filterPeminjam}
-               | filter:{ruangan:filterRuangan} | filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd))">
+               | filter:{ruangan:filterRuangan} | filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd)) | filter:{waktu_bayar:filterBayar}" >
 
-                   <td ng-click="go(peminjamanData.edit_link)">{[{ peminjamanData.no_laporan }]}</td>
-                   <td>{[{ peminjamanData.peminjam }]}</td>
-                   <td>{[{ peminjamanData.ruangan }]}</td>
+                <td ng-click="go(peminjamanData.edit_link)">{[{ peminjamanData.no_laporan }]}</td>
+                <td>{[{ peminjamanData.peminjam }]}</td>
+                <td>{[{ peminjamanData.ruangan }]}</td>
 
-                   <td>{[{ peminjamanData.waktu_awal | date:'dd MMM yyyy; HH:mm' : 'UTC' }]}</td>
-                   <td>{[{ peminjamanData.waktu_akhir | date:'dd MMM yyyy; HH:mm' : 'UTC' }]}</td>
+                <td>{[{ peminjamanData.waktu_awal | date:'dd MMM yyyy; HH:mm' : 'UTC' }]}</td>
+                <td>{[{ peminjamanData.waktu_akhir | date:'dd MMM yyyy; HH:mm' : 'UTC' }]}</td>
 
-                   <td>{[{ peminjamanData.jumlah_tagihan }]}</td>
-                   <td ng-click="togglePembayaran(peminjamanData)">{[{ peminjamanData.waktu_bayar | date:'dd MMM yyyy' }]}</td>
-                   <td>{[{ peminjamanData.deskripsi }]}</td>
+                <td>{[{ peminjamanData.jumlah_tagihan }]}</td>
+                <td ng-click="togglePembayaran(peminjamanData)">{[{ peminjamanData.waktu_bayar | date:'dd MMM yyyy' }]}</td>
+                <td>{[{ peminjamanData.deskripsi }]}</td>
 
                </tr>
-            </table>
+            </table>                        
         </div>
     </div>
 

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import JsonResponse
+from django.db.models import Q
 
 from .models import Peminjaman
 from ruangan.models import Ruangan
@@ -59,7 +60,7 @@ def formadd(request):
         input_tagihan = float(input_tagihan)
         decimal_diskon = float(input_diskon) / float(100)
         input_tagihan = (1-decimal_diskon) * input_tagihan
-        if input_tagihan < 0:
+        if input_tagihan <= 0:
             input_tagihan = 0
             waktu_bayar_t = date.today()
         else:
@@ -116,6 +117,11 @@ def formadd(request):
                 if int(input_diskon) > 0:
                     input_deskripsi = input_deskripsi + '\nDiskon : ' + input_diskon + ' %'
                     new_peminjaman.deskripsi = input_deskripsi
+
+                    if len(request.FILES) != 0:
+                        new_peminjaman.foto = request.FILES['foto']
+                    else:
+                        new_peminjaman.foto = None
                 try:
                     new_peminjaman.save()
                     new_log = Log(peminjaman=new_peminjaman,
@@ -169,15 +175,37 @@ def formedit(request, peminjaman_id = 0):
     input_deskripsi = request.POST.get('deskripsi', selected_peminjaman.deskripsi)
     input_tagihan = request.POST.get('harga', selected_peminjaman.jumlah_tagihan)
     input_nomor_surat = request.POST.get('nomor_surat', selected_peminjaman.no_laporan)
+    input_tanggal_lunas = request.POST.get('tanggal_bayar', selected_peminjaman.waktu_bayar)
+    if input_tagihan <= 0:
+        input_lunas = 'already'
+    else:
+        input_lunas = ''
 
     errormsg = []
     messages = []
 
     if request.method == 'POST':
 
+        input_lunas = request.POST['lunas']
+        if input_tanggal_lunas == None:
+            input_tanggal_lunas = request.POST['tanggal_bayar']
+        if input_lunas == 'already' and input_tanggal_lunas != '':
+            waktu_bayar_t = datetime.strptime(input_tanggal_lunas, "%Y-%m-%d")
+        elif input_lunas == 'already' and input_tanggal_lunas == '':
+            waktu_bayar_t = date.today()
+        else:
+            waktu_bayar_t = None
+
         # Ambil data pascaedit
         input_tagihan = request.POST['harga']
         input_tagihan = float(input_tagihan)
+        if input_tagihan <= 0 and waktu_bayar_t == None:
+            waktu_bayar_t = date.today()
+        # else:
+        #     waktu_bayar_t = None
+
+        if waktu_bayar_t != None:
+            input_tagihan = 0.00
 
         # Ambil data hasil input dari user
         input_peminjam = request.POST['peminjam']
@@ -211,6 +239,7 @@ def formedit(request, peminjaman_id = 0):
                                         ruangan=obj_ruangan,
                                         waktu_awal=tanggal_mulai_pinjam,
                                         waktu_akhir=tanggal_selesai_pinjam,
+                                        waktu_bayar=waktu_bayar_t,
                                         deskripsi=input_deskripsi,
                                         jumlah_tagihan=input_tagihan,
                                         no_laporan=input_nomor_surat)
@@ -253,9 +282,13 @@ def formedit(request, peminjaman_id = 0):
                     selected_peminjaman.ruangan = obj_ruangan
                     selected_peminjaman.waktu_awal = tanggal_mulai_pinjam
                     selected_peminjaman.waktu_akhir = tanggal_selesai_pinjam
+                    selected_peminjaman.waktu_bayar = waktu_bayar_t
                     selected_peminjaman.deskripsi = input_deskripsi
                     selected_peminjaman.jumlah_tagihan = input_tagihan
                     selected_peminjaman.no_laporan = input_nomor_surat
+                    if len(request.FILES) != 0:
+                        selected_peminjaman.foto.delete()
+                        selected_peminjaman.foto = request.FILES['foto']
                     selected_peminjaman.save()
                     new_log = Log(peminjaman=selected_peminjaman,
                                   peminjaman_str=selected_peminjaman.__str__(),
@@ -286,6 +319,7 @@ def formedit(request, peminjaman_id = 0):
         'pukul_akhir': pukul_akhir,
         'harga': input_tagihan.__str__(),
         'nomor_surat': input_nomor_surat,
+        'input_lunas': input_lunas,
     })
 
 
@@ -300,6 +334,8 @@ def formdelete(request, peminjaman_id = 0, errormsg=''):
                       deskripsi="",
                       aksi="Hapus")
         new_log.save()
+        if object_peminjaman.foto:
+            object_peminjaman.foto.delete()
         object_peminjaman.delete()
     except Peminjaman.DoesNotExist:
         pass
@@ -349,5 +385,7 @@ def togglepembayaran(request, peminjaman_id = 0):
 
 
 def fetchrecord(request, start_year = 2017):
-    selected_peminjaman = Peminjaman.objects.filter(waktu_awal__year = start_year).values()
+    prev_year = int(start_year)-1
+    after_year = int(start_year)+1
+    selected_peminjaman = Peminjaman.objects.filter(Q(waktu_awal__year = prev_year) | Q(waktu_awal__year = start_year) | Q(waktu_awal__year = after_year)).values()
     return JsonResponse({'results': list(selected_peminjaman)})

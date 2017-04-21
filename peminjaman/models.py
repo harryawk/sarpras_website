@@ -1,7 +1,21 @@
 from django.db import models
 from ruangan.models import Ruangan
 from peminjam.models import Peminjam
+from datetime import datetime
+import os
 
+def peminjaman_foto_dir(instance, filename):
+    now = datetime.datetime.now().date()
+    if instance.id is None:
+        try:
+            nextid = (Ruangan.objects.latest('id')).id + 1
+        except(Ruangan.DoesNotExist):
+            nextid = 0
+    else:
+        nextid = instance.id
+
+    fname, file_extension = os.path.splitext(filename)
+    return 'peminjaman/{0}/{1}_{2}{3}'.format(now.year, nextid, instance.no_laporan, file_extension)
 
 class Peminjaman(models.Model):
     no_laporan = models.CharField(blank=True, max_length=500, db_index=True)
@@ -16,6 +30,8 @@ class Peminjaman(models.Model):
     waktu_bayar = models.DateField(blank=True, null=True) # Apabila bernilai null maka berarti belum dibayar
 
     deskripsi = models.CharField(max_length=1000, blank=True)
+
+    foto = models.ImageField(upload_to=peminjaman_foto_dir, max_length=500, blank=True)
 
     def __str__(self):
         return (self.peminjam.__str__() +' : '+ self.ruangan.__str__() +', '+ self.waktu_awal.__str__() +' -> '+ self.waktu_akhir.__str__())

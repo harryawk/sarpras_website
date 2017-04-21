@@ -6,7 +6,10 @@ from django.contrib.auth.decorators import login_required
 # Log index view
 @login_required
 def index(request):
-    return render(request, 'log/index.html', {})
+    all_log = Log.objects.all();
+    return render(request, 'log/index.html', {
+        'all_log': all_log,
+    })
 
 @login_required
 def fetchrecord(request, start_year = 2017):

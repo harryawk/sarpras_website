@@ -277,6 +277,15 @@ $(document).ready(function () {
                     </div>
                 </div>
             </div>
+            <div class="col-lg-8"></div>
+            <div class="col-lg-4">
+            <h6 id="rekap">Total tagihan yang ditampilkan: {[{ peminjamanListData | orderBy : column : reverse | filter:{peminjam:filterPeminjam}
+               | filter:{ruangan:filterRuangan} | filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd)) | filter:{waktu_bayar:filterBayar} | getTotal: 'jumlah_tagihan'}]}</h6>
+            </div>
+            <div class="col-lg-8"></div>
+            <div class="col-lg-4">
+            <h6 id="rekap">Total tagihan belum lunas: {[{ peminjamanListData | filter:{waktu_bayar:"Belum Lunas"} | getTotal: 'jumlah_tagihan'}]}</h6>
+            </div>
         </div>
         <div class="table-responsive">
             <table class="table table-striped table-hover table-bordered">
@@ -306,10 +315,7 @@ $(document).ready(function () {
                 <td>{[{ peminjamanData.deskripsi }]}</td>
 
                </tr>
-            </table>
-            <h6 id="rekap">Nilai: {[{ peminjamanListData | orderBy : column : reverse | filter:{peminjam:filterPeminjam}
-               | filter:{ruangan:filterRuangan} | filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd)) | filter:{waktu_bayar:filterBayar} | getTotal: 'jumlah_tagihan'}]}</h6>
-            
+            </table>                        
         </div>
     </div>
 

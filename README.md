@@ -47,3 +47,19 @@ After the image requirement (for logo, etc) was added, you might encounter this 
 
 **Solution:**
 Just execute this command: pip install Pillow
+
+---
+
+**Prob:**
+There were some additions for several models, such as the new fields called 'foto' and 'warna'.
+When you're migrating, this problem might be encountered:
+<b>django.db.utils.IntegrityError: (1062, "Duplicate entry '#FFFFFF' for key 'ruangan_ruangan_warna_529d0479_uniq'")</b>
+
+**Solution:**
+<ul>
+<li>It is because you already have existing fields in the table 'ruangan'</li>
+<li>Django asked you to provide default value for those existing fields, and in this case the default value is '#FFFFFF'. You can see this value in file with the name similar with '0004_ruangan_warna.py'</li>
+<li>Delete those existing elements</li>
+<li>Run <b>python manage.py migrate</b> and the process should be OK</li>
+</ul>
+

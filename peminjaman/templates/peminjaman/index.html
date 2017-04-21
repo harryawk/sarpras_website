@@ -231,8 +231,10 @@ $(document).ready(function () {
 </script>
 
 <div id="AppPeminjamanList" ng-controller="peminjamanListController">
+    <ul class="breadcrumb" style="margin-bottom: 10px;">
+        <li class="active">Peminjaman</li>
+    </ul>
     <div class="panel container-fluid">
-        <legend>Daftar peminjaman</legend>
         <a href="{% url 'peminjaman:add' %}" style="text-decoration: none; color: black;"><button>ADD</button></a>
         <div class="row" style="margin-bottom: 10px;margin-top: 10px">
             <div class="col-lg-5" style="margin-bottom: 10px;width: 36.66666667%">

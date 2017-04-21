@@ -85,7 +85,20 @@ i {
 .panel.container-fluid {
     padding: 10px 15px;
 }
+.breadcrumb li {
+    font-size: 120%;
+}
 
-.table>tbody>tr>td {
-    padding: 8px 0;
+th.arrow-up:after {
+    bottom : 10px;
+    left : 5px;
+    border: 6px solid transparent;
+    border-bottom-color: #bdbdbd;
+}
+
+th.arrow-down:after {
+    top : 12px;
+    left : 5px;
+    border: 6px solid transparent;
+    border-top-color: #bdbdbd;
 }

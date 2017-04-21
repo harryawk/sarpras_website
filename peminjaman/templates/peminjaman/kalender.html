@@ -150,41 +150,47 @@
   	});
 </script>
 
+<style>
+    .table>tbody>tr>td {
+        padding: 8px 0;
+    }
+</style>
+
 <div class="content">
     <ul class="breadcrumb" style="margin-bottom: 10px;">
         <li class="active">Kalender Peminjaman</li>
     </ul>
     <div class="panel container-fluid">
         <div id="AppKalender" ng-controller="CalendarDemoCtrl" ng-init="filterEvents()">
-            <div class="btn-toolbar" style="margin-bottom: 10px">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default" ng-disabled="isToday()"
-                            ng-click="today()">
-                        Today
-                    </button>
+            <div class="row">
+                <div class="col-md-3 col-sm-4 col-xs-5">
+                    <div class="btn-toolbar" style="margin-bottom: 10px">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-sm" ng-disabled="isToday()" ng-click="today()">
+                                Today
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
+
+                <!-- FILTERER -->
+                <div class="col-md-offset-6 col-md-3 col-sm-offset-3 col-sm-5 col-xs-7">
+                    <div class="btn-toolbar" style="margin-bottom: 10px">
+                        <div class="btn-group">
+                            <div class="input-group">
+                                <input type="text" id="txtFilterRuangan" placeholder="Filter by ruangan" ng-model="filterRuangan" class="form-control input-sm"/>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default btn-sm" ng-click="filterEvents()" id="calendarFilter">
+                                        Filter
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END OF FILTERER -->
             </div>
-			
-			<!-- FILTERER -->
-			<div class="btn-toolbar" style="margin-bottom: 10px">
-            
-				<div class="btn-group">
-					<input type="text" id="txtFilterRuangan" placeholder="Filter by ruangan" ng-model="filterRuangan" />
-                    
-					<!--
-					<input type="text" id="txtFilterPeminjam" placeholder="Filter by peminjam" ng-model="filterPeminjam" />
-                    
-					<input type="text" id="txtFilterRuangan" placeholder="Filter by ruangan" ng-model="TEST" />
-                    -->
-					
-					<button type="button" class="btn btn-default" ng-click="filterEvents()" id="calendarFilter">
-                        Filter
-                    </button>
-                </div>
-            	
-			</div>
-			<!-- END OF FILTERER -->
-			
             <div class="well well-sm">
                 <calendar ng-model="currentDate" calendar-mode="mode" event-source="eventSource"
                       range-changed="reloadSource(startTime, endTime)"

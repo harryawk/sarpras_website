@@ -102,3 +102,8 @@ th.arrow-down:after {
     border: 6px solid transparent;
     border-top-color: #bdbdbd;
 }
+
+span.input-group-addon {
+    padding-left: 0px;
+    padding-right: 3px;
+}

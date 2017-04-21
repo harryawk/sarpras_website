@@ -236,55 +236,53 @@ $(document).ready(function () {
     </ul>
     <div class="panel container-fluid">
         <a href="{% url 'peminjaman:add' %}" style="text-decoration: none; color: black;"><button>ADD</button></a>
-        <div class="row" style="margin-bottom: 10px;margin-top: 10px">
-            <div class="col-lg-5" style="margin-bottom: 10px;width: 36.66666667%">
-              <div class="form-group">
-                  <label class="col-lg-1" for="id_time_start" style="text-align: left;padding-left: 0px">From</label>
-                  <div class="col-lg-4" style="padding: 0px">
-                      <input type="date" ng-model="filterTimeStart" id="id_time_start" class="form-control input-sm"/>
+        <div class="container-fluid" style="margin-bottom: 10px;margin-top: 10px">
+            <div class="row well well-sm">
+                <div class="col-lg-5">
+                  <div class="form-group">
+                      <span><b>Filter Tanggal</b></span>
+                      <div class="input-group">
+                          <span class="input-group-addon">From</span>
+                          <input type="date" ng-model="filterTimeStart" id="id_time_start" class="form-control input-sm"/>
+                          <span class="input-group-addon">to</span>
+                          <input type="date" ng-model="filterTimeEnd" id="id_time_end" class="form-control input-sm"/>
+                      </div>
                   </div>
-
-                  <label class="control-label col-lg-1" for="id_time_end" style="text-align: center">to</label>
-                  <div class="col-lg-4" style="padding: 0px">
-                      <input type="date" ng-model="filterTimeEnd" id="id_time_end" class="form-control input-sm"/>
-                  </div>
-              </div>
-            </div>
-            <div class="col-lg-7" style="">
-                <div class="form-group">
-                    <label class="control-label col-lg-3" for="id_filter_peminjam">Filter Peminjam</label>
-                    <div class="col-lg-3" style="padding: 0px">
-                        <select ng-model="filterPeminjam" id="id_filter_peminjam" class="form-control input-sm">
-                            <option value="" selected>Semua</option>
-                            <option value="{[{ peminjamData.string }]}" ng-repeat = "peminjamData in peminjamListData">{[{ peminjamData.nama }]}</option>
-                        </select>
-                    </div>
-
-                    <label class="control-label col-lg-3" for="id_filter_ruangan">Filter Ruangan</label>
-                    <div class="col-lg-3" style="padding: 0px">
-                        <select ng-model="filterRuangan" id="id_filter_ruangan" class="form-control input-sm">
-                            <option value="" selected>Semua</option>
-                            <option value="{[{ ruanganData.string }]}" ng-repeat = "ruanganData in ruanganListData">{[{ ruanganData.nama }]}</option>
-                        </select>
-                    </div>
-
-				            <label class="control-label col-lg-3" for="id_filter_bayaran">Filter Status Bayar</label>
-                    <div class="col-lg-3" style="padding: 0px">
-                        <select ng-model="filterBayar" id="id_filter_bayaran" class="form-control input-sm">
-                            <option value="" selected>Semua</option>
-                            <option value="{[{ bayarData.string }]}" ng-repeat = "bayarData in waktu_bayarListData">{[{ bayarData.string }]}</option>
-                        </select>
+                </div>
+                <div class="col-lg-7">
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <span><b>Filter Peminjam</b></span>
+                            <select ng-model="filterPeminjam" class="form-control input-sm">
+                                <option value="" selected>Semua</option>
+                                <option value="{[{ peminjamData.string }]}" ng-repeat = "peminjamData in peminjamListData">{[{ peminjamData.nama }]}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <span><b>Filter Ruangan</b></span>
+                            <select ng-model="filterPeminjam" class="form-control input-sm">
+                                <option value="" selected>Semua</option>
+                                <option value="{[{ ruanganData.string }]}" ng-repeat = "ruanganData in ruanganListData">{[{ ruanganData.nama }]}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <span><b>Filter Status Bayar</b></span>
+                            <select ng-model="filterPeminjam" class="form-control input-sm">
+                                <option value="" selected>Semua</option>
+                                <option value="{[{ bayarData.string }]}" ng-repeat = "bayarData in waktu_bayarListData">{[{ bayarData.string }]}</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-8"></div>
             <div class="col-lg-4">
-            <h6 id="rekap">Total tagihan yang ditampilkan: {[{ peminjamanListData | orderBy : column : reverse | filter:{peminjam:filterPeminjam}
+            <h6 class="rekap">Total tagihan yang ditampilkan: {[{ peminjamanListData | orderBy : column : reverse | filter:{peminjam:filterPeminjam}
                | filter:{ruangan:filterRuangan} | filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd)) | filter:{waktu_bayar:filterBayar} | getTotal: 'jumlah_tagihan'}]}</h6>
             </div>
             <div class="col-lg-8"></div>
             <div class="col-lg-4">
-            <h6 id="rekap">Total tagihan belum lunas: {[{ peminjamanListData | filter:{waktu_bayar:"Belum Lunas"} | getTotal: 'jumlah_tagihan'}]}</h6>
+            <h6 class="rekap">Total tagihan belum lunas: {[{ peminjamanListData | filter:{waktu_bayar:"Belum Lunas"} | getTotal: 'jumlah_tagihan'}]}</h6>
             </div>
         </div>
         <div class="table-responsive">

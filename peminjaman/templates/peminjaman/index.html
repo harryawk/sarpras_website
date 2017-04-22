@@ -37,9 +37,10 @@
 
 {% block body %}
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.6/angular-filter.js"></script>
 <script>
 
-var peminjamanList = angular.module('peminjamanList', []);
+var peminjamanList = angular.module('peminjamanList', ['angular.filter']);
 peminjamanList.config(function($interpolateProvider) {
     $interpolateProvider.startSymbol('{[{');
     $interpolateProvider.endSymbol('}]}');
@@ -64,6 +65,7 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
       id: {{ ruangan.id }},
       string: "{{ ruangan }}",
       nama:"{{ ruangan.nama }}",
+      tipe:"{{ ruangan.tipe }}",
     });
     {% endfor %}
 
@@ -235,7 +237,7 @@ $(document).ready(function () {
         <li class="active">Peminjaman</li>
     </ul>
     <div class="panel container-fluid">
-        <a href="{% url 'peminjaman:add' %}" style="text-decoration: none; color: black;"><button>ADD</button></a>
+        <a href="{% url 'peminjaman:add' %}" style="text-decoration: none; color: black;"><button class="btn btn-primary">ADD</button></a>
         <div class="container-fluid" style="margin-bottom: 10px;margin-top: 10px">
             <div class="row well well-sm">
                 <div class="col-lg-5">
@@ -251,21 +253,28 @@ $(document).ready(function () {
                 </div>
                 <div class="col-lg-7">
                     <div class="row">
-                        <div class="form-group col-lg-4">
+                        <div class="form-group col-lg-3">
                             <span><b>Filter Peminjam</b></span>
                             <select ng-model="filterPeminjam" class="form-control input-sm">
                                 <option value="" selected>Semua</option>
                                 <option value="{[{ peminjamData.string }]}" ng-repeat = "peminjamData in peminjamListData">{[{ peminjamData.nama }]}</option>
                             </select>
                         </div>
-                        <div class="form-group col-lg-4">
-                            <span><b>Filter Ruangan</b></span>
-                            <select ng-model="filterPeminjam" class="form-control input-sm">
+                        <div class="form-group col-lg-3">
+                            <span><b>Filter Tipe Ruangan</b></span>
+                            <select ng-model="filterTipe" class="form-control input-sm">
                                 <option value="" selected>Semua</option>
-                                <option value="{[{ ruanganData.string }]}" ng-repeat = "ruanganData in ruanganListData">{[{ ruanganData.nama }]}</option>
+                                <option value="{[{ ruanganData.string }]}" ng-repeat = "ruanganData in ruanganListData | unique: 'tipe' ">{[{ ruanganData.tipe }]}</option>
                             </select>
                         </div>
-                        <div class="form-group col-lg-4">
+                        <div class="form-group col-lg-3">
+                            <span><b>Filter Ruangan</b></span>
+                            <select ng-model="filterRuangan" class="form-control input-sm">
+                                <option value="" selected>Semua</option>
+                                <option value="{[{ ruanganData.string }]}" ng-repeat = "ruanganData in ruanganListData | filter:filterTipe ">{[{ ruanganData.nama }]}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-3">
                             <span><b>Filter Status Bayar</b></span>
                             <select ng-model="filterPeminjam" class="form-control input-sm">
                                 <option value="" selected>Semua</option>
@@ -277,7 +286,7 @@ $(document).ready(function () {
             </div>
             <div class="col-lg-8"></div>
             <div class="col-lg-4">
-            <h6 class="rekap">Total tagihan yang ditampilkan: {[{ peminjamanListData | orderBy : column : reverse | filter:{peminjam:filterPeminjam}
+            <h6 class="rekap">Total tagihan yang ditampilkan: {[{ peminjamanListData | orderBy : column : reverse | filter:filterTipe | filter:{peminjam:filterPeminjam}
                | filter:{ruangan:filterRuangan} | filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd)) | filter:{waktu_bayar:filterBayar} | getTotal: 'jumlah_tagihan'}]}</h6>
             </div>
             <div class="col-lg-8"></div>
@@ -298,15 +307,15 @@ $(document).ready(function () {
                    <th ng-click="sort('deskripsi')" ng-class="sortClass('deskripsi')">Description</th>
                </tr>
 
-               <tr ng-repeat = "peminjamanData in peminjamanListData | orderBy : column : reverse | filter:{peminjam:filterPeminjam}
+               <tr ng-repeat = "peminjamanData in peminjamanListData | orderBy : column : reverse | filter:filterTipe | filter:{peminjam:filterPeminjam}
                | filter:{ruangan:filterRuangan} | filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd)) | filter:{waktu_bayar:filterBayar}" >
 
                 <td ng-click="go(peminjamanData.edit_link)">{[{ peminjamanData.no_laporan }]}</td>
                 <td>{[{ peminjamanData.peminjam }]}</td>
                 <td>{[{ peminjamanData.ruangan }]}</td>
 
-                <td>{[{ peminjamanData.waktu_awal | date:'dd MMM yyyy; HH:mm' : 'UTC' }]}</td>
-                <td>{[{ peminjamanData.waktu_akhir | date:'dd MMM yyyy; HH:mm' : 'UTC' }]}</td>
+                <td>{[{ peminjamanData.waktu_awal | date:'dd MMM yyyy; HH:mm' : 'UTC+0700' }]}</td>
+                <td>{[{ peminjamanData.waktu_akhir | date:'dd MMM yyyy; HH:mm' : 'UTC+0700' }]}</td>
 
                 <td>{[{ peminjamanData.jumlah_tagihan }]}</td>
                 <td ng-click="togglePembayaran(peminjamanData)">{[{ peminjamanData.waktu_bayar | date:'dd MMM yyyy' }]}</td>
@@ -328,5 +337,16 @@ $(document).ready(function () {
 </ul>
 
 </div>
+
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+<script type="text/javascript">
+   $(function() {
+       $("#id_time_start").datepicker({ dateFormat: "yy-mm-dd" }).val();
+       $("#id_time_end").datepicker({ dateFormat: "yy-mm-dd" }).val();
+   });
+</script>
 
 {% endblock %}

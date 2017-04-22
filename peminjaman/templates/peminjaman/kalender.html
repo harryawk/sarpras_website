@@ -86,33 +86,54 @@
             var events = [];
             $http.get($scope.peminjamanJson + year).success(function(data, status, headers, config) {
 				// EXPERIMENT CODE
+                console.log("SUCCESS");
 				$scope.peminjamanList_GLOBAL = data.results;
 				// END OF EXPERIMENT CODE
             }).error(function(data, status, headers, config) {
                 $scope.peminjamanList = "ERROR";
+                $scope.peminjamanList_GLOBAL = "ERROR";
             });
             return events;
         };
 
 		/* Filtering */		
-		$scope.filterRuangan = "";
+		$scope.filterRuangan = "Semua";
 		var date = new Date();
 		var currentYear = date.getFullYear();
 		fetchPeminjaman(currentYear);
-		$scope.filterEvents = function() {
-		
-			var events = [];
-			
+
+		$scope.filterEvents = function(e) {
+            var events = [];
+			if ($scope.filterRuangan != "") {
+                console.log("Filter ruangan : " + $scope.filterRuangan);
+            } else {
+			    console.log("FILTER NOTHING");
+            }
+
+            if (e == "refresh") {
+                $('#filterQuery').val('Semua');
+            }
+
+            if (e != "") {
+                console.log("e : " + e);
+            } else {
+			    console.log("e NOTHING");
+            }
+
+            console.log("BEFORE FOR LOOP================");
+			console.log("peminjamanList_GLOBAL : " + $scope.peminjamanList_GLOBAL);
+
 			for (var indeksPeminjaman in $scope.peminjamanList_GLOBAL) {
-				
+                console.log("ENTER FOR LOOP================");
 				var filterByRuangan = ruanganTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].ruangan_id);
 				//var filterByPeminjam = peminjamTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id);
-                				
+
 				var waktuAwal = new Date($scope.peminjamanList_GLOBAL[indeksPeminjaman].waktu_awal);
 				var waktuAkhir = new Date($scope.peminjamanList_GLOBAL[indeksPeminjaman].waktu_akhir);
-				
-				if (!$scope.filterRuangan) {
-				
+				console.log("START===============================");
+				if (!$scope.filterRuangan || $scope.filterRuangan == "Semua" || e == "refresh") {
+
+				    console.log("START PUSH refresh");
 					events.push({
 						title: filterByRuangan,
 						startTime: waktuAwal,
@@ -122,9 +143,12 @@
 						description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
 					});
 
+                    console.log("PUSH refresh SELESAI");
+
 				} else {
+				    console.log("START PUSH FILTER");
 					if (filterByRuangan == $scope.filterRuangan) {
-					
+
 						events.push({
 							title: filterByRuangan,
 							startTime: waktuAwal,
@@ -133,20 +157,23 @@
 							borrower: peminjamTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id),
 							description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
 						});
-				
+						console.log("PUSH FILTER SELESAI");
+
 					}
 				}
 			}
 
 			$scope.eventSource = events;
 			$scope.$broadcast('eventSourceChanged',$scope.eventSource);
+    	    console.log("EVENTS ==> Sampai akhir");
+    	    console.log(events);
 		}
 		$timeout(function() {
             angular.element(document.getElementById("calendarFilter")).triggerHandler('click');
         },200);
     }]);
     angular.element(document).ready(function() {
-    	angular.bootstrap(document.getElementById("AppKalender"), ["calendarDemoApp"])
+    	angular.bootstrap(document.getElementById("AppKalender"), ["calendarDemoApp"]);
   	});
 </script>
 
@@ -161,7 +188,7 @@
         <li class="active">Kalender Peminjaman</li>
     </ul>
     <div class="panel container-fluid">
-        <div id="AppKalender" ng-controller="CalendarDemoCtrl" ng-init="filterEvents()">
+        <div id="AppKalender" ng-controller="CalendarDemoCtrl" ng-init="filterEvents('filter')">
             <div class="row">
                 <div class="col-md-3 col-sm-4 col-xs-5">
                     <div class="btn-toolbar" style="margin-bottom: 10px">
@@ -175,16 +202,32 @@
                 </div>
 
                 <!-- FILTERER -->
-                <div class="col-md-offset-6 col-md-3 col-sm-offset-3 col-sm-5 col-xs-7">
+                <div class="col-md-offset-4 col-md-3 col-sm-offset-3 col-sm-5 col-xs-7">
                     <div class="btn-toolbar" style="margin-bottom: 10px">
                         <div class="btn-group">
                             <div class="input-group">
-                                <input type="text" id="txtFilterRuangan" placeholder="Filter by ruangan" ng-model="filterRuangan" class="form-control input-sm"/>
-                                <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default btn-sm" ng-click="filterEvents()" id="calendarFilter">
-                                        Filter
-                                    </button>
-                                </span>
+                                <div class="col-lg-6">
+                                    <select ng-model="filterRuangan" class="form-control input-sm" id="filterQuery">
+                                        <option value="Semua" selected>Semua</option>
+                                        <option value="{[{ ruanganData.nama }]}" ng-repeat = "ruanganData in ruanganList">{[{ ruanganData.nama }]}</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="col-lg-6">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-sm" ng-click="filterEvents('filter')" id="calendarFilter">
+                                                Filter
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-sm" ng-click="filterEvents('refresh')" id="calendarRefresh">
+                                                Refresh
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -197,6 +240,10 @@
                       event-selected="onEventSelected(event)"
                       time-selected="onTimeSelected(selectedTime)"></calendar>
             </div>
+            <!--<div ng-init="filterEvents('refresh')">-->
+
+            <!--</div>-->
         </div>
     </div>
 </div>
+

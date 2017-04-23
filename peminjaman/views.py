@@ -45,6 +45,9 @@ def formadd(request):
     input_deskripsi = request.POST.get('deskripsi', '')
     input_tagihan = request.POST.get('harga', 0.00)
     input_tagihan = float(input_tagihan)
+    waktu_bayar_t = None
+    if input_tagihan == 0:
+        waktu_bayar_t = date.today()
     input_nomor_surat = request.POST.get('nomor_surat', '')
     input_diskon = request.POST.get('discount', 0) # only for minus of input_tagihan
 
@@ -57,14 +60,17 @@ def formadd(request):
         input_tagihan = request.POST['harga']
         input_diskon = request.POST['discount']
 
-        input_tagihan = float(input_tagihan)
-        decimal_diskon = float(input_diskon) / float(100)
-        input_tagihan = (1-decimal_diskon) * input_tagihan
-        if input_tagihan <= 0:
-            input_tagihan = 0
-            waktu_bayar_t = date.today()
+        if input_tagihan > 0:
+            input_tagihan = float(input_tagihan)
+            decimal_diskon = float(input_diskon) / float(100)
+            input_tagihan = (1-decimal_diskon) * input_tagihan
+            if input_tagihan <= 0:
+                input_tagihan = 0
+                waktu_bayar_t = date.today()
+            else:
+                waktu_bayar_t = None
         else:
-            waktu_bayar_t = None
+            waktu_bayar_t = date.today()
 
         # Ambil data hasil input dari user
         input_peminjam = request.POST['peminjam']
@@ -153,6 +159,7 @@ def formadd(request):
         'harga': input_tagihan.__str__(),
         'diskon': input_diskon,
         'nomor_surat': input_nomor_surat,
+        'waktu_bayar': waktu_bayar_t,
     })
 
 
@@ -176,19 +183,48 @@ def formedit(request, peminjaman_id = 0):
     input_tagihan = request.POST.get('harga', selected_peminjaman.jumlah_tagihan)
     input_nomor_surat = request.POST.get('nomor_surat', selected_peminjaman.no_laporan)
     input_tanggal_lunas = request.POST.get('tanggal_bayar', selected_peminjaman.waktu_bayar)
+    if input_tanggal_lunas == None:
+        input_tanggal_lunas = request.POST.get('tanggal_bayar', date.today().strftime("%Y-%m-%d"))
+    else:
+        input_tanggal_lunas = request.POST.get('tanggal_bayar', selected_peminjaman.waktu_bayar)
+    input_lunas = ''
     if input_tagihan <= 0:
         input_lunas = 'already'
-    else:
-        input_lunas = ''
+    if input_tanggal_lunas != '' or input_tanggal_lunas != None:
+        input_lunas = 'already'
+    print "tanggal_awal ", tanggal_awal
+    print "tanggal_akhir ", tanggal_akhir
+    print "pukul_awal ", pukul_awal
+    print "pukul_akhir ", pukul_akhir
+    print "input_deskripsi ", input_deskripsi
+    print "input_tagihan ", input_tagihan
+    print "input_nomor_surat ", input_nomor_surat
+    print "input_tanggal_lunas ", input_tanggal_lunas
 
     errormsg = []
     messages = []
 
     if request.method == 'POST':
 
-        input_lunas = request.POST['lunas']
+        print "tanggal_awal ", tanggal_awal
+        print "tanggal_akhir ", tanggal_akhir
+        print "pukul_awal ", pukul_awal
+        print "pukul_akhir ", pukul_akhir
+        print "input_deskripsi ", input_deskripsi
+        print "input_tagihan ", input_tagihan
+        print "input_nomor_surat ", input_nomor_surat
+        print "input_tanggal_lunas ", input_tanggal_lunas
+
+        try:
+            input_lunas = request.POST['lunas']
+        except Exception:
+            input_lunas = input_lunas
+        print "input_lunas ", input_lunas
         if input_tanggal_lunas == None:
-            input_tanggal_lunas = request.POST['tanggal_bayar']
+            try:
+                input_tanggal_lunas = request.POST['tanggal_bayar']
+            except Exception:
+                input_tanggal_lunas = input_tanggal_lunas
         if input_lunas == 'already' and input_tanggal_lunas != '':
             waktu_bayar_t = datetime.strptime(input_tanggal_lunas, "%Y-%m-%d")
         elif input_lunas == 'already' and input_tanggal_lunas == '':
@@ -320,6 +356,7 @@ def formedit(request, peminjaman_id = 0):
         'harga': input_tagihan.__str__(),
         'nomor_surat': input_nomor_surat,
         'input_lunas': input_lunas,
+        'waktu_bayar': input_tanggal_lunas.strftime('%Y-%m-%d'),
     })
 
 
@@ -368,7 +405,7 @@ def togglepembayaran(request, peminjaman_id = 0):
                 return JsonResponse({'result': "Belum Lunas"})
 
             else:
-                selected_peminjaman.waktu_bayar = date.today()
+                selected_peminjaman.waktu_bayar = date.today().strftime("%Y-%m-%d")
                 selected_peminjaman.save()
 
                 new_log = Log(peminjaman=selected_peminjaman,

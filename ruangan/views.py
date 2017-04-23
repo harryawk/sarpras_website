@@ -23,6 +23,7 @@ def formadd(request):
     new_harga = request.POST.get("harga",0)
     new_deskripsi = request.POST.get("deskripsi", '')
     new_tipe = request.POST.get("tipe",'Selasar')
+    new_warna = request.POST.get('warna', '#000000')
 
     error = []
     message = []
@@ -49,6 +50,7 @@ def formadd(request):
 				harga = new_harga,
                 deskripsi = new_deskripsi,
 				tipe = new_tipe,
+                warna = new_warna,
             )
             if len(request.FILES) != 0:
                 new_ruangan.foto = request.FILES['foto']
@@ -70,7 +72,8 @@ def formadd(request):
         'nama': new_nama,
 		'harga': new_harga,
         'deskripsi': new_deskripsi,
-		'tipe': new_tipe
+		'tipe': new_tipe,
+        'warna': new_warna,
     })
 
 
@@ -89,6 +92,7 @@ def formedit(request, ruangan_id = 0):
     new_harga = request.POST.get("harga", 0)
     new_deskripsi = request.POST.get("deskripsi", '')
     new_tipe = request.POST.get("tipe", 'Selasar')
+    new_warna = request.POST.get('warna', '#000000')
 
     error = []
     message = []
@@ -114,6 +118,7 @@ def formedit(request, ruangan_id = 0):
             selected_ruangan.harga = new_harga
             selected_ruangan.deskripsi = new_deskripsi
             selected_ruangan.tipe = new_tipe
+            selected_ruangan.warna = new_warna
             if len(request.FILES) != 0:
                 selected_ruangan.foto.delete()
                 selected_ruangan.foto = request.FILES['foto']

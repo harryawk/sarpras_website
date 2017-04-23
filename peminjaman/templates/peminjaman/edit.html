@@ -159,11 +159,13 @@
 				<div class="form-group">
 					<label for="id_lunas" class="col-lg-2 control-label">Sudah Bayar</label>
                     <div class="col-lg-1" style="margin-top: 8px">
-                        <input type="checkbox" name="lunas" id="id_lunas" class="" value="already" ng-model="lunas.value1"/>
+                        <input type="checkbox" name="lunas" id="id_lunas" class="" value="already" ng-model="lunas.value1" onclick="changed()"/>
                     </div>
-                    <label for="id_harga" class="col-lg-2 control-label">Waktu Pembayaran</label>
-                    <div class="col-lg-7">
-                        <input type="date" name="tanggal_bayar" id="id_bayar" class="form-control" value="" ng-disabled="!lunas.value1"/>
+                    <label for="id_bayar" class="col-lg-2 control-label">Waktu Pembayaran</label>
+                    <div class="col-lg-7" id="id_tanggal_bayar">
+                        <input type="date" name="tanggal_bayar" id="id_bayar" class="form-control form-bayar" value="{{ waktu_bayar }}" />
+
+                        <!--<input type="date" name="tanggal_bayar" id="id_not_bayar" class="form-control" value="" ng-disabled="!lunas.value1" ng-if="lunas.value1 != true"/>-->
                     </div>
                 </div>
 
@@ -183,6 +185,10 @@
                 <li>{{ message_item }}</li>
                 {% endfor %}
                 </ul>
+
+                <p>Waktu Bayar : {{ waktu_bayar }}</p>
+                <p>Input Lunas : {{ input_lunas }}</p>
+
 
                 <div class="form-group">
                     <div class="col-lg-10 col-lg-offset-2">
@@ -205,4 +211,46 @@
 </div>
 </div>
 
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+<script type="text/javascript">
+   $(document).ready(function() {
+       $("#id_waktu_awal_0").datepicker({ dateFormat: "yy-mm-dd" }).val();
+       $("#id_waktu_akhir_0").datepicker({ dateFormat: "yy-mm-dd" }).val();
+       $(".form-bayar").datepicker({ dateFormat: "yy-mm-dd" }).val();
+       if (!$('#id_lunas').is(':checked')) {
+           $('#id_bayar').attr('value', '');
+       }
+   });
+
+   var current_date = '';
+
+   function changed() {
+       console.log("get in : " + $('#id_lunas').is(':checked'));
+       if (!$('#id_lunas').is(':checked')) {
+           $('#id_bayar').attr('disabled', 'disabled');
+           current_date = $('#id_bayar').attr('value');
+           console.log('date checked : ' + current_date);
+           $('#id_bayar').attr('value', '');
+       } else {
+           console.log('date UNCHECKED : ' + current_date);
+           $('#id_bayar').removeAttr('disabled');
+
+           if (current_date == '') {
+               console.log("Still empty");
+               var d = new Date();
+               var month = d.getMonth() + 1;
+               var day = d.getDate();
+               current_date = d.getFullYear() + '-' + (('' + month).length < 2 ? '0' : '') + month + '-' + (('' + day).length < 2 ? '0' : '') + day;
+           } else { // current_date != ''
+               // do nothing
+           }
+
+           // set value attribute on input form
+           $('#id_bayar').attr('value', current_date);
+       }
+   }
+</script>
 {% endblock %}

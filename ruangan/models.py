@@ -32,6 +32,7 @@ class Ruangan(models.Model):
 
     foto = models.ImageField(upload_to=ruangan_foto_dir, max_length=500, blank=True)
 
+    warna = models.CharField(max_length=10, unique=True)
 
     def __str__(self):
         return self.nama + ' - ' + self.tipe

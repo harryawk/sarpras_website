@@ -37,9 +37,10 @@
 
 {% block body %}
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.6/angular-filter.js"></script>
 <script>
 
-var peminjamanList = angular.module('peminjamanList', []);
+var peminjamanList = angular.module('peminjamanList', ['angular.filter']);
 peminjamanList.config(function($interpolateProvider) {
     $interpolateProvider.startSymbol('{[{');
     $interpolateProvider.endSymbol('}]}');
@@ -64,6 +65,7 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
       id: {{ ruangan.id }},
       string: "{{ ruangan }}",
       nama:"{{ ruangan.nama }}",
+      tipe:"{{ ruangan.tipe }}",
     });
     {% endfor %}
 
@@ -278,37 +280,35 @@ $(document).ready(function () {
                 </div>
             </div>
             <div class="col-lg-4">
-                <h6 class="rekap">Total tagihan yang ditampilkan: {[{ peminjamanListData | orderBy : column : reverse | filter:{peminjam:filterPeminjam}
+            <h6 class="rekap">Total tagihan yang ditampilkan: {[{ peminjamanListData | orderBy : column : reverse | filter:filterTipe | filter:{peminjam:filterPeminjam}
                | filter:{ruangan:filterRuangan} | filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd)) | filter:{waktu_bayar:filterBayar} | getTotal: 'jumlah_tagihan'}]}</h6>
             </div>
             <div class="col-lg-4">
                 <h6 class="rekap">Total tagihan belum lunas: {[{ peminjamanListData | filter:{waktu_bayar:"Belum Lunas"} | getTotal: 'jumlah_tagihan'}]}</h6>
             </div>
         </div>
-        <div class="">
-            <div class="table-responsive">
-                <table class="table table-striped table-hover table-bordered">
-                    <tr>
-                        <th ng-click="sort('no_laporan')" ng-class="sortClass('no_laporan')">No Laporan</th>
-                        <th ng-click="sort('peminjam')" ng-class="sortClass('peminjam')">Peminjam</th>
-                        <th ng-click="sort('ruangan')" ng-class="sortClass('ruangan')">Ruangan</th>
-                        <th ng-click="sort('waktu_awal')" ng-class="sortClass('waktu_awal')">Waktu Awal</th>
-                        <th ng-click="sort('waktu_akhir')" ng-class="sortClass('waktu_akhir')">Waktu Akhir</th>
-                        <th ng-click="sort('jumlah_tagihan')" ng-class="sortClass('jumlah_tagihan')">Tagihan</th>
-                        <th ng-click="sort('waktu_bayar')" ng-class="sortClass('waktu_bayar')">Waktu Bayar</th>
-                        <th ng-click="sort('deskripsi')" ng-class="sortClass('deskripsi')">Description</th>
-                    </tr>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered">
+               <tr>
+                   <th ng-click="sort('no_laporan')" ng-class="sortClass('no_laporan')">No Laporan</th>
+                   <th ng-click="sort('peminjam')" ng-class="sortClass('peminjam')">Peminjam</th>
+                   <th ng-click="sort('ruangan')" ng-class="sortClass('ruangan')">Ruangan</th>
+                   <th ng-click="sort('waktu_awal')" ng-class="sortClass('waktu_awal')">Waktu Awal</th>
+                   <th ng-click="sort('waktu_akhir')" ng-class="sortClass('waktu_akhir')">Waktu Akhir</th>
+                   <th ng-click="sort('jumlah_tagihan')" ng-class="sortClass('jumlah_tagihan')">Tagihan</th>
+                   <th ng-click="sort('waktu_bayar')" ng-class="sortClass('waktu_bayar')">Waktu Bayar</th>
+                   <th ng-click="sort('deskripsi')" ng-class="sortClass('deskripsi')">Description</th>
+               </tr>
 
-                    <tr ng-repeat = "peminjamanData in peminjamanListData | orderBy : column : reverse | filter:{peminjam:filterPeminjam}
+               <tr ng-repeat = "peminjamanData in peminjamanListData | orderBy : column : reverse | filter:filterTipe | filter:{peminjam:filterPeminjam}
                | filter:{ruangan:filterRuangan} | filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd)) | filter:{waktu_bayar:filterBayar}" >
 
                         <td ng-click="go(peminjamanData.edit_link)">{[{ peminjamanData.no_laporan }]}</td>
                         <td>{[{ peminjamanData.peminjam }]}</td>
                         <td>{[{ peminjamanData.ruangan }]}</td>
 
-                        <td>{[{ peminjamanData.waktu_awal | date:'dd MMM yyyy; HH:mm' : 'UTC' }]}</td>
-                        <td>{[{ peminjamanData.waktu_akhir | date:'dd MMM yyyy; HH:mm' : 'UTC' }]}</td>
-
+                <td>{[{ peminjamanData.waktu_awal | date:'dd MMM yyyy; HH:mm' : 'UTC+0700' }]}</td>
+                <td>{[{ peminjamanData.waktu_akhir | date:'dd MMM yyyy; HH:mm' : 'UTC+0700' }]}</td>
                         <td>{[{ peminjamanData.jumlah_tagihan }]}</td>
                         <td ng-click="togglePembayaran(peminjamanData)">{[{ peminjamanData.waktu_bayar | date:'dd MMM yyyy' }]}</td>
                         <td>{[{ peminjamanData.deskripsi }]}</td>
@@ -330,5 +330,16 @@ $(document).ready(function () {
 </ul>
 
 </div>
+
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+<script type="text/javascript">
+   $(function() {
+       $("#id_time_start").datepicker({ dateFormat: "yy-mm-dd" }).val();
+       $("#id_time_end").datepicker({ dateFormat: "yy-mm-dd" }).val();
+   });
+</script>
 
 {% endblock %}

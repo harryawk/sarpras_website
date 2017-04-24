@@ -257,21 +257,28 @@ $(document).ready(function () {
                       </div>
                   </div>
                 </div>
-                <div class="form-group col-lg-2 col-md-6 col-sm-4">
+                <div class="form-group col-lg-2 col-md-6 col-sm-3">
                     <span><b>Filter Peminjam</b></span>
                     <select ng-model="filterPeminjam" class="form-control input-sm">
                         <option value="" selected>Semua</option>
                         <option value="{[{ peminjamData.string }]}" ng-repeat = "peminjamData in peminjamListData">{[{ peminjamData.nama }]}</option>
                     </select>
                 </div>
-                <div class="form-group col-lg-2 col-md-6 col-sm-4">
+                <div class="form-group col-lg-2 col-md-6 col-sm-3">
+                    <span><b>Filter Tipe Ruangan</b></span>
+                    <select ng-model="filterTipe" class="form-control input-sm">
+                        <option value="" selected>Semua</option>
+                        <option value="{[{ ruanganData.string }]}" ng-repeat = "ruanganData in ruanganListData | unique: 'tipe' ">{[{ ruanganData.tipe }]}</option>
+                    </select>
+                </div>
+                <div class="form-group col-lg-2 col-md-6 col-sm-3">
                     <span><b>Filter Ruangan</b></span>
-                    <select ng-model="filterPeminjam" class="form-control input-sm">
+                    <select ng-model="filterRuangan" class="form-control input-sm">
                         <option value="" selected>Semua</option>
                         <option value="{[{ ruanganData.string }]}" ng-repeat = "ruanganData in ruanganListData">{[{ ruanganData.nama }]}</option>
                     </select>
                 </div>
-                <div class="form-group col-lg-2 col-md-6 col-sm-4">
+                <div class="form-group col-lg-2 col-md-6 col-sm-3">
                     <span><b>Filter Status Bayar</b></span>
                     <select ng-model="filterPeminjam" class="form-control input-sm">
                         <option value="" selected>Semua</option>

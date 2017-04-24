@@ -147,7 +147,7 @@
     <div class="panel container-fluid">
         <div class="row" style="margin-bottom: 10px">
             <div class="col-lg-offset-4 col-lg-6">
-                <div class="form-group" style="text-align: right;">
+                <div class="form-group" style="text-align: right; margin-top: 10px">
                     <label for="id_tipe" class="control-label col-lg-3" style="text-align: right">Filter Type</label>
                     <div class="col-lg-3">
                         <select  ng-model="filterTipe" id="id_tipe" class="form-control input-sm">
@@ -181,11 +181,11 @@
 					
 						<tr ng-repeat = "ruanganData in ruanganListData | orderBy : column : reverse | filter:{tipe:filterTipe} | filter:{nama:filterNama}" >
 
-							<td ng-click="go(ruanganData.edit_link)">{[{ ruanganData.nama }]}</td>
-							<td ng-click="go(ruanganData.edit_link)">{[{ ruanganData.harga }]}</td>
-							<td ng-click="go(ruanganData.edit_link)">{[{ ruanganData.deskripsi }]}</td>
-							<td ng-click="go(ruanganData.edit_link)">{[{ ruanganData.tipe }]}</td>
-                            <td data-toggle="modal" data-target="#modalFoto" data-img-source="/img/{[{ ruanganData.foto }]}" data-nama="{[{ ruanganData.nama }]}"><img src="/img/{[{ ruanganData.foto }]}" alt="{[{ ruanganData.nama }]}" height="100" width="100"></td>
+							<td ng-click="go(ruanganData.edit_link)"><a href="#">{[{ ruanganData.nama }]}</a></td>
+							<td>{[{ ruanganData.harga }]}</td>
+							<td>{[{ ruanganData.deskripsi }]}</td>
+							<td>{[{ ruanganData.tipe }]}</td>
+                            <td data-toggle="modal" data-target="#modalFoto" data-img-source="/img/{[{ ruanganData.foto }]}" data-nama="{[{ ruanganData.nama }]}"><img src="/img/{[{ ruanganData.foto }]}" alt="{[{ ruanganData.nama }]}" class="img-responsive"></td>
 
 						</tr>
                     </table>

@@ -63,7 +63,7 @@ def formadd(request):
 
     errormsg = []
     messages = []
-
+    obj_ruangan = None
     if request.method == 'POST':
 
         # Ambil input tagihan dan Olah tagihan setelah dikurangi diskon

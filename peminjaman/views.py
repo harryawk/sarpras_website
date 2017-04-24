@@ -60,7 +60,7 @@ def formadd(request):
         input_tagihan = request.POST['harga']
         input_diskon = request.POST['discount']
 
-        if input_tagihan > 0:
+        if float(input_tagihan) > 0:
             input_tagihan = float(input_tagihan)
             decimal_diskon = float(input_diskon) / float(100)
             input_tagihan = (1-decimal_diskon) * input_tagihan
@@ -139,17 +139,48 @@ def formadd(request):
                 except Exception as e:
                     messages += ["Unhandled Exception", ]
                 else:
-                    return redirect(reverse('peminjaman:index'))
+                    if request.POST['save'] == "Save":
+                        return redirect(reverse('peminjaman:index'))
+                    else:
+                        all_peminjam = Peminjam.objects.all()
+                        all_ruangan = Ruangan.objects.all()
+                        errormsg = []
+                        messages = []
+                        if obj_ruangan: input_tipe = obj_ruangan.tipe
+                        else: input_tipe = ""
+
+                        return render(request, 'peminjaman/add.html', {
+                            'all_peminjam': all_peminjam,
+                            'all_ruangan': all_ruangan,
+                            'error': errormsg,
+                            'message': messages,
+                            'input_peminjam': input_peminjam,
+                            'input_tipe': input_tipe,
+                            'input_ruangan': input_ruangan,
+                            'input_deskripsi': '',
+                            'tanggal_awal': datetime.now().strftime("%Y-%m-%d"),
+                            'pukul_awal': '00:00',
+                            'tanggal_akhir': datetime.now().strftime("%Y-%m-%d"),
+                            'pukul_akhir': '00:00',
+                            'harga': 0.00,
+                            'diskon': 0,
+                            'nomor_surat': input_nomor_surat,
+                            'waktu_bayar': date.today(),
+                        })
 
     # Apabila tidak redirect ke index, maka kirim form
     all_peminjam = Peminjam.objects.all()
     all_ruangan = Ruangan.objects.all()
+    if obj_ruangan: input_tipe = obj_ruangan.tipe
+    else: input_tipe = ""
+
     return render(request, 'peminjaman/add.html', {
         'all_peminjam': all_peminjam,
         'all_ruangan': all_ruangan,
         'error': errormsg,
         'message': messages,
         'input_peminjam': input_peminjam,
+        'input_tipe': input_tipe,
         'input_ruangan': input_ruangan,
         'input_deskripsi': input_deskripsi,
         'tanggal_awal': tanggal_awal,
@@ -192,34 +223,15 @@ def formedit(request, peminjaman_id = 0):
         input_lunas = 'already'
     if input_tanggal_lunas != '' or input_tanggal_lunas != None:
         input_lunas = 'already'
-    print "tanggal_awal ", tanggal_awal
-    print "tanggal_akhir ", tanggal_akhir
-    print "pukul_awal ", pukul_awal
-    print "pukul_akhir ", pukul_akhir
-    print "input_deskripsi ", input_deskripsi
-    print "input_tagihan ", input_tagihan
-    print "input_nomor_surat ", input_nomor_surat
-    print "input_tanggal_lunas ", input_tanggal_lunas
 
     errormsg = []
     messages = []
 
     if request.method == 'POST':
-
-        print "tanggal_awal ", tanggal_awal
-        print "tanggal_akhir ", tanggal_akhir
-        print "pukul_awal ", pukul_awal
-        print "pukul_akhir ", pukul_akhir
-        print "input_deskripsi ", input_deskripsi
-        print "input_tagihan ", input_tagihan
-        print "input_nomor_surat ", input_nomor_surat
-        print "input_tanggal_lunas ", input_tanggal_lunas
-
         try:
             input_lunas = request.POST['lunas']
         except Exception:
             input_lunas = input_lunas
-        print "input_lunas ", input_lunas
         if input_tanggal_lunas == None:
             try:
                 input_tanggal_lunas = request.POST['tanggal_bayar']

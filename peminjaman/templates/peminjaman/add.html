@@ -44,6 +44,8 @@
 		});
 		{% endfor %}
 
+		$scope.filterTipe = "{{input_tipe}}";
+
 	});
 </script>
 <ul class="breadcrumb" style="margin-bottom: 10px;">
@@ -189,8 +191,8 @@
                     <div class="col-lg-10 col-lg-offset-2">
                         <!--<input type="submit" value="Save" class="default" name="_save" />-->
                         <!--<input type="submit" value="WAWA" >-->
-                        <input type="submit" value="Save" class="btn btn-primary" >
-                        <!--<input type="submit" value="Save and add another" name="_addanother" />-->
+                        <input type="submit" name="save" value="Save" class="btn btn-primary" >
+                        <input type="submit" name="save" value="Save and add another" class="btn btn-primary" />
                         <!--<input type="submit" value="Save and continue editing" name="_continue" />-->
                     </div>
                 </div>

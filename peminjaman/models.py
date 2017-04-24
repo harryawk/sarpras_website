@@ -5,7 +5,7 @@ from datetime import datetime
 import os
 
 def peminjaman_foto_dir(instance, filename):
-    now = datetime.datetime.now().date()
+    now = datetime.now().date()
     if instance.id is None:
         try:
             nextid = (Ruangan.objects.latest('id')).id + 1

@@ -111,7 +111,7 @@ def formadd(request):
 
         # Ambil objek Peminjam dan Ruangan
         obj_peminjam = Peminjam.objects.get(id=input_peminjam)
-        obj_ruangan = Ruangan.objects.get(id=input_ruangan)
+        obj_ruangan = Ruangan.objects.get(i=input_ruangan)
 
         # Mengecek tanggal mulai kurang dari tanggal selesai
         temp_mulai = tanggal_mulai_pinjam.replace(tzinfo=None)

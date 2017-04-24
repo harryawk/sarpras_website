@@ -41,14 +41,27 @@
                     <div class="panel panel-default">
                         <div class="panel-heading"><b>{{event.title}}</b></div>
                       <div class="panel-body">
-                        <p style="margin-bottom: 0">
-                            <b>Peminjam, </b>{{event.borrower}}
-                        </p>
-                        <p ng-if="!event.allDay" style="margin-bottom: 0">
-                            <b>Waktu, </b>{{event.startTime|date: 'HH:mm': 'UTC+0700' }} - {{event.endTime|date: 'HH:mm': 'UTC+0700' }}
-                        </p>
-                        <p ng-if="event.allDay" style="margin-bottom: 0">
-                            <b>Waktu, </b>Satu hari penuh</p>
+                        <div class="col-md-6" ng-show="event.fotoPeminjaman != '' || event.fotoRuangan != ''">
+                            <div class="col-md-6" ng-show="event.fotoPeminjaman != ''">
+                                <img src="/img/{[{ event.fotoPeminjaman }]}" alt="" height="100" width="50">
+                            </div>
+                            <div class="col-md-6" ng-show="event.fotoRuangan != ''">
+                                <img src="/img/{[{ event.fotoRuangan }]}" alt="" height="100" width="50">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <p style="margin-bottom: 0">
+                                <b>Peminjam, </b>{{event.borrower}}
+                            </p>
+                            <p ng-if="!event.allDay" style="margin-bottom: 0">
+                                <b>Waktu, </b>{{event.startTime|date: 'HH:mm': 'UTC+0700' }} - {{event.endTime|date: 'HH:mm': 'UTC+0700' }}
+                            </p>
+                            <p ng-if="event.allDay" style="margin-bottom: 0">
+                                <b>Waktu, </b>Satu hari penuh</p>
+                            <p style="margin-bottom: 0">
+                                <b>Deskripsi, </b>{{event.description}}
+                            </p>
+                        </div>
                       </div>
                     </div>
                 </div>

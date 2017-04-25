@@ -15,10 +15,11 @@ def index(request):
 #Ajax Bulan dan tahun
 @login_required
 @csrf_exempt
-def filter(request, select_year = 2017,select_month = 4):
-    print(select_month)
-    print(select_year)
-    selected_log = Log.objects.filter(tanggal__year = select_year, tanggal__month = select_month).values()
+def filter(request, select_year,select_month):
+    if select_year == "" and select_month == "":
+        selected_log = Log.objects.all()
+    else:
+        selected_log = Log.objects.filter(tanggal__year = select_year, tanggal__month = select_month).values()
     return JsonResponse({'results': list(selected_log)})
 
 @login_required

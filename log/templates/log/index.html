@@ -108,14 +108,18 @@
 				$scope.years = range;
 
 				$scope.filterlog = function ( tahun,bulan) {
+					if(((typeof tahun === 'undefined' ) || (tahun == null)) || (tahun == ""))
+					{
+						tahun = "1971";
+					}
+					if(((typeof bulan === 'undefined'  ) || (bulan == null)) || (bulan == ""))
+					{
+						bulan = "0";
+					}
 					var req = {
 						method: 'GET',
 						url: "{% url 'log:filterbase' %}" + tahun + "/" + bulan + "/"
 					}
-					console.log(req);
-					console.log('some');
-					console.log(tahun);
-					console.log(bulan);
 					$http.get(req.url).success(function(data, status, headers, config) {
 							var temp = data.results;
 							$scope.logListData = [];

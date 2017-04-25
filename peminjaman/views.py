@@ -109,18 +109,23 @@ def formadd(request):
         akhir_pinjam = datetime.strptime(pukul_akhir, "%H:%M")
         tanggal_selesai_pinjam = tanggal_selesai_pinjam.replace(hour=akhir_pinjam.hour, minute=akhir_pinjam.minute)
 
-        # Ambil objek Peminjam dan Ruangan
-        obj_peminjam = Peminjam.objects.get(id=input_peminjam)
-        obj_ruangan = Ruangan.objects.get(i=input_ruangan)
-
         # Mengecek tanggal mulai kurang dari tanggal selesai
         temp_mulai = tanggal_mulai_pinjam.replace(tzinfo=None)
         temp_selesai = tanggal_selesai_pinjam.replace(tzinfo=None)
         if temp_mulai >= temp_selesai:
             errormsg += ['Waktu mulai harus kurang dari waktu selesai']
 
+        if not input_peminjam:
+            errormsg += ['Harap pilih peminjam yang valid']
+        if not input_ruangan:
+            errormsg += ['Harap pilih ruangan yang valid']
+
         # Jika belum ditemukan error
         if not errormsg:
+
+            # Ambil objek Peminjam dan Ruangan
+            obj_peminjam = Peminjam.objects.get(id=input_peminjam)
+            obj_ruangan = Ruangan.objects.get(i=input_ruangan)
 
             # Membuat object peminjaman yang sesuai, BELUM DI-SAVE
             new_peminjaman = Peminjaman(no_laporan=input_nomor_surat,
@@ -333,8 +338,17 @@ def formedit(request, peminjaman_id = 0):
         if temp_mulai >= temp_selesai:
             errormsg += ['Waktu mulai harus kurang dari waktu selesai']
 
+        if not input_peminjam:
+            errormsg += ['Harap pilih peminjam yang valid']
+        if not input_ruangan:
+            errormsg += ['Harap pilih ruangan yang valid']
+
         # Jika belum ditemukan error
         if not errormsg:
+
+            # Ambil objek Peminjam dan Ruangan
+            obj_peminjam = Peminjam.objects.get(id=input_peminjam)
+            obj_ruangan = Ruangan.objects.get(id=input_ruangan)
 
             # Membuat object peminjaman yang sesuai, TIDAK AKAN DI-SAVE
             new_peminjaman = Peminjaman(peminjam=obj_peminjam,

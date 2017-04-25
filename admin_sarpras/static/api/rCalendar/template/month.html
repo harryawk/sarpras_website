@@ -42,11 +42,11 @@
                         <div class="panel-heading"><b>{{event.title}}</b></div>
                       <div class="panel-body">
                         <div class="col-md-6" ng-show="event.fotoPeminjaman != '' || event.fotoRuangan != ''">
-                            <div class="col-md-6" ng-show="event.fotoPeminjaman != ''">
-                                <img src="/img/{[{ event.fotoPeminjaman }]}" alt="" height="100" width="50">
+                            <div class="col-md-6" ng-show="event.fotoPeminjaman != ''"   >
+                                <img src="/img/{[{ event.fotoPeminjaman }]}" alt="" height="100" width="50" id="fotoPeminjaman" name="fotoPeminjaman" data-toggle="modal" data-target="#modalFoto" data-img-source="/img/{[{ event.fotoPeminjaman }]}" onclick="assign_global_src('/img/{{ event.fotoPeminjaman }}')">
                             </div>
-                            <div class="col-md-6" ng-show="event.fotoRuangan != ''">
-                                <img src="/img/{[{ event.fotoRuangan }]}" alt="" height="100" width="50">
+                            <div class="col-md-6" ng-show="event.fotoRuangan != ''"  >
+                                <img src="/img/{[{ event.fotoRuangan }]}" alt="" height="100" width="50" id="fotoRuangan" name="fotoRuangan" data-toggle="modal" data-target="#modalFoto" data-img-source="/img/{[{ event.fotoRuangan }]}" onclick="assign_global_src('/img/{{ event.fotoPeminjaman }}')">
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -70,5 +70,45 @@
                 <tr><td class="no-event-label">No Events</td></tr>
             </table>
         </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modalFoto" role="dialog" tabindex="-1">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" name="namaRuangan">Detil Foto</h4>
+            </div>
+            <div class="modal-body">
+                <img src="" alt="" name="fotoRuangan" style="display: block; min-width: 0%; max-width: 100%; height: auto; margin: auto;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+
+        </div>
     </div>
+
+    <style>
+        @media screen and (min-width: 768px) { #modalFoto .modal-dialog { min-width: 25%; max-width: 75%; } }
+        @media screen and (max-width: 767px) { #modalFoto .modal-dialog { min-width: 80%; max-width: 100%; align-self: center; } }
+    </style>
+
+    <script type="text/javascript">
+        var global_src = '';
+        function assign_global_src(url) {
+            global_src = url;
+        }
+        $('#modalFoto').on('show.bs.modal', function(e) {
+            console.log("Got in");
+            var src = $(e.relatedTarget).data('img-source');
+            console.log("src_ruang : " + src);
+            $(e.currentTarget).find('img[name="fotoRuangan"]').attr('src', src);
+            $(e.currentTarget).find('img[name="fotoRuangan"]').attr('alt', 'Foto tidak ditemukan');
+        });
+    </script>
+    </div>
+
 </div>

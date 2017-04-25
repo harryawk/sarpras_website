@@ -28,6 +28,13 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="{% static 'js/bootstrap.min.js' %}" ></script>
 
+    <!-- Disable Native Chrome Datepicker -->
+    <style>
+    input::-webkit-calendar-picker-indicator{
+        display: none;
+    }
+    </style>
+
     {% block head %}
     <title>SB Admin - Bootstrap Admin Template</title>
     {% endblock %}

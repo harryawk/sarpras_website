@@ -310,7 +310,7 @@ $(document).ready(function () {
                <tr ng-repeat = "peminjamanData in peminjamanListData | orderBy : column : reverse | filter:filterTipe | filter:{peminjam:filterPeminjam}
                | filter:{ruangan:filterRuangan} | filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd)) | filter:{waktu_bayar:filterBayar}" >
 
-                        <td ng-click="go(peminjamanData.edit_link)">{[{ peminjamanData.no_laporan }]}</td>
+                   <td ng-click="go(peminjamanData.edit_link)"><a href="#">{[{ peminjamanData.no_laporan }]}</a></td>
                         <td>{[{ peminjamanData.peminjam }]}</td>
                         <td>{[{ peminjamanData.ruangan }]}</td>
 

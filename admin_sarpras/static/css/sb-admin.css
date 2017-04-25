@@ -107,3 +107,15 @@ span.input-group-addon {
     padding-left: 0px;
     padding-right: 3px;
 }
+
+.square {
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 56.25%;
+}
+
+img.img-responsive{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}

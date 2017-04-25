@@ -35,32 +35,41 @@
         </tbody>
     </table>
     <div ng-if="showEventDetail" class="event-detail-container">
-        <div class="scrollable" style="height: 200px">
+        <div>
             <div class="row" ng-if="selectedDate.events" style="margin-top: 10px">
                 <div class="col-md-4 col-sm-6" ng-repeat="event in selectedDate.events">
                     <div class="panel panel-default">
-                        <div class="panel-heading"><b>{{event.title}}</b></div>
-                      <div class="panel-body">
-                        <div class="col-md-6" ng-show="event.fotoPeminjaman != '' || event.fotoRuangan != ''">
-                            <div class="col-md-6" ng-show="event.fotoPeminjaman != ''"   >
-                                <img src="/img/{[{ event.fotoPeminjaman }]}" alt="" height="100" width="50" id="fotoPeminjaman" name="fotoPeminjaman" data-toggle="modal" data-target="#modalFoto" data-img-source="/img/{[{ event.fotoPeminjaman }]}" onclick="assign_global_src('/img/{{ event.fotoPeminjaman }}')">
-                            </div>
-                            <div class="col-md-6" ng-show="event.fotoRuangan != ''"  >
-                                <img src="/img/{[{ event.fotoRuangan }]}" alt="" height="100" width="50" id="fotoRuangan" name="fotoRuangan" data-toggle="modal" data-target="#modalFoto" data-img-source="/img/{[{ event.fotoRuangan }]}" onclick="assign_global_src('/img/{{ event.fotoPeminjaman }}')">
+                        <div class="panel-heading" style="padding: 0px;text-align: center" ng-show="event.fotoRuangan != ''">
+                            <div class="square">
+                                <h5 style="background-color: #0a6ebd;color:white;position: absolute;padding:5px 10px;bottom: 5px;right: 10px;z-index: 1;">
+                                    {{event.title}}
+                                </h5>
+                                <img src="/img/{[{ event.fotoRuangan }]}" alt="" class="img-responsive" id="fotoRuangan" name="fotoRuangan" data-toggle="modal" data-target="#modalFoto" data-img-source="/img/{[{ event.fotoRuangan }]}" onclick="assign_global_src('/img/{{ event.fotoPeminjaman }}')">
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <p style="margin-bottom: 0">
-                                <b>Peminjam, </b>{{event.borrower}}
-                            </p>
-                            <p ng-if="!event.allDay" style="margin-bottom: 0">
-                                <b>Waktu, </b>{{event.startTime|date: 'HH:mm': 'UTC+0700' }} - {{event.endTime|date: 'HH:mm': 'UTC+0700' }}
-                            </p>
-                            <p ng-if="event.allDay" style="margin-bottom: 0">
-                                <b>Waktu, </b>Satu hari penuh</p>
-                            <p style="margin-bottom: 0">
-                                <b>Deskripsi, </b>{{event.description}}
-                            </p>
+                        <div class="panel-heading" ng-hide="event.fotoRuangan != ''">
+                            <b>{{event.title}}</b>
+                        </div>
+                      <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-4" ng-show="event.fotoPeminjaman != '' || event.fotoRuangan != ''">
+                                <div class="col-md-12 square" ng-show="event.fotoPeminjaman != ''"   >
+                                    <img src="/img/{[{ event.fotoPeminjaman }]}" alt="" class="img-responsive" id="fotoPeminjaman" name="fotoPeminjaman" data-toggle="modal" data-target="#modalFoto" data-img-source="/img/{[{ event.fotoPeminjaman }]}" onclick="assign_global_src('/img/{{ event.fotoPeminjaman }}')">
+                                </div>
+                            </div>
+                            <div ng-class="event.fotoPeminjaman != '' ? 'col-md-8' : 'col-md-12'">
+                                <p style="margin-bottom: 0">
+                                    <b>Peminjam, </b>{{event.borrower}}
+                                </p>
+                                <p ng-if="!event.allDay" style="margin-bottom: 0">
+                                    <b>Waktu, </b>{{event.startTime|date: 'HH:mm': 'UTC+0700' }} - {{event.endTime|date: 'HH:mm': 'UTC+0700' }}
+                                </p>
+                                <p ng-if="event.allDay" style="margin-bottom: 0">
+                                    <b>Waktu, </b>Satu hari penuh</p>
+                                <p style="margin-bottom: 0">
+                                    <b>Deskripsi, </b>{{event.description}}
+                                </p>
+                            </div>
                         </div>
                       </div>
                     </div>

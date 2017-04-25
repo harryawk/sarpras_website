@@ -185,7 +185,11 @@
 							<td>{[{ ruanganData.harga }]}</td>
 							<td>{[{ ruanganData.deskripsi }]}</td>
 							<td>{[{ ruanganData.tipe }]}</td>
-                            <td data-toggle="modal" data-target="#modalFoto" data-img-source="/img/{[{ ruanganData.foto }]}" data-nama="{[{ ruanganData.nama }]}"><img src="/img/{[{ ruanganData.foto }]}" alt="{[{ ruanganData.nama }]}" class="img-responsive"></td>
+                            <td data-toggle="modal" data-target="#modalFoto" data-img-source="/img/{[{ ruanganData.foto }]}" data-nama="{[{ ruanganData.nama }]}">
+                                <div class="square">
+                                    <img src="/img/{[{ ruanganData.foto }]}" alt="{[{ ruanganData.nama }]}" class="img-responsive">
+                                </div>
+                            </td>
 
 						</tr>
                     </table>

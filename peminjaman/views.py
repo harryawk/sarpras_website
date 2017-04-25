@@ -31,6 +31,8 @@ def index(request, errormsg=''):
 def kalender(request, errormsg=''):
     return render(request, 'peminjaman/kalender_admin.html', {})
 
+def kalender_umum(request, errormsg=''):
+    return render(request, 'peminjaman/kalender_umum.html', {})
 
 # Return a form which'll be used to add new Peminjaman object to model
 @login_required
@@ -109,18 +111,23 @@ def formadd(request):
         akhir_pinjam = datetime.strptime(pukul_akhir, "%H:%M")
         tanggal_selesai_pinjam = tanggal_selesai_pinjam.replace(hour=akhir_pinjam.hour, minute=akhir_pinjam.minute)
 
-        # Ambil objek Peminjam dan Ruangan
-        obj_peminjam = Peminjam.objects.get(id=input_peminjam)
-        obj_ruangan = Ruangan.objects.get(i=input_ruangan)
-
         # Mengecek tanggal mulai kurang dari tanggal selesai
         temp_mulai = tanggal_mulai_pinjam.replace(tzinfo=None)
         temp_selesai = tanggal_selesai_pinjam.replace(tzinfo=None)
         if temp_mulai >= temp_selesai:
             errormsg += ['Waktu mulai harus kurang dari waktu selesai']
 
+        if not input_peminjam:
+            errormsg += ['Harap pilih peminjam yang valid']
+        if not input_ruangan:
+            errormsg += ['Harap pilih ruangan yang valid']
+
         # Jika belum ditemukan error
         if not errormsg:
+
+            # Ambil objek Peminjam dan Ruangan
+            obj_peminjam = Peminjam.objects.get(id=input_peminjam)
+            obj_ruangan = Ruangan.objects.get(i=input_ruangan)
 
             # Membuat object peminjaman yang sesuai, BELUM DI-SAVE
             new_peminjaman = Peminjaman(no_laporan=input_nomor_surat,
@@ -333,8 +340,17 @@ def formedit(request, peminjaman_id = 0):
         if temp_mulai >= temp_selesai:
             errormsg += ['Waktu mulai harus kurang dari waktu selesai']
 
+        if not input_peminjam:
+            errormsg += ['Harap pilih peminjam yang valid']
+        if not input_ruangan:
+            errormsg += ['Harap pilih ruangan yang valid']
+
         # Jika belum ditemukan error
         if not errormsg:
+
+            # Ambil objek Peminjam dan Ruangan
+            obj_peminjam = Peminjam.objects.get(id=input_peminjam)
+            obj_ruangan = Ruangan.objects.get(id=input_ruangan)
 
             # Membuat object peminjaman yang sesuai, TIDAK AKAN DI-SAVE
             new_peminjaman = Peminjaman(peminjam=obj_peminjam,
@@ -376,7 +392,7 @@ def formedit(request, peminjaman_id = 0):
                     logmsg += "Ubah waktu akhir dari " + selected_peminjaman.waktu_akhir.__str__() + " ke " + tanggal_selesai_pinjam.__str__() + "\n"
                 if selected_peminjaman.deskripsi != input_deskripsi:
                     logmsg += "Ubah isi deskripsi\n"
-                if selected_peminjaman.jumlah_tagihan != input_tagihan:
+                if str(selected_peminjaman.jumlah_tagihan) != input_tagihan:
                     logmsg += "Ubah jumlah tagihan dari " + selected_peminjaman.jumlah_tagihan.__str__() + " ke " + input_tagihan.__str__() + "\n"
 
                 try:
@@ -425,6 +441,7 @@ def formedit(request, peminjaman_id = 0):
         'input_lunas': input_lunas,
         'waktu_bayar': input_tanggal_lunas,
     })
+
 
 
 # Return a form which'll be used to delete peminjaman object to model

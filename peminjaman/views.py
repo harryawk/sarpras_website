@@ -127,7 +127,7 @@ def formadd(request):
 
             # Ambil objek Peminjam dan Ruangan
             obj_peminjam = Peminjam.objects.get(id=input_peminjam)
-            obj_ruangan = Ruangan.objects.get(i=input_ruangan)
+            obj_ruangan = Ruangan.objects.get(id=input_ruangan)
 
             # Membuat object peminjaman yang sesuai, BELUM DI-SAVE
             new_peminjaman = Peminjaman(no_laporan=input_nomor_surat,

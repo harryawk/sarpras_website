@@ -70,25 +70,18 @@
             }
             return ;
         };
-		
+		var filterByRuangan;
+        var fotoRuangan ;
+        var warnaRuangan;
 		// get the name of room
 		function ruanganTampil(e) {
             for (var i in $scope.ruanganList) {
                 if (e == $scope.ruanganList[i].id) {
-                    return $scope.ruanganList[i].nama;
+                    filterByRuangan = $scope.ruanganList[i].nama;
+                    fotoRuangan =  $scope.ruanganList[i].foto;
+                    warnaRuangan = $scope.ruanganList[i].warna;
                 }
             }
-            return;
-        };
-
-		// get the url of room's photo
-		function getfotoRuangan(e) {
-            for (var i in $scope.ruanganList) {
-                if (e == $scope.ruanganList[i].id) {
-                    return $scope.ruanganList[i].foto;
-                }
-            }
-            return;
         };
 
 		// get all borrowed room in particular year
@@ -115,12 +108,12 @@
 		$scope.filterEvents = function(e) {
             var events = [];
 			for (var indeksPeminjaman in $scope.peminjamanList_GLOBAL) {
-			    var filterByRuangan = ruanganTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].ruangan_id);
-			    var fotoRuangan = getfotoRuangan($scope.peminjamanList_GLOBAL[indeksPeminjaman].ruangan_id);
+                ruanganTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].ruangan_id);
 				//var filterByPeminjam = peminjamTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id);
 
 				var waktuAwal = new Date($scope.peminjamanList_GLOBAL[indeksPeminjaman].waktu_awal);
 				var waktuAkhir = new Date($scope.peminjamanList_GLOBAL[indeksPeminjaman].waktu_akhir);
+				console.log($scope.peminjamanList_GLOBAL[indeksPeminjaman]);
 				if (!$scope.filterRuangan || $scope.filterRuangan == "Semua" || e == "refresh") {
 
 					while (waktuAkhir.getDate() - waktuAwal.getDate() >= 1) {
@@ -135,6 +128,7 @@
                             description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
                             fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
                             fotoRuangan: fotoRuangan,
+                            warnaRuang: warnaRuangan,
                         });
                         waktuAwal = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(),
                             waktuAwal.getDate()+1, 0, 0, 0, 0);
@@ -148,6 +142,7 @@
 						description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
                         fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
                         fotoRuangan: fotoRuangan,
+                        warnaRuang: warnaRuangan,
 					});
 
 
@@ -165,6 +160,7 @@
                                 description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
                                 fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
                                 fotoRuangan: fotoRuangan,
+                                warnaRuang: warnaRuangan,
                             });
                             waktuAwal = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(),
                                 waktuAwal.getDate()+1, 0, 0, 0, 0);
@@ -178,6 +174,7 @@
 							description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
                             fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
                             fotoRuangan: fotoRuangan,
+                            warnaRuang: warnaRuangan,
 						});
 
 					}

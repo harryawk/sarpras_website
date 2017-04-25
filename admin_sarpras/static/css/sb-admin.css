@@ -114,6 +114,12 @@ span.input-group-addon {
   padding-bottom: 56.25%;
 }
 
+.poster {
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 141.42%;
+}
+
 img.img-responsive{
   position: absolute;
   top: 50%;

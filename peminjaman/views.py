@@ -31,6 +31,8 @@ def index(request, errormsg=''):
 def kalender(request, errormsg=''):
     return render(request, 'peminjaman/kalender_admin.html', {})
 
+def kalender_umum(request, errormsg=''):
+    return render(request, 'peminjaman/kalender_umum.html', {})
 
 # Return a form which'll be used to add new Peminjaman object to model
 @login_required
@@ -390,7 +392,7 @@ def formedit(request, peminjaman_id = 0):
                     logmsg += "Ubah waktu akhir dari " + selected_peminjaman.waktu_akhir.__str__() + " ke " + tanggal_selesai_pinjam.__str__() + "\n"
                 if selected_peminjaman.deskripsi != input_deskripsi:
                     logmsg += "Ubah isi deskripsi\n"
-                if selected_peminjaman.jumlah_tagihan != input_tagihan:
+                if str(selected_peminjaman.jumlah_tagihan) != input_tagihan:
                     logmsg += "Ubah jumlah tagihan dari " + selected_peminjaman.jumlah_tagihan.__str__() + " ke " + input_tagihan.__str__() + "\n"
 
                 try:
@@ -439,6 +441,7 @@ def formedit(request, peminjaman_id = 0):
         'input_lunas': input_lunas,
         'waktu_bayar': input_tanggal_lunas,
     })
+
 
 
 # Return a form which'll be used to delete peminjaman object to model

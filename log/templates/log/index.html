@@ -192,7 +192,7 @@
                 <tbody>
                    <tr ng-repeat = "logData in logListData | orderBy : column : reverse | filter:{aksi:filterAksi} | filter: inRange(toTimestamp(filterTimeStart),toTimestamp(filterTimeEnd))  ">
                        <td>{[{ logData.tanggal | date:'dd MMM yyyy' : 'UTC' }]}</td>
-                       <td ng-click="openPeminjaman(logData)">{[{ logData.peminjaman_str }]}</td>
+                       <td>{[{ logData.peminjaman_str }]}</td>
                        <td>{[{ logData.aksi }]}</td>
                        <td><pre>{[{ logData.deskripsi }]}</pre></td>
                    </tr>

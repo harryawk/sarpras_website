@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
 import json
-
+import re
 
 # Peminjaman index view, mostly for debugging purpose
 @login_required
@@ -509,15 +509,20 @@ def togglepembayaran(request, peminjaman_id = 0):
 @csrf_exempt
 def filter(request):
         received_json_data = json.loads(request.body)
+        print(received_json_data)
+        rx = re.compile("/[^/]*|[^/]+")
         dateawal = received_json_data[u'dateawal']
-        year_awal = int(dateawal[0:4])
-        month_awal = int(dateawal[5:7])
-        day_awal = int(dateawal[8:10])
+        dateawal = rx.findall(dateawal)
+        year_awal = int(dateawal[2][1:])
+        month_awal = int(dateawal[1][1:])
+        day_awal = int(dateawal[0])
         dateakhir = received_json_data[u'dateakhir']
-        year_akhir = int(dateakhir[0:4])
-        month_akhir = int(dateakhir[5:7])
-        day_akhir = int(dateakhir[8:10])
-        selected_peminjaman = Peminjaman.objects.filter(waktu_awal__gte=datetime(year_awal, month_awal, month_awal),waktu_akhir__lte=datetime(year_akhir, month_akhir, day_akhir)).values()
+        dateakhir = rx.findall(dateakhir)
+        year_akhir = int(dateakhir[2][1:])
+        month_akhir = int(dateakhir[1][1:])
+        day_akhir = int(dateakhir[0])
+        selected_peminjaman = Peminjaman.objects.filter(waktu_awal__gte=datetime(year_awal, month_awal, day_awal),waktu_akhir__lte=datetime(year_akhir, month_akhir, day_akhir,23)).values()
+        print(selected_peminjaman)
         return JsonResponse({'results': list(selected_peminjaman)})
 
 

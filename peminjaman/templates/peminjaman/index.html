@@ -80,7 +80,7 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
     $scope.filterTime = {};
     console.log($scope.filterTime);
     $scope.filterTime.TimeStart = new Date();
-    $scope.filterTime.TimeStart.setMonth(6);
+    $scope.filterTime.TimeStart.setMonth(0);
     $scope.filterTime.TimeStart.setDate(1);
 
     $scope.filterTime.TimeEnd = new Date();
@@ -167,16 +167,20 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
 
 	$scope.fetchajax = function (timeawal,timeakhir)
 			{
-                console.log($scope.filterTime);
+                console.log(timeawal);
+                var timeawalconvert = timeawal.toLocaleDateString();
+                console.log(timeawalconvert);
+                console.log(timeakhir);
+                var timeakhirconvert = timeakhir.toLocaleDateString();;
+                console.log(timeakhirconvert);
                 var req = {
                        method: 'POST',
                        url :  '{% url 'peminjaman:filter' %}',
-                       data:  JSON.stringify({dateawal: timeawal,
-                                              dateakhir: timeakhir})
+                       data:  JSON.stringify({dateawal: timeawalconvert,
+                                              dateakhir: timeakhirconvert})
                     }
                 $http(req).success(function(data, status, headers, config) {
                     var temp = data.results;
-                    console.log(temp);
                     $scope.peminjamanListData = [];
                     angular.forEach(temp, function(value, key){
 
@@ -312,9 +316,9 @@ $(document).ready(function () {
                       <span><b>Filter Tanggal</b></span>
                       <div class="input-group">
                           <span class="input-group-addon">From</span>
-                          <input ng-click= "fetchajax(filterTime.TimeStart,filterTime.TimeEnd)" type="date" ng-model="filterTime.TimeStart" id="id_time_start" class="form-control input-sm"/>
+                          <input ng-change= "fetchajax(filterTime.TimeStart,filterTime.TimeEnd)" type="date" ng-model="filterTime.TimeStart" id="id_time_start" class="form-control input-sm"/>
                           <span class="input-group-addon">to</span>
-                          <input ng-click= "fetchajax(filterTime.TimeStart,filterTime.TimeEnd)" type="date" ng-model="filterTime.TimeEnd" id="id_time_end" class="form-control input-sm"/>
+                          <input ng-change= "fetchajax(filterTime.TimeStart,filterTime.TimeEnd)" type="date" ng-model="filterTime.TimeEnd" id="id_time_end" class="form-control input-sm"/>
                       </div>
                   </div>
                 </div>

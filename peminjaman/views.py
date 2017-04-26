@@ -1,3 +1,5 @@
+import calendar
+
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import JsonResponse
@@ -520,9 +522,23 @@ def filter(request):
         selected_peminjaman = Peminjaman.objects.filter(waktu_awal__gte=datetime(year_awal, month_awal, month_awal),waktu_akhir__lte=datetime(year_akhir, month_akhir, day_akhir)).values()
         return JsonResponse({'results': list(selected_peminjaman)})
 
+def add_months(sourcedate,months):
+    month = sourcedate.month - 1 + months
+    year = int(sourcedate.year + month / 12 )
+    month = month % 12 + 1
+    day = calendar.monthrange(year,month)[1]
+    return date(year,month,day)
 
-def fetchrecord(request, start_year = 2017):
-    prev_year = int(start_year)-1
-    after_year = int(start_year)+1
-    selected_peminjaman = Peminjaman.objects.filter(Q(waktu_awal__year = prev_year) | Q(waktu_awal__year = start_year) | Q(waktu_awal__year = after_year)).values()
+def diff_months(sourcedate,months):
+    year = sourcedate.year
+    month = sourcedate.month
+    if (sourcedate.month < months) :
+        year=year-1
+        month=month+12-months
+    else :
+        month = month - months
+    return date(year, month, 1)
+
+def fetchrecord(request, d = date.today()):
+    selected_peminjaman = Peminjaman.objects.filter(waktu_awal__range = [diff_months(d,2).strftime('%Y-%m-%d'),add_months(d,2).strftime('%Y-%m-%d')]).values()
     return JsonResponse({'results': list(selected_peminjaman)})

@@ -236,6 +236,7 @@
 <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 
 <script type="text/javascript">
    $(document).ready(function() {
@@ -245,9 +246,26 @@
        if (!$('#id_lunas').is(':checked')) {
            $('#id_bayar').attr('value', '');
        }
+
    });
 
    var current_date = '';
+   window.onload = function () {
+       filled = "{{waktu_bayar}}";
+       if (filled != '') {
+           console.log('filled : ' + filled);
+           if (moment(filled, "DD MMMM YYYY")) {
+               console.log("true formatted wrong");
+               $('#id_bayar').attr('value', (moment(filled, "DD MMMM YYYY").format("YYYY-MM-DD")));
+           } else {
+               console.log("no i'm not");
+           }
+       } else {
+//           $('.form-bayar').datepicker({dateFormat: 'dd MMMM yy'}).val();
+           filled = $('#id_bayar').attr('value');
+           console.log('empty : ' + filled);
+       }
+   }
 
    function changed() {
        console.log("get in : " + $('#id_lunas').is(':checked'));

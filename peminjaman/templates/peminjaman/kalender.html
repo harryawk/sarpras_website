@@ -85,9 +85,9 @@
         };
 
 		// get all borrowed room in particular year
-	    function fetchPeminjaman(year){
+	    function fetchPeminjaman(){
             var events = [];
-            $http.get($scope.peminjamanJson + year).success(function(data, status, headers, config) {
+            $http.get($scope.peminjamanJson).success(function(data, status, headers, config) {
 				// EXPERIMENT CODE
                 console.log("SUCCESS");
 				$scope.peminjamanList_GLOBAL = data.results;
@@ -101,9 +101,8 @@
 
 		/* Filtering */		
 		$scope.filterRuangan = "Semua";
-		var date = new Date();
-		var currentYear = date.getFullYear();
-		fetchPeminjaman(currentYear);
+		fetchPeminjaman();
+		console.log("saya"+$scope.peminjamanList_GLOBAL)
 
 		$scope.filterEvents = function(e) {
             var events = [];

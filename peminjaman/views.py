@@ -1,3 +1,5 @@
+import calendar
+
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import JsonResponse
@@ -11,6 +13,8 @@ from log.models import Log
 from datetime import datetime, date
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+
+import json
 
 
 # Peminjaman index view, mostly for debugging purpose
@@ -503,10 +507,38 @@ def togglepembayaran(request, peminjaman_id = 0):
             return JsonResponse({'result': selected_peminjaman.waktu_bayar})
 
     return JsonResponse({'result': 'Nope'})
+@login_required
+@csrf_exempt
+def filter(request):
+        received_json_data = json.loads(request.body)
+        dateawal = received_json_data[u'dateawal']
+        year_awal = int(dateawal[0:4])
+        month_awal = int(dateawal[5:7])
+        day_awal = int(dateawal[8:10])
+        dateakhir = received_json_data[u'dateakhir']
+        year_akhir = int(dateakhir[0:4])
+        month_akhir = int(dateakhir[5:7])
+        day_akhir = int(dateakhir[8:10])
+        selected_peminjaman = Peminjaman.objects.filter(waktu_awal__gte=datetime(year_awal, month_awal, month_awal),waktu_akhir__lte=datetime(year_akhir, month_akhir, day_akhir)).values()
+        return JsonResponse({'results': list(selected_peminjaman)})
 
+def add_months(sourcedate,months):
+    month = sourcedate.month - 1 + months
+    year = int(sourcedate.year + month / 12 )
+    month = month % 12 + 1
+    day = calendar.monthrange(year,month)[1]
+    return date(year,month,day)
 
-def fetchrecord(request, start_year = 2017):
-    prev_year = int(start_year)-1
-    after_year = int(start_year)+1
-    selected_peminjaman = Peminjaman.objects.filter(Q(waktu_awal__year = prev_year) | Q(waktu_awal__year = start_year) | Q(waktu_awal__year = after_year)).values()
+def diff_months(sourcedate,months):
+    year = sourcedate.year
+    month = sourcedate.month
+    if (sourcedate.month < months) :
+        year=year-1
+        month=month+12-months
+    else :
+        month = month - months
+    return date(year, month, 1)
+
+def fetchrecord(request, d = date.today()):
+    selected_peminjaman = Peminjaman.objects.filter(waktu_awal__range = [diff_months(d,2).strftime('%Y-%m-%d'),add_months(d,2).strftime('%Y-%m-%d')]).values()
     return JsonResponse({'results': list(selected_peminjaman)})

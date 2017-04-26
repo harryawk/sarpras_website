@@ -125,3 +125,7 @@ img.img-responsive{
   top: 50%;
   transform: translateY(-50%);
 }
+
+label.control-label {
+    font-weight: 500;
+}

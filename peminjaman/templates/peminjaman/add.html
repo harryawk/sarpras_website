@@ -49,131 +49,150 @@
 	});
 </script>
 <ul class="breadcrumb" style="margin-bottom: 10px;">
-    <li>Peminjaman</li>
+    <li><a href="{% url 'peminjaman:index' %}">Peminjaman</a></li>
     <li class="active">Tambah Peminjaman</li>
 </ul>
-<div class="panel container-fluid">
+<div class="container-fluid">
 <div class="row">
-    <div class="col-lg-10" style="margin-top: 20px;">
+    <div class="col-lg-6 panel " style="padding-top: 20px;">
         <form enctype="multipart/form-data" action="{% url 'peminjaman:add' %}" method="post" id="peminjaman_form" novalidate ng-app="peminjamList" ng-controller="peminjamListController" class="form-horizontal">
             {% csrf_token %}
+            <legend>Formulir Penambahan Peminjaman</legend>
+            <p style="color: red;text-align: right">* wajib diisi</p>
             <fieldset>
                 <div class="form-group">
-                    <label for="id_nomor_surat" class="col-lg-2 control-label">Nomor Surat</label>
+                    <label for="id_nomor_surat" class="col-lg-3 control-label">Nomor Surat</label>
                     <div class="col-lg-9">
-                        <input type="text" name="nomor_surat" id="id_nomor_surat" class="form-control" value="{{ nomor_surat }}"/>
+                        <div class="input-group">
+                            <input type="text" name="nomor_surat" id="id_nomor_surat" class="form-control" value="{{ nomor_surat }}"/>
+                            <span class="input-group-addon" style="font-size: 150%;color: red">*</span>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="id_peminjam" class="col-md-2 control-label">Peminjam</label>
+                    <label for="id_peminjam" class="col-md-3 control-label">Peminjam</label>
                     <div class="col-md-9">
-                        <select name="peminjam" required id="id_peminjam" ng-model="peminjamID" class="form-control">
-                            <option value="" selected>---------</option>
-                            <option value="{[{ peminjamData.id }]}" ng-repeat = "peminjamData in peminjamListData">{[{ peminjamData.nama }]}</option>
-                        </select>
-                    </div>
-                    <div class="col-md-1">
-                        <a id="change_id_peminjam"
-                        href="/peminjam/edit/{[{peminjamID}]}"
-                        title="Change selected peminjam"><img src="/static/admin/img/icon-changelink.svg" alt="Change"/></a>
-                        <a id="add_id_peminjam"
-                        href="{% url 'peminjam:add' %}"
-                        title="Add another peminjam"><img src="/static/admin/img/icon-addlink.svg" alt="Add"/></a>
+                        <div class="input-group">
+                            <select name="peminjam" required id="id_peminjam" ng-model="peminjamID" class="form-control">
+                                <option value="" selected>---------</option>
+                                <option value="{[{ peminjamData.id }]}" ng-repeat = "peminjamData in peminjamListData">{[{ peminjamData.nama }]}</option>
+                            </select>
+                            <span class="input-group-addon" style="font-size: 150%;color: red">*</span>
+                            <a id="change_id_peminjam"
+                            href="/peminjam/edit/{[{peminjamID}]}"
+                            title="Change selected peminjam" class="input-group-addon"><img src="/static/admin/img/icon-changelink.svg" alt="Change"/></a>
+                            <a id="add_id_peminjam"
+                            href="{% url 'peminjam:add' %}"
+                            title="Add another peminjam" class="input-group-addon"><img src="/static/admin/img/icon-addlink.svg" alt="Add"/></a>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="id_ruangan" class="col-lg-2 control-label">Ruangan</label>
-                    <div class="col-lg-9">                          
-                        <select  ng-model="filterTipe" id="id_tipe" class="form-control input-sm">
-                            <option value="" selected>Semua</option>
-                            <option value="Ruang">Ruangan</option>
-                            <option value="Lapangan">Lapangan</option>
-                            <option value="Selasar">Selasar</option>
-                        </select>                        
-                        <select name="ruangan" required id="id_ruangan" ng-model="ruanganID" class="form-control">
-                            <option value="-" selected>---------</option>
-                            <option value="{[{ ruanganData.id }]}" ng-repeat = "ruanganData in ruanganListData | filter:{tipe:filterTipe}">{[{ ruanganData.nama }]}</option>
-                        </select>
-                    </div>
-                    <div class="col-lg-1">
-                        <a id="change_id_ruangan"
-                        href="/ruangan/edit/{[{ruanganID}]}"
-                        title="Change selected ruangan"><img src="/static/admin/img/icon-changelink.svg" alt="Change"/></a>
-                        <a id="add_id_ruangan"
-                        href="{% url 'ruangan:add' %}"
-                        title="Add another ruangan"><img src="/static/admin/img/icon-addlink.svg" alt="Add"/></a>
+                    <label for="id_ruangan" class="col-lg-3 control-label">Ruangan</label>
+                    <div class="col-lg-9">
+                        <div class="input-group">
+                            <div class="input-group">
+                                <span class="input-group-addon" style="padding-right: 20px">Tipe</span>
+                                <select  ng-model="filterTipe" id="id_tipe" class="form-control input-sm">
+                                    <option value="" selected>Semua</option>
+                                    <option value="Ruang">Ruangan</option>
+                                    <option value="Lapangan">Lapangan</option>
+                                    <option value="Selasar">Selasar</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon" style="padding-right: 10px">Nama</span>
+                                <select name="ruangan" required id="id_ruangan" ng-model="ruanganID" class="form-control" style="width: 100%">
+                                    <option value="-" selected>---------</option>
+                                    <option value="{[{ ruanganData.id }]}" ng-repeat = "ruanganData in ruanganListData | filter:{tipe:filterTipe}">{[{ ruanganData.nama }]}</option>
+                                </select>
+                            </div>
+                            <span class="input-group-addon" style="font-size: 150%;color: red">*</span>
+                            <a id="change_id_ruangan"
+                               href="/ruangan/edit/{[{ruanganID}]}"
+                               title="Change selected ruangan" class="input-group-addon"><img src="/static/admin/img/icon-changelink.svg" alt="Change"/></a>
+                            <a id="add_id_ruangan"
+                               href="{% url 'ruangan:add' %}"
+                               title="Add another ruangan" class="input-group-addon"><img src="/static/admin/img/icon-addlink.svg" alt="Add"/></a>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-lg-2 control-label">Waktu awal</label>
-                    <div class="col-md-9">
-                        <div class="form-group">
-                            <label for="id_waktu_awal_0" class="col-md-1 control-label">Date</label>
-                            <div class="col-md-11">
+                    <label class="col-lg-3 control-label">Waktu awal</label>
+                    <div class="col-md-7">
+                        <div class="input-group">
+                            <div class="input-group">
+                                <span class="input-group-addon" style="padding-right: 10px">Tanggal</span>
                                 <input type="date" name="waktu_awal_0" id="id_waktu_awal_0" class="form-control" value="{{ tanggal_awal }}" required />
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="id_waktu_awal_1" class="col-md-1 control-label">Time</label>
-                            <div class="col-md-11">
+                            <div class="input-group">
+                                <span class="input-group-addon" style="padding-right: 30px">Jam</span>
                                 <input type="time" name="waktu_awal_1" id="id_waktu_awal_1" class="form-control" value="{{ pukul_awal }}" required />
                             </div>
+                            <span class="input-group-addon" style="font-size: 150%;color: red">*</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-lg-2 control-label">Waktu awal</label>
-                    <div class="col-md-9">
-                        <div class="form-group">
-                            <label for="id_waktu_akhir_0" class="col-md-1 control-label">Date</label>
-                            <div class="col-md-11">
+                    <label class="col-lg-3 control-label">Waktu akhir</label>
+                    <div class="col-md-7">
+                        <div class="input-group">
+                            <div class="input-group">
+                                <span class="input-group-addon" style="padding-right: 10px">Tanggal</span>
                                 <input type="date" name="waktu_akhir_0" id="id_waktu_akhir_0" class="form-control" value="{{ tanggal_akhir }}" required />
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="id_waktu_akhir_1" class="col-md-1 control-label">Time</label>
-                            <div class="col-md-11">
+                            <div class="input-group">
+                                <span class="input-group-addon" style="padding-right: 25px">Waktu</span>
                                 <input type="time" name="waktu_akhir_1" id="id_waktu_akhir_1" class="form-control" value="{{ pukul_akhir }}" required />
                             </div>
+                            <span class="input-group-addon" style="font-size: 150%;color: red">*</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="id_deskripsi" class="col-lg-2 control-label">Deskripsi</label>
+                    <label for="id_deskripsi" class="col-lg-3 control-label">Deskripsi</label>
                     <div class="col-lg-9">
-                        <textarea name="deskripsi" id="id_deskripsi" maxlength="1000" class="form-control" >{{ input_deskripsi }}</textarea>
+                        <div class="input-group">
+                            <textarea name="deskripsi" id="id_deskripsi" maxlength="1000" class="form-control" >{{ input_deskripsi }}</textarea>
+                            <span class="input-group-addon" style="font-size: 150%;color: red">*</span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="id_harga" class="col-lg-2 control-label">Pembayaran</label>
-                    <div class="col-lg-1">
-                        Rp.
-                    </div>
-                    <div class="col-lg-8" ng-model="ruanganID">
-                        <input type="text" name="harga" id="id_harga" class="form-control" value="{[{ (ruanganListData | filter:{id: ruanganID})[0].harga }]}" ng-if="ruanganID!='-'"/>
-                        <input type="text" name="harga" id="id_harga" class="form-control" value="0" ng-if="ruanganID=='-'"/>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="id_discount" class="col-lg-2 control-label">Diskon</label>
-                    <div class="col-lg-1">
-                        <input type="text" name="discount" id="id_discount" class="form-control" value="{{ diskon }}" />
-                    </div>
-                    <div class="col-lg-1">
-                        %
+                    <label for="id_harga" class="col-lg-3 control-label">Pembayaran</label>
+                    <div class="col-lg-9" ng-model="ruanganID">
+                        <div class="input-group">
+                            <span class="input-group-addon">Rp. </span>
+                            <input type="text" name="harga" id="id_harga" class="form-control" value="{[{ (ruanganListData | filter:{id: ruanganID})[0].harga }]}" ng-if="ruanganID!='-'"/>
+                            <input type="text" name="harga" id="id_harga" class="form-control" value="0" ng-if="ruanganID=='-'"/>
+                            <span class="input-group-addon" style="font-size: 150%;color: red">*</span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-					<label for="id_harga" class="control-label col-lg-2">Unggah foto ruangan jika ada</label>
+                    <label for="id_discount" class="col-lg-3 control-label">Diskon</label>
+                    <div class="col-lg-9">
+                        <div class="input-group">
+                            <input type="text" name="discount" id="id_discount" class="form-control" value="{{ diskon }}" />
+                            <span class="input-group-addon">%</span>
+                            <span class="input-group-addon" style="font-size: 150%;color: red">*</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+					<label for="id_harga" class="control-label col-lg-3">Unggah Poster</label>
 					<div class="col-lg-9">
-						<input type="file" name="foto" class="form-control">
+						<label class="btn btn-default btn-sm">
+							Pilih Foto ...
+							<input type="file" name="foto" style="display: none">
+						</label>
 					</div>
 				</div>
 
@@ -188,11 +207,12 @@
                 </ul>
 
                 <div class="form-group">
-                    <div class="col-lg-10 col-lg-offset-2">
+                    <div class="col-lg-10 col-lg-offset-3">
                         <!--<input type="submit" value="Save" class="default" name="_save" />-->
                         <!--<input type="submit" value="WAWA" >-->
                         <input type="submit" name="save" value="Save" class="btn btn-primary" >
                         <input type="submit" name="save" value="Save and add another" class="btn btn-primary" />
+                        <a href="{% url 'peminjaman:index' %}" class="btn btn-default">Cancel</a>
                         <!--<input type="submit" value="Save and continue editing" name="_continue" />-->
                     </div>
                 </div>
@@ -211,4 +231,5 @@
        $("#id_waktu_akhir_0").datepicker({ dateFormat: "yy-mm-dd" }).val();
    });
 </script>
+
 {% endblock %}

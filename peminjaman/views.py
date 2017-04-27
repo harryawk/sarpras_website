@@ -511,6 +511,7 @@ def togglepembayaran(request, peminjaman_id = 0):
 @csrf_exempt
 def filter(request):
         received_json_data = json.loads(request.body)
+        print(received_json_data)
         rx = re.compile("/[^/]*|[^/]+")
         dateawal = received_json_data[u'dateawal']
         dateawal = rx.findall(dateawal)

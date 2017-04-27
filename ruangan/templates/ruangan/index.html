@@ -206,7 +206,7 @@
 					
 						<tr ng-repeat = "ruanganData in ruanganListData | orderBy : column : reverse | filter:{tipe:filterTipe} | filter:{nama:filterNama}" >
 
-							<td ng-click="go(ruanganData.edit_link)"><a href="#" style="{[{'color: ' + ruanganData.warna}]}">{[{ ruanganData.nama }]}</a></td>
+							<td ng-click="go(ruanganData.edit_link)"><a href="#" style="color: {[{ruanganData.warna}]}">{[{ ruanganData.nama }]}</a></td>
 							<td>{[{ ruanganData.harga }]}</td>
 							<td>{[{ ruanganData.deskripsi }]}</td>
 							<td>{[{ ruanganData.tipe }]}</td>

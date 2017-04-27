@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
+from django.views.generic import RedirectView
 
 urlpatterns = [
     url(r'^peminjam/', include('peminjam.urls')),
@@ -27,4 +28,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^login/$', auth_views.login, kwargs={'template_name': 'login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout, kwargs={'next_page': '/login/'}, name='logout'),
+    url(r'^.*$', RedirectView.as_view(pattern_name='peminjaman:kalender_umum', permanent=False), name='index'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

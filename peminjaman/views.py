@@ -507,6 +507,8 @@ def togglepembayaran(request, peminjaman_id = 0):
             return JsonResponse({'result': selected_peminjaman.waktu_bayar})
 
     return JsonResponse({'result': 'Nope'})
+
+
 @login_required
 @csrf_exempt
 def filter(request):
@@ -525,6 +527,7 @@ def filter(request):
         day_akhir = int(dateakhir[0])
         selected_peminjaman = Peminjaman.objects.filter(waktu_awal__gte=datetime(year_awal, month_awal, day_awal),waktu_akhir__lte=datetime(year_akhir, month_akhir, day_akhir,23)).values()
         return JsonResponse({'results': list(selected_peminjaman)})
+
 
 def add_months(sourcedate,months):
     month = sourcedate.month - 1 + months

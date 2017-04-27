@@ -55,6 +55,13 @@
         {% endfor %}
 
     });
+
+    function deleteData() {
+	    var result = confirm("\nBuang data peminjaman berikut?\n");
+		if (result) {
+		    javascript:window.location='{% url 'peminjaman:delete' selected_peminjaman.id %}';
+		}
+	}
 </script>
 <ul class="breadcrumb" style="margin-bottom: 10px;">
     <li><a href="{% url 'peminjaman:index' %}">Peminjaman</a></li>
@@ -223,7 +230,7 @@
                         <a href="{% url 'peminjaman:index' %}" class="btn btn-default">Cancel</a>
                     </div>
                     <div class="col-lg-3" style="text-align: right">
-                        <input type="button" value="Delete" class="btn btn-danger" onclick="javascript:window.location='{% url 'peminjaman:delete' selected_peminjaman.id %}';" />
+                        <input type="button" value="Delete" class="btn btn-danger" onclick="deleteData()" />
                     </div>
                 </div>
 

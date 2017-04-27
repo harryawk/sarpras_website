@@ -37,6 +37,12 @@
 
 		/* Global Variables */
 		$scope.peminjamanList_GLOBAL = null;
+
+		$scope.dataGambar = '';
+		$scope.something = function(url_gambar) {
+		    console.log('SOMETHING dipanggil');
+            $scope.dataGambar = '/img/' + url_gambar;
+        };
 		
         /* Fetching */
         $scope.peminjamEdit = "{% url 'peminjam:editbase' %}"

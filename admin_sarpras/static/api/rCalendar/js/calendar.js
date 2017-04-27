@@ -275,6 +275,19 @@ angular.module('ui.rCalendar', [])
                 scope.showWeeks = ctrl.showWeeks;
                 scope.showEventDetail = ctrl.showEventDetail;
 
+                scope.varsomething = 'hello';
+                scope.something = function (url_gambar) {
+                    console.log('get SOMETHING');
+                    $('#modalFoto').on('show.bs.modal', function(e) {
+                        console.log('url : ' + url_gambar);
+                        var src = url_gambar;
+                        console.log("src_ruang : " + src);
+                        $(e.currentTarget).find('img[name="fotoRuangan"]').attr('src', src);
+                        $(e.currentTarget).find('img[name="fotoRuangan"]').attr('alt', 'Foto tidak ditemukan');
+                    })
+                };
+
+
                 ctrl.mode = {
                     step: {months: 1}
                 };

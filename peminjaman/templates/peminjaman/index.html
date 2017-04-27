@@ -94,13 +94,23 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
 
     $scope.total = 0;
 
-    $scope.fetchPeminjaman = function(year) {
+    $scope.fetchPeminjaman = function(timeawal,timeakhir) {
 
         $scope.peminjamanListData = [];
 
-        var url = "{% url 'peminjaman:jsonbase' %}" + year;
+        console.log(timeawal);
+        var timeawalconvert = timeawal.toLocaleDateString();
+        console.log(timeawalconvert);
+        console.log(timeakhir);
+        var timeakhirconvert = timeakhir.toLocaleDateString();;
+        console.log(timeakhirconvert);
+        var req = {
+            method: 'POST',
+            url :  '{% url 'peminjaman:filter' %}',
+            data:  JSON.stringify({dateawal: timeawalconvert, dateakhir: timeakhirconvert})
+        }
 
-        $http.get(url).success(function(data, status, headers, config) {
+        $http(req).success(function(data, status, headers, config) {
             var temp = data.results;
             angular.forEach(temp, function(value, key){
 
@@ -151,7 +161,7 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
         });
     };
 
-    $scope.fetchPeminjaman(new Date().getFullYear());
+    $scope.fetchPeminjaman($scope.filterTime.TimeStart,$scope.filterTime.TimeEnd);
 
     $scope.togglePembayaran = function ( peminjaman ) {
         var req = {

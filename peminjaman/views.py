@@ -511,7 +511,6 @@ def togglepembayaran(request, peminjaman_id = 0):
 @csrf_exempt
 def filter(request):
         received_json_data = json.loads(request.body)
-        print(received_json_data)
         rx = re.compile("/[^/]*|[^/]+")
         dateawal = received_json_data[u'dateawal']
         dateawal = rx.findall(dateawal)
@@ -524,7 +523,6 @@ def filter(request):
         month_akhir = int(dateakhir[1][1:])
         day_akhir = int(dateakhir[0])
         selected_peminjaman = Peminjaman.objects.filter(waktu_awal__gte=datetime(year_awal, month_awal, day_awal),waktu_akhir__lte=datetime(year_akhir, month_akhir, day_akhir,23)).values()
-        print(selected_peminjaman)
         return JsonResponse({'results': list(selected_peminjaman)})
 
 def add_months(sourcedate,months):
@@ -545,5 +543,6 @@ def diff_months(sourcedate,months):
     return date(year, month, 1)
 
 def fetchrecord(request, d = date.today()):
-    selected_peminjaman = Peminjaman.objects.filter(waktu_awal__range = [diff_months(d,2).strftime('%Y-%m-%d'),add_months(d,2).strftime('%Y-%m-%d')]).values()
+    selected_peminjaman = Peminjaman.objects.filter(waktu_awal__range = [diff_months(d,6).strftime('%Y-%m-%d'),add_months(d,6).strftime('%Y-%m-%d')]).values()
     return JsonResponse({'results': list(selected_peminjaman)})
+

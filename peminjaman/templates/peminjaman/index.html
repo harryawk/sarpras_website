@@ -97,13 +97,8 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
     $scope.fetchPeminjaman = function(timeawal,timeakhir) {
 
         $scope.peminjamanListData = [];
-
-        console.log(timeawal);
-        var timeawalconvert = timeawal.toLocaleDateString();
-        console.log(timeawalconvert);
-        console.log(timeakhir);
-        var timeakhirconvert = timeakhir.toLocaleDateString();;
-        console.log(timeakhirconvert);
+        var timeawalconvert = timeawal.toLocaleDateString("in_ID");
+        var timeakhirconvert = timeakhir.toLocaleDateString("in_ID");
         var req = {
             method: 'POST',
             url :  '{% url 'peminjaman:filter' %}',
@@ -177,12 +172,8 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
 
 	$scope.fetchajax = function (timeawal,timeakhir)
 			{
-                console.log(timeawal);
-                var timeawalconvert = timeawal.toLocaleDateString();
-                console.log(timeawalconvert);
-                console.log(timeakhir);
-                var timeakhirconvert = timeakhir.toLocaleDateString();;
-                console.log(timeakhirconvert);
+                var timeawalconvert = timeawal.toLocaleDateString("in_ID");
+                var timeakhirconvert = timeakhir.toLocaleDateString("in_ID");
                 var req = {
                        method: 'POST',
                        url :  '{% url 'peminjaman:filter' %}',

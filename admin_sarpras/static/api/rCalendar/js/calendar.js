@@ -275,8 +275,7 @@ angular.module('ui.rCalendar', [])
                 scope.showWeeks = ctrl.showWeeks;
                 scope.showEventDetail = ctrl.showEventDetail;
 
-                scope.varsomething = 'hello';
-                scope.something = function (url_gambar) {
+                scope.showImageDetail = function (url_gambar) {
                     console.log('get SOMETHING');
                     $('#modalFoto').on('show.bs.modal', function(e) {
                         console.log('url : ' + url_gambar);

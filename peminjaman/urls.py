@@ -27,6 +27,10 @@ urlpatterns = [
     url(r'^json/$', views.fetchrecord, name='jsonbase'),
     url(r'^json/(?P<start_year>[0-9]+)/$', views.fetchrecord, name='json'),
 
+    # /peminjaman/json_umum/2016
+    url(r'^json_umum/$', views.fetchrecord_umum, name='jsonbase_umum'),
+    url(r'^json_umum/(?P<start_year>[0-9]+)/$', views.fetchrecord_umum, name='json_umum'),
+
     # /peminjaman/bayar/2
     url(r'^bayar/$', views.togglepembayaran, name='bayarbase'),
     url(r'^bayar/(?P<peminjaman_id>[0-9]+)/$', views.togglepembayaran, name='bayar'),

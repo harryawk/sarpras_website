@@ -24,6 +24,10 @@ def formadd(request):
     new_deskripsi = request.POST.get("deskripsi", '')
     new_tipe = request.POST.get("tipe",'Selasar')
     new_warna = request.POST.get('warna', '#000000')
+    if request.POST.get('restrict', False):
+        new_restricted = True
+    else:
+        new_restricted = False
 
     error = []
     message = []
@@ -51,6 +55,7 @@ def formadd(request):
                 deskripsi = new_deskripsi,
 				tipe = new_tipe,
                 warna = new_warna,
+                restricted = new_restricted
             )
             if len(request.FILES) != 0:
                 new_ruangan.foto = request.FILES['foto']
@@ -74,6 +79,7 @@ def formadd(request):
         'deskripsi': new_deskripsi,
 		'tipe': new_tipe,
         'warna': new_warna,
+        'restrict' : new_restricted
     })
 
 
@@ -93,6 +99,10 @@ def formedit(request, ruangan_id = 0):
     new_deskripsi = request.POST.get("deskripsi", '')
     new_tipe = request.POST.get("tipe", 'Selasar')
     new_warna = request.POST.get('warna', '#000000')
+    if request.POST.get('restrict', False):
+        new_restricted = True
+    else:
+        new_restricted = False
 
     error = []
     message = []
@@ -119,6 +129,7 @@ def formedit(request, ruangan_id = 0):
             selected_ruangan.deskripsi = new_deskripsi
             selected_ruangan.tipe = new_tipe
             selected_ruangan.warna = new_warna
+            selected_ruangan.restricted = new_restricted
             if len(request.FILES) != 0:
                 selected_ruangan.foto.delete()
                 selected_ruangan.foto = request.FILES['foto']
@@ -128,6 +139,7 @@ def formedit(request, ruangan_id = 0):
                 selected_ruangan.save()
             except Exception as e:
                 message += ["Unhandled Exception", ]
+                print(e)
             else:
                 return redirect(reverse('ruangan:index'))
 

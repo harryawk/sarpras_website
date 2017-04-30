@@ -188,11 +188,11 @@
 								var waktuAkhirTemp = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(),
 									waktuAwal.getDate(), 24, 0, 0, 0);
 								events.push({
-									title: filterByRuangan,
+									title: filterByPeminjam,
 									startTime: waktuAwal,
 									endTime: waktuAkhirTemp,
 									allDay: false,
-									borrower: peminjamTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id),
+									room: ruanganTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].ruangan_id),
 									description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
 									fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
 									fotoRuangan: fotoRuangan,
@@ -203,11 +203,11 @@
 							}
 							
 							events.push({
-								title: filterByRuangan,
+								title: filterByPeminjam,
 								startTime: waktuAwal,
 								endTime: waktuAkhir,
 								allDay: false,
-								borrower: peminjamTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id),
+								room: ruanganTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].ruangan_id),
 								description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
 								fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
 								fotoRuangan: fotoRuangan,

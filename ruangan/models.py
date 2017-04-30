@@ -31,6 +31,7 @@ class Ruangan(models.Model):
     tipe = models.CharField(max_length=50, choices=PILIHAN_TIPE_RUANG, default=SELASAR)
 
     foto = models.ImageField(upload_to=ruangan_foto_dir, max_length=500, blank=True)
+    restricted = models.BooleanField(default=False, db_index=True)
 
     warna = models.CharField(max_length=10, unique=True)
 

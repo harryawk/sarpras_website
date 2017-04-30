@@ -85,6 +85,18 @@
 					</div>
 				</div>
 
+				<div class="form-group">
+					<label for="id_restrict" class="control-label col-lg-3">Restrict Ruangan</label>
+					<div class="col-lg-2">
+						<div class="input-group">
+							<label class="btn btn-default btn-sm">
+								Apakah Ruangan Disembunyikan
+								<input name="restrict" id="id_restrict" type="checkbox" class="form-control" {% if selected_ruangan.restricted %} checked {% endif %} />
+							</label>
+						</div>
+					</div>
+				</div>
+
 				<ul>
 				{% for error_item in error %}
 					<li>{{ error_item }}</li>

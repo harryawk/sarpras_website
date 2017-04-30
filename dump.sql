@@ -1,8 +1,8 @@
--- MySQL dump 10.16  Distrib 10.1.16-MariaDB, for Win32 (AMD64)
+-- MySQL dump 10.16  Distrib 10.1.10-MariaDB, for Win32 (AMD64)
 --
 -- Host: localhost    Database: sarpras_peminjamanruang
 -- ------------------------------------------------------
--- Server version	10.1.16-MariaDB
+-- Server version	10.1.10-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -116,7 +116,7 @@ CREATE TABLE `auth_user` (
   `date_joined` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,7 +125,7 @@ CREATE TABLE `auth_user` (
 
 LOCK TABLES `auth_user` WRITE;
 /*!40000 ALTER TABLE `auth_user` DISABLE KEYS */;
-INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$30000$9ZRmSHvbqGFD$Ea0QvUjW72m8Oprj7VJVADJKMXRlf8MhTrSD4h42oAA=','2017-03-17 12:12:01.552669',1,'developer','','','dev@temporary.com',1,1,'2017-03-17 08:36:26.688160');
+INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$30000$9ZRmSHvbqGFD$Ea0QvUjW72m8Oprj7VJVADJKMXRlf8MhTrSD4h42oAA=',NULL,1,'developer','','','dev@temporary.com',1,1,'2017-03-17 08:36:26.688160'),(2,'pbkdf2_sha256$30000$pOHiPbXnb7pt$zbq0iTa9gnQjr13EDFUElIkMQ/CHFvaRlGoSH8COnOY=','2017-03-23 20:16:39.240000',1,'admin','','','admin@sarpras.com',1,1,'2017-03-21 03:42:37.586000');
 /*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -206,7 +206,7 @@ CREATE TABLE `django_admin_log` (
   KEY `django_admin_log_user_id_c564eba6_fk_auth_user_id` (`user_id`),
   CONSTRAINT `django_admin__content_type_id_c4bce8eb_fk_django_content_type_id` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
   CONSTRAINT `django_admin_log_user_id_c564eba6_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -215,7 +215,6 @@ CREATE TABLE `django_admin_log` (
 
 LOCK TABLES `django_admin_log` WRITE;
 /*!40000 ALTER TABLE `django_admin_log` DISABLE KEYS */;
-INSERT INTO `django_admin_log` VALUES (1,'2017-03-20 05:37:21.277404','5','LapanganA - L',1,'[{\"added\": {}}]',10,1),(2,'2017-03-20 05:37:37.804381','6','Selasar B - S',1,'[{\"added\": {}}]',10,1),(3,'2017-03-20 05:38:23.779055','6','SelasarB - S',2,'[{\"changed\": {\"fields\": [\"nama\"]}}]',10,1),(4,'2017-03-20 05:49:06.529059','5','ClassB : LapanganA - L, 2017-03-20 12:47:43+07:00 -> 2017-03-21 12:47:44+07:00',1,'[{\"added\": {}}]',9,1),(5,'2017-03-20 05:49:40.555091','6','ClassB : SelasarB - S, 2017-03-20 12:49:29+07:00 -> 2017-03-21 12:49:32+07:00',1,'[{\"added\": {}}]',9,1),(6,'2017-03-20 05:49:46.094351','6','ClassB : SelasarB - S, 2017-03-20 12:49:29+07:00 -> 2017-03-21 12:49:32+07:00',2,'[]',9,1),(7,'2017-03-20 05:50:02.506994','7','ClassA : LapanganA - L, 2017-03-22 12:49:53+07:00 -> 2017-03-24 12:49:55+07:00',1,'[{\"added\": {}}]',9,1);
 /*!40000 ALTER TABLE `django_admin_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -258,7 +257,7 @@ CREATE TABLE `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -267,7 +266,7 @@ CREATE TABLE `django_migrations` (
 
 LOCK TABLES `django_migrations` WRITE;
 /*!40000 ALTER TABLE `django_migrations` DISABLE KEYS */;
-INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2017-03-16 08:00:09.097205'),(2,'auth','0001_initial','2017-03-16 08:00:33.193920'),(3,'admin','0001_initial','2017-03-16 08:00:41.330959'),(4,'admin','0002_logentry_remove_auto_add','2017-03-16 08:00:41.368961'),(5,'contenttypes','0002_remove_content_type_name','2017-03-16 08:00:43.311072'),(6,'auth','0002_alter_permission_name_max_length','2017-03-16 08:00:45.145177'),(7,'auth','0003_alter_user_email_max_length','2017-03-16 08:00:46.786271'),(8,'auth','0004_alter_user_username_opts','2017-03-16 08:00:46.835274'),(9,'auth','0005_alter_user_last_login_null','2017-03-16 08:00:49.731440'),(10,'auth','0006_require_contenttypes_0002','2017-03-16 08:00:50.321473'),(11,'auth','0007_alter_validators_add_error_messages','2017-03-16 08:00:50.696495'),(12,'auth','0008_alter_user_username_max_length','2017-03-16 08:00:53.774671'),(13,'sessions','0001_initial','2017-03-16 08:00:55.120748'),(14,'peminjam','0001_initial','2017-03-17 12:07:20.754651'),(15,'ruangan','0001_initial','2017-03-17 12:07:21.647702'),(16,'peminjaman','0001_initial','2017-03-17 12:07:50.675362'),(17,'ruangan','0002_auto_20170324_1301','2017-03-24 06:01:18.633080');
+INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2017-03-16 08:00:09.097205'),(2,'auth','0001_initial','2017-03-16 08:00:33.193920'),(3,'admin','0001_initial','2017-03-16 08:00:41.330959'),(4,'admin','0002_logentry_remove_auto_add','2017-03-16 08:00:41.368961'),(5,'contenttypes','0002_remove_content_type_name','2017-03-16 08:00:43.311072'),(6,'auth','0002_alter_permission_name_max_length','2017-03-16 08:00:45.145177'),(7,'auth','0003_alter_user_email_max_length','2017-03-16 08:00:46.786271'),(8,'auth','0004_alter_user_username_opts','2017-03-16 08:00:46.835274'),(9,'auth','0005_alter_user_last_login_null','2017-03-16 08:00:49.731440'),(10,'auth','0006_require_contenttypes_0002','2017-03-16 08:00:50.321473'),(11,'auth','0007_alter_validators_add_error_messages','2017-03-16 08:00:50.696495'),(12,'auth','0008_alter_user_username_max_length','2017-03-16 08:00:53.774671'),(13,'sessions','0001_initial','2017-03-16 08:00:55.120748'),(14,'peminjam','0001_initial','2017-03-17 12:07:20.754651'),(15,'ruangan','0001_initial','2017-03-17 12:07:21.647702'),(16,'peminjaman','0001_initial','2017-03-17 12:07:50.675362'),(17,'peminjaman','0002_auto_20170407_1401','2017-04-12 20:11:07.044000'),(18,'log','0001_initial','2017-04-12 20:11:08.531000'),(19,'log','0002_log_peminjaman_str','2017-04-12 20:11:09.217000');
 /*!40000 ALTER TABLE `django_migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -293,8 +292,37 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-INSERT INTO `django_session` VALUES ('1kn81vxhfqs00ya2izc47cm7tz7a5d3i','MDQzY2NjODUxNDgwNzliYjBhNWFlYmU1ZWYyNjZmYTBmMmY2MzJhZTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI3NGRkYjYwNzVhNDIxZmU1YWIyMDk2NTdiOWYyMjUwMzNlNTM2YTQ2In0=','2017-03-31 12:12:01.668675');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `log_log`
+--
+
+DROP TABLE IF EXISTS `log_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `log_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tanggal` date NOT NULL,
+  `deskripsi` varchar(1000) NOT NULL,
+  `aksi` varchar(50) NOT NULL,
+  `peminjaman_id` int(11) DEFAULT NULL,
+  `peminjaman_str` varchar(500) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `log_log_peminjaman_id_4e5e782c_fk_peminjaman_peminjaman_id` (`peminjaman_id`),
+  KEY `log_log_6a038e6b` (`tanggal`),
+  CONSTRAINT `log_log_peminjaman_id_4e5e782c_fk_peminjaman_peminjaman_id` FOREIGN KEY (`peminjaman_id`) REFERENCES `peminjaman_peminjaman` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `log_log`
+--
+
+LOCK TABLES `log_log` WRITE;
+/*!40000 ALTER TABLE `log_log` DISABLE KEYS */;
+/*!40000 ALTER TABLE `log_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -310,7 +338,7 @@ CREATE TABLE `peminjam_peminjam` (
   `deskripsi` varchar(1000) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nama` (`nama`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -319,37 +347,8 @@ CREATE TABLE `peminjam_peminjam` (
 
 LOCK TABLES `peminjam_peminjam` WRITE;
 /*!40000 ALTER TABLE `peminjam_peminjam` DISABLE KEYS */;
-INSERT INTO `peminjam_peminjam` VALUES (1,'ClassB','Ini kelas B'),(2,'ClassA','Ini Kelas A yang lama'),(3,'ClassC','Test nambah peminjam');
+INSERT INTO `peminjam_peminjam` VALUES (1,'Organisasi_sample_1','Deskripsi dari Organisasi_sample_1');
 /*!40000 ALTER TABLE `peminjam_peminjam` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `peminjaman_pembayaran`
---
-
-DROP TABLE IF EXISTS `peminjaman_pembayaran`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `peminjaman_pembayaran` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `waktu_bayar` datetime(6) DEFAULT NULL,
-  `deskripsi` varchar(1000) NOT NULL,
-  `tipe` varchar(50) NOT NULL,
-  `peminjaman_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `peminjaman_pembayaran_8395f832` (`tipe`),
-  KEY `peminjaman_pe_peminjaman_id_895f504f_fk_peminjaman_peminjaman_id` (`peminjaman_id`),
-  CONSTRAINT `peminjaman_pe_peminjaman_id_895f504f_fk_peminjaman_peminjaman_id` FOREIGN KEY (`peminjaman_id`) REFERENCES `peminjaman_peminjaman` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `peminjaman_pembayaran`
---
-
-LOCK TABLES `peminjaman_pembayaran` WRITE;
-/*!40000 ALTER TABLE `peminjaman_pembayaran` DISABLE KEYS */;
-/*!40000 ALTER TABLE `peminjaman_pembayaran` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -366,14 +365,18 @@ CREATE TABLE `peminjaman_peminjaman` (
   `deskripsi` varchar(1000) NOT NULL,
   `peminjam_id` int(11) NOT NULL,
   `ruangan_id` int(11) NOT NULL,
+  `jumlah_tagihan` decimal(65,2) NOT NULL,
+  `no_laporan` varchar(500) NOT NULL,
+  `waktu_bayar` date,
   PRIMARY KEY (`id`),
   KEY `peminjaman_peminjam_peminjam_id_7847fe58_fk_peminjam_peminjam_id` (`peminjam_id`),
   KEY `peminjaman_peminjaman_ruangan_id_1c45be5c_fk_ruangan_ruangan_id` (`ruangan_id`),
   KEY `peminjaman_peminjaman_66b6a27e` (`waktu_awal`),
   KEY `peminjaman_peminjaman_f7d5e278` (`waktu_akhir`),
+  KEY `peminjaman_peminjaman_d881b253` (`no_laporan`),
   CONSTRAINT `peminjaman_peminjam_peminjam_id_7847fe58_fk_peminjam_peminjam_id` FOREIGN KEY (`peminjam_id`) REFERENCES `peminjam_peminjam` (`id`),
   CONSTRAINT `peminjaman_peminjaman_ruangan_id_1c45be5c_fk_ruangan_ruangan_id` FOREIGN KEY (`ruangan_id`) REFERENCES `ruangan_ruangan` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -397,10 +400,10 @@ CREATE TABLE `ruangan_ruangan` (
   `nama` varchar(250) NOT NULL,
   `harga` bigint(20) NOT NULL,
   `deskripsi` varchar(1000) NOT NULL,
-  `tipe` varchar(50) NOT NULL,
+  `tipe` varchar(50) NOT NULL DEFAULT 'Selasar',
   PRIMARY KEY (`id`),
   UNIQUE KEY `nama` (`nama`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -409,7 +412,6 @@ CREATE TABLE `ruangan_ruangan` (
 
 LOCK TABLES `ruangan_ruangan` WRITE;
 /*!40000 ALTER TABLE `ruangan_ruangan` DISABLE KEYS */;
-INSERT INTO `ruangan_ruangan` VALUES (7,'LapanganA',10000,'Ini Lapangan A','Lapangan'),(8,'SelasarB',50000,'Ini Selasar B','Selasar');
 /*!40000 ALTER TABLE `ruangan_ruangan` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -422,4 +424,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-24 13:15:58
+-- Dump completed on 2017-04-13  3:22:46

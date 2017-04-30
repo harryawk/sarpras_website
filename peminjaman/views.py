@@ -1,3 +1,5 @@
+import calendar
+
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import JsonResponse
@@ -12,6 +14,8 @@ from datetime import datetime, date
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
+import json
+import re
 
 # Peminjaman index view, mostly for debugging purpose
 @login_required
@@ -53,16 +57,6 @@ def formadd(request):
     input_nomor_surat = request.POST.get('nomor_surat', '')
     input_diskon = request.POST.get('discount', 0) # only for minus of input_tagihan
 
-    print "==========BEFORE============"
-    print "tanggal_awal ", tanggal_awal
-    print "tanggal_akhir ", tanggal_akhir
-    print "pukul_awal ", pukul_awal
-    print "pukul_akhir ", pukul_akhir
-    print "input_deskripsi ", input_deskripsi
-    print "input_tagihan ", input_tagihan
-    print "input_diskon ", input_diskon
-    print "input_nomor_surat ", input_nomor_surat
-
     errormsg = []
     messages = []
     obj_ruangan = None
@@ -87,19 +81,6 @@ def formadd(request):
         # Ambil data hasil input dari user
         input_peminjam = request.POST['peminjam']
         input_ruangan = request.POST['ruangan']
-
-        print "==========AFTER============"
-        print "input_peminjam ", input_peminjam
-        print "input_ruangan ", input_ruangan
-        print "tanggal_awal ", tanggal_awal
-        print "tanggal_akhir ", tanggal_akhir
-        print "pukul_awal ", pukul_awal
-        print "pukul_akhir ", pukul_akhir
-        print "input_deskripsi ", input_deskripsi
-        print "input_tagihan ", input_tagihan
-        print "input_diskon ", input_diskon
-        print "input_nomor_surat ", input_nomor_surat
-        print "input_tanggal_lunas ", waktu_bayar_t
 
         # Ambil dan parsing tanggal-jam mulai pinjam dari form
         tanggal_mulai_pinjam = datetime.strptime(tanggal_awal, "%Y-%m-%d")
@@ -252,39 +233,16 @@ def formedit(request, peminjaman_id = 0):
     else:
         input_tanggal_lunas = date.today().strftime("%Y-%m-%d")
 
-    print "==============BEFORE============="
-    print "tanggal_awal ", tanggal_awal
-    print "tanggal_akhir ", tanggal_akhir
-    print "pukul_awal ", pukul_awal
-    print "pukul_akhir ", pukul_akhir
-    print "input_deskripsi ", input_deskripsi
-    print "input_tagihan ", input_tagihan
-    print "input_nomor_surat ", input_nomor_surat
-    print "input_lunas ", input_lunas
-    # print "input_tanggal_lunas ", input_tanggal_lunas
-
     errormsg = []
     messages = []
 
     if request.method == 'POST':
 
-        print "==============AFTER============="
-        print "tanggal_awal ", tanggal_awal
-        print "tanggal_akhir ", tanggal_akhir
-        print "pukul_awal ", pukul_awal
-        print "pukul_akhir ", pukul_akhir
-        print "input_deskripsi ", input_deskripsi
-        print "input_tagihan ", input_tagihan
-        print "input_nomor_surat ", input_nomor_surat
-        print "input_tanggal_lunas ", input_tanggal_lunas
-
         try:
             input_lunas = request.POST['lunas']
         except Exception:
-            print "masuk exception"
             input_lunas = ''
 
-        print "input_lunas ", input_lunas
         if input_tanggal_lunas == None:
             try:
                 input_tanggal_lunas = request.POST['tanggal_bayar']
@@ -304,7 +262,6 @@ def formedit(request, peminjaman_id = 0):
         if input_tagihan <= 0 and waktu_bayar_t == None:
             waktu_bayar_t = date.today()
 
-        print "waktu_bayar_t ", waktu_bayar_t
         if waktu_bayar_t != None:
             try:
                 waktu_bayar_t = datetime.strptime(waktu_bayar_t, "%d %B %Y")
@@ -312,8 +269,6 @@ def formedit(request, peminjaman_id = 0):
             except Exception as e:
                 # Nothing's need to be changed
                 pass
-
-        print "waktu_bayar_t ", waktu_bayar_t
 
 
         # Ambil data hasil input dari user
@@ -407,7 +362,6 @@ def formedit(request, peminjaman_id = 0):
                     if len(request.FILES) != 0:
                         selected_peminjaman.foto.delete()
                         selected_peminjaman.foto = request.FILES['foto']
-                        print selected_peminjaman.foto
                     selected_peminjaman.save()
                     new_log = Log(peminjaman=selected_peminjaman,
                                   peminjaman_str=selected_peminjaman.__str__(),
@@ -505,8 +459,47 @@ def togglepembayaran(request, peminjaman_id = 0):
     return JsonResponse({'result': 'Nope'})
 
 
-def fetchrecord(request, start_year = 2017):
-    prev_year = int(start_year)-1
-    after_year = int(start_year)+1
-    selected_peminjaman = Peminjaman.objects.filter(Q(waktu_awal__year = prev_year) | Q(waktu_awal__year = start_year) | Q(waktu_awal__year = after_year)).values()
+@login_required
+@csrf_exempt
+def filter(request):
+        received_json_data = json.loads(request.body)
+        print(received_json_data)
+        rx = re.compile("/[^/]*|[^/]+")
+        dateawal = received_json_data[u'dateawal']
+        dateawal = rx.findall(dateawal)
+        year_awal = int(dateawal[2][1:])
+        month_awal = int(dateawal[1][1:])
+        day_awal = int(dateawal[0])
+        dateakhir = received_json_data[u'dateakhir']
+        dateakhir = rx.findall(dateakhir)
+        year_akhir = int(dateakhir[2][1:])
+        month_akhir = int(dateakhir[1][1:])
+        day_akhir = int(dateakhir[0])
+        selected_peminjaman = Peminjaman.objects.filter(waktu_awal__gte=datetime(year_awal, month_awal, day_awal),waktu_akhir__lte=datetime(year_akhir, month_akhir, day_akhir,23)).values()
+        return JsonResponse({'results': list(selected_peminjaman)})
+def add_months(sourcedate,months):
+    month = sourcedate.month - 1 + months
+    year = int(sourcedate.year + month / 12 )
+    month = month % 12 + 1
+    day = calendar.monthrange(year,month)[1]
+    return date(year,month,day)
+def diff_months(sourcedate,months):
+    year = sourcedate.year
+    month = sourcedate.month
+    if (sourcedate.month < months) :
+        year=year-1
+        month=month+12-months
+    else :
+        month = month - months
+    return date(year, month, 1)
+
+
+@login_required
+def fetchrecord(request, d = date.today()):
+    selected_peminjaman = Peminjaman.objects.filter(waktu_awal__range = [diff_months(d,6).strftime('%Y-%m-%d'),add_months(d,6).strftime('%Y-%m-%d')]).values()
+    return JsonResponse({'results': list(selected_peminjaman)})
+
+
+def fetchrecord_umum(request, d = date.today()):
+    selected_peminjaman = Peminjaman.objects.filter(waktu_awal__range = [diff_months(d,6).strftime('%Y-%m-%d'),add_months(d,6).strftime('%Y-%m-%d')]).filter(ruangan__restricted = False).values()
     return JsonResponse({'results': list(selected_peminjaman)})

@@ -68,6 +68,8 @@
 			deskripsi:"{{ ruangan.deskripsi }}",
 			tipe:"{{ ruangan.tipe }}",
 			foto:"{{ ruangan.foto }}",
+			warna:"{{ ruangan.warna }}",
+			restricted:"{{ ruangan.restricted }}",
 			edit_link: "{% url 'ruangan:edit' ruangan.id %}",
 			delete_link: "{% url 'ruangan:delete' ruangan.id %}"
 		});
@@ -200,18 +202,21 @@
 							<th ng-click="sort('harga')" ng-class="sortClass('harga')">Price</th>
 							<th ng-click="sort('deskripsi')" ng-class="sortClass('deskripsi')">Description</th>
 							<th ng-click="sort('tipe')" ng-class="sortClass('tipe')">Type</th>
+                            <th ng-click="sort('restricted')" ng-class="sortClass('restricted')">Tersembunyi</th>
 							<th ng-click="sort('foto')" ng-class="sortClass('foto')">Foto</th>
 						</tr>
 					
 						<tr ng-repeat = "ruanganData in ruanganListData | orderBy : column : reverse | filter:{tipe:filterTipe} | filter:{nama:filterNama}" >
 
-							<td ng-click="go(ruanganData.edit_link)"><a href="#">{[{ ruanganData.nama }]}</a></td>
+							<td ng-click="go(ruanganData.edit_link)"><a href="#" style="color: {[{ruanganData.warna}]}">{[{ ruanganData.nama }]}</a></td>
 							<td>{[{ ruanganData.harga }]}</td>
 							<td>{[{ ruanganData.deskripsi }]}</td>
 							<td>{[{ ruanganData.tipe }]}</td>
-                            <td data-toggle="modal" data-target="#modalFoto" data-img-source="/img/{[{ ruanganData.foto }]}" data-nama="{[{ ruanganData.nama }]}">
+                            <td>{[{ ruanganData.restricted }]}</td>
+                            <td>
                                 <div class="square">
-                                    <img src="/img/{[{ ruanganData.foto }]}" alt="{[{ ruanganData.nama }]}" class="img-responsive">
+                                    <img data-toggle="modal" data-target="#modalFoto" data-img-source="/img/{[{ ruanganData.foto }]}" data-nama="{[{ ruanganData.nama }]}"
+                                            ng-show="{[{ ruanganData.foto }]}" style="cursor: pointer" src="/img/{[{ ruanganData.foto }]}" alt="{[{ ruanganData.nama }]}" class="img-responsive">
                                 </div>
                             </td>
 
@@ -270,4 +275,3 @@
 </div>
 
 {% endblock %}
-

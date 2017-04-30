@@ -57,9 +57,14 @@
                                 </div>
                             </div>
                             <div class="col-md-8">
-                                <p style="margin-bottom: 0">
+                                <p style="margin-bottom: 0" ng-show="{{event.roomOrBorrower}}">
                                     <b>Peminjam, </b>{{event.borrower}}
                                 </p>
+								
+								<p style="margin-bottom: 0" ng-show="{{event.roomOrBorrower == false}}">
+                                    <b>Ruangan, </b>{{event.borrower}}
+                                </p>
+								
                                 <p ng-if="!event.allDay" style="margin-bottom: 0">
                                     <b>Waktu, </b>{{event.startTime|date: 'HH:mm': 'UTC+0700' }} - {{event.endTime|date: 'HH:mm': 'UTC+0700' }}
                                 </p>

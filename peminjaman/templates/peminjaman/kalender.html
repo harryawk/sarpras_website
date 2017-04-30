@@ -82,8 +82,11 @@
                     filterByRuangan = $scope.ruanganList[i].nama;
                     fotoRuangan =  $scope.ruanganList[i].foto;
                     warnaRuangan = $scope.ruanganList[i].warna;
+					
+					return $scope.ruanganList[i].nama; 
                 }
             }
+			return;
         };
 
 		// get all borrowed room in particular year
@@ -133,6 +136,8 @@
                             fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
                             fotoRuangan: fotoRuangan,
                             warnaRuang: warnaRuangan,
+							
+							roomOrBorrower: true
                         });
                         waktuAwal = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(),
                             waktuAwal.getDate()+1, 0, 0, 0, 0);
@@ -147,6 +152,8 @@
                         fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
                         fotoRuangan: fotoRuangan,
                         warnaRuang: warnaRuangan,
+						
+						roomOrBorrower: true
 					});
 
 
@@ -165,6 +172,8 @@
                                 fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
                                 fotoRuangan: fotoRuangan,
                                 warnaRuang: warnaRuangan,
+								
+								roomOrBorrower: true
                             });
                             waktuAwal = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(),
                                 waktuAwal.getDate()+1, 0, 0, 0, 0);
@@ -179,6 +188,8 @@
                             fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
                             fotoRuangan: fotoRuangan,
                             warnaRuang: warnaRuangan,
+							
+							roomOrBorrower: true
 						});
 
 					} else {
@@ -192,11 +203,13 @@
 									startTime: waktuAwal,
 									endTime: waktuAkhirTemp,
 									allDay: false,
-									room: ruanganTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].ruangan_id),
+									borrower: ruanganTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].ruangan_id),
 									description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
 									fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
 									fotoRuangan: fotoRuangan,
 									warnaRuang: warnaRuangan,
+									
+									roomOrBorrower: false
 								});
 								waktuAwal = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(),
 									waktuAwal.getDate()+1, 0, 0, 0, 0);
@@ -207,11 +220,13 @@
 								startTime: waktuAwal,
 								endTime: waktuAkhir,
 								allDay: false,
-								room: ruanganTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].ruangan_id),
+								borrower: ruanganTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].ruangan_id),
 								description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
 								fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
 								fotoRuangan: fotoRuangan,
 								warnaRuang: warnaRuangan,
+								
+								roomOrBorrower: false
 							});
 						}
 						

@@ -160,15 +160,8 @@
 
 				} else {
 				
-					console.log("filterbyruangan: " + filterByRuangan);
-					console.log("filterbypeminjam: " + filterByPeminjam);
-					console.log("filterruangan: " + $scope.filterRuangan);
-					console.log("filterpeminjam: " + $scope.filterPeminjam);
-					
 					if ((filterByRuangan == $scope.filterRuangan && filterByPeminjam == $scope.filterPeminjam) || (filterByRuangan == $scope.filterRuangan && $scope.filterPeminjam == "Semua")) {
-                        
-						console.log("HERE");
-						
+                		
 						while (waktuAkhir.getDate() - waktuAwal.getDate() >= 1) {
                             var waktuAkhirTemp = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(),
                                 waktuAwal.getDate(), 24, 0, 0, 0);

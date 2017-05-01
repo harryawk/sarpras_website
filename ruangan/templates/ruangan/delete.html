@@ -5,39 +5,72 @@
 {% endblock %}
 
 {% block body %}
-<h1>Menghapus Data Ruangan</h1>
+<div class="row">
+    <div class="col-sm-8">
+        <ul class="breadcrumb" style="margin-bottom: 10px;">
+            <li><a href="{% url 'ruangan:index' %}">Ruangan</a></li>
+            <li class="active">Hapus Ruangan</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid">
+<div class="row">
+    <div class="col-lg-6">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">Harap Perhatian!</h3>
+            </div>
+            <div class="panel-body">
 
-<br />Harap Perhatian, Anda akan menghapus data ruangan berikut ini,
-<br />
-<br />Nama: {{ selected_ruangan.nama }}
-<br />Harga: {{ selected_ruangan.harga }}
-<br />Deskripsi: {{ selected_ruangan.deskripsi }}
-<br />Tipe: {{ selected_ruangan.tipe }}
-<br />
-<br />Dengan menghapus data ruangan, maka
-<br />SEMUA DATA RUANGAN TERKAIT RUANGAN INI JUGA AKAN DIHAPUS
-<br />Harap berhati hati,
-<br />
-<br />Untuk menghapus, harap ketik ulang nama ruangan dan kirim form dibawah
-<br />
+                <p>Anda akan menghapus data ruangan berikut ini: </p>
+                <table class="table table-striped table-hover ">
+                  <thead>
+                    <tr>
+                      <th>Nama</th>
+                      <th>Tipe</th>
+                      <th>Harga</th>
+                      <th>Deskripsi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{ selected_ruangan.nama }}</td>
+                      <td>{{ selected_ruangan.tipe }}</td>
+                      <td>{{ selected_ruangan.harga }}</td>
+                      <td>{{ selected_ruangan.deskripsi }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p>Dengan menghapus data ruangan, maka
+                    <span style="color: red">SEMUA DATA RUANGAN TERKAIT RUANGAN INI JUGA AKAN DIHAPUS</span>.
+                 Harap berhati hati.
+                </p>
+                <p>Untuk menghapus, harap ketik ulang nama ruangan dan kirim form dibawah.</p>
+                <form action="{% url 'ruangan:delete' selected_ruangan.id %}" method="post">
 
-<form action="{% url 'ruangan:delete' selected_ruangan.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="input-group col-sm-6">
+                        <input type="text" name="nama" class="form-control input-sm" autofocus required>
+                        <div class="input-group-btn">
+                            <input type="submit" value="Delete" class="btn btn-default btn-sm">
+                        </div>
+                    </div>
+                    {% for error_item in error %}
+                    <span>{{ error_item }}</span>
+                    {% endfor %}
 
-    {% csrf_token %}
-    <input type="text" name="nama" autofocus required>
+                    {% for message_item in message %}
+                    <span>{{ message_item }}</span>
+                    {% endfor %}
+                    <div style="text-align: right;padding-top: 20px">
+                        <a href="{% url 'ruangan:index' %}" class="btn btn-primary">Cancel</a>
+                    </div>
 
-    <ul>
-    {% for error_item in error %}
-        <li>{{ error_item }}</li>
-    {% endfor %}
-
-    {% for message_item in message %}
-        <li>{{ message_item }}</li>
-    {% endfor %}
-    </ul>
-
-    <input type="submit" value="Delete">
-
-</form>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 {% endblock %}
 

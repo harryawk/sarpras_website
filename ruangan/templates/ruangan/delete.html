@@ -42,10 +42,10 @@
                   </tbody>
                 </table>
                 <p>Dengan menghapus data ruangan, maka
-                    <span style="color: red">SEMUA DATA RUANGAN TERKAIT RUANGAN INI JUGA AKAN DIHAPUS</span>.
-                 Harap berhati hati.
+                    <span style="color: red">SEMUA DATA TERKAIT RUANGAN INI JUGA AKAN DIHAPUS</span>.
+                 Harap berhati-hati.
                 </p>
-                <p>Untuk menghapus, harap ketik ulang nama ruangan dan kirim form dibawah.</p>
+                <p>Untuk menghapus, harap ketik ulang nama ruangan pada field di bawah.</p>
                 <form action="{% url 'ruangan:delete' selected_ruangan.id %}" method="post">
 
                     {% csrf_token %}

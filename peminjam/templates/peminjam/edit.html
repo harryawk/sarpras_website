@@ -38,26 +38,37 @@
 						<textarea name="deskripsi" id="id_deskripsi" maxlength="1000" class="form-control">{{ selected_peminjam.deskripsi }}</textarea>
 					</div>
 				</div>
-
-                <ul>
-                {% for error_item in error %}
-                    <li>{{ error_item }}</li>
-                {% endfor %}
-
-                {% for message_item in message %}
-                    <li>{{ message_item }}</li>
-                {% endfor %}
-                </ul>
-
                 <div class="form-group">
-					<div class="col-lg-10 col-lg-offset-2" style="text-align: right">
+					<div class="col-lg-6 col-lg-offset-3">
+                        <input type="submit" value="Save" class="btn btn-primary" >
+                        <a href="{% url 'peminjam:index' %}" class="btn btn-default">Cancel</a>
+                    </div>
+                    <div class="col-lg-3" style="text-align: right">
                         <input type="button" value="Delete" class="btn btn-danger" onclick="javascript:window.location='{% url 'peminjam:delete' selected_peminjam.id %}';" />
-						<input type="submit" value="Save" class="btn btn-primary"/>
 					</div>
 				</div>
-
             </fieldset>
         </form>
+    </div>
+    <div class="col-lg-4">
+        {% if error %}
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Error</h3>
+                </div>
+                <div class="panel-body">
+                    <ul>
+                        {% for error_item in error %}
+                        <li>{{ error_item }}</li>
+                        {% endfor %}
+
+                        {% for message_item in message %}
+                        <li>{{ message_item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
     </div>
 </div>
 </div>

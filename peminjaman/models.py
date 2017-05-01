@@ -34,7 +34,7 @@ class Peminjaman(models.Model):
     foto = models.ImageField(upload_to=peminjaman_foto_dir, max_length=500, blank=True)
 
     def __str__(self):
-        return (self.peminjam.__str__() +' : '+ self.ruangan.__str__() +', '+ self.waktu_awal.__str__() +' -> '+ self.waktu_akhir.__str__())
+        return (self.peminjam.__str__() +' : '+ self.ruangan.__str__() +' ( '+ self.waktu_awal.__str__() +' - '+ self.waktu_akhir.__str__()+ ' )')
 
     def is_collision(self, Peminjaman_new):
         new_time_start = Peminjaman_new.waktu_awal.replace(tzinfo=None)

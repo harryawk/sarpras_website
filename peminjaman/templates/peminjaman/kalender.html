@@ -72,6 +72,7 @@
             }
             return ;
         };
+		
 		var filterByRuangan;
         var fotoRuangan ;
         var warnaRuangan;
@@ -106,6 +107,7 @@
 
 		/* Filtering */		
 		$scope.filterRuangan = "Semua";
+		$scope.filterPeminjam = "Semua";
 		fetchPeminjaman();
 		console.log("saya"+$scope.peminjamanList_GLOBAL)
 
@@ -121,7 +123,7 @@
 				var waktuAkhir = new Date($scope.peminjamanList_GLOBAL[indeksPeminjaman].waktu_akhir);
 				console.log($scope.peminjamanList_GLOBAL[indeksPeminjaman]);
 				
-				if (!$scope.filterRuangan || $scope.filterRuangan == "Semua" || e == "refresh") {
+				if (!$scope.filterRuangan || !$scope.filterPeminjam || ($scope.filterRuangan == "Semua" && $scope.filterPeminjam == "Semua") || e == "refresh") {
 
 					while (waktuAkhir.getDate() - waktuAwal.getDate() >= 1) {
                         var waktuAkhirTemp = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(),
@@ -156,10 +158,18 @@
 						roomOrBorrower: true
 					});
 
-
 				} else {
-					if (filterByRuangan == $scope.filterRuangan) {
-                        while (waktuAkhir.getDate() - waktuAwal.getDate() >= 1) {
+				
+					console.log("filterbyruangan: " + filterByRuangan);
+					console.log("filterbypeminjam: " + filterByPeminjam);
+					console.log("filterruangan: " + $scope.filterRuangan);
+					console.log("filterpeminjam: " + $scope.filterPeminjam);
+					
+					if ((filterByRuangan == $scope.filterRuangan && filterByPeminjam == $scope.filterPeminjam) || (filterByRuangan == $scope.filterRuangan && $scope.filterPeminjam == "Semua")) {
+                        
+						console.log("HERE");
+						
+						while (waktuAkhir.getDate() - waktuAwal.getDate() >= 1) {
                             var waktuAkhirTemp = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(),
                                 waktuAwal.getDate(), 24, 0, 0, 0);
                             events.push({
@@ -193,8 +203,8 @@
 						});
 
 					} else {
-						
-						if (filterByPeminjam == $scope.filterRuangan) {
+					
+						if ($scope.filterRuangan == "Semua" && filterByPeminjam == $scope.filterPeminjam) {
 							while (waktuAkhir.getDate() - waktuAwal.getDate() >= 1) {
 								var waktuAkhirTemp = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(),
 									waktuAwal.getDate(), 24, 0, 0, 0);
@@ -203,7 +213,7 @@
 									startTime: waktuAwal,
 									endTime: waktuAkhirTemp,
 									allDay: false,
-									borrower: ruanganTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].ruangan_id),
+									borrower: ruanganTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id),
 									description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
 									fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
 									fotoRuangan: fotoRuangan,
@@ -214,13 +224,12 @@
 								waktuAwal = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(),
 									waktuAwal.getDate()+1, 0, 0, 0, 0);
 							}
-							
 							events.push({
 								title: filterByPeminjam,
 								startTime: waktuAwal,
 								endTime: waktuAkhir,
 								allDay: false,
-								borrower: ruanganTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].ruangan_id),
+								borrower: ruanganTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id),
 								description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
 								fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
 								fotoRuangan: fotoRuangan,
@@ -228,10 +237,12 @@
 								
 								roomOrBorrower: false
 							});
-						}
-						
+
+						} 
 					}
+					
 				}
+				
 			}
 
 			$scope.eventSource = events;
@@ -278,9 +289,17 @@
                             <select ng-model="filterRuangan" class="form-control input-sm" id="filterQuery">
                                 <option value="Semua" selected>Semua</option>
                                 <option value="{[{ ruanganData.nama }]}" ng-repeat = "ruanganData in ruanganList">{[{ ruanganData.nama }]}</option>
-								<option value="{[{ peminjamData.nama }]}" ng-repeat = "peminjamData in peminjamList">{[{ peminjamData.nama }]}</option>
+								<!--
+								<option selected disabled style="font-weight: bold" value="Peminjam">Peminjam</option>
+								-->
 							</select>
-                            <span class="input-group-btn">
+                            
+							<select ng-model="filterPeminjam" class="form-control input-sm" id="filterQueryPeminjam">
+                                <option value="Semua" selected>Semua</option>
+                            	<option value="{[{ peminjamData.nama }]}" ng-repeat = "peminjamData in peminjamList">{[{ peminjamData.nama }]}</option>
+							</select>
+                            
+							<span class="input-group-btn">
                                 <button type="button" class="btn btn-default btn-sm" ng-click="filterEvents('filter')" id="calendarFilter">
                                     Filter
                                 </button>

@@ -195,6 +195,12 @@ def formdelete(request, ruangan_id = 0):
     })
 
 
+@login_required
 def fetchrecord(request):
     all_ruangan = Ruangan.objects.all().values()
+    return JsonResponse({'results': list(all_ruangan)})
+
+
+def fetchrecord_umum(request):
+    all_ruangan = Ruangan.objects.filter(restricted=False).values()
     return JsonResponse({'results': list(all_ruangan)})

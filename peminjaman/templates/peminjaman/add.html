@@ -159,7 +159,7 @@
                     <div class="col-lg-9" ng-model="ruanganID">
                         <div class="input-group">
                             <span ng-class="{'input-group-addon': true, 'has-error' : form.harga.$touched&&form.harga.$invalid}">Rp. </span>
-                            <input type="text" name="harga" id="id_harga" class="form-control" ng-model="harga" required value="{[{ (ruanganListData | filter:{id: ruanganID})[0].harga }]}" ng-if="ruanganID!='-'"/>
+                            <input type="text" name="harga" id="id_harga" class="form-control" required value="{[{ (ruanganListData | filter:{id: ruanganID})[0].harga }]}" ng-if="ruanganID!='-'"/>
                             <input type="text" name="harga" id="id_harga" class="form-control" value="0" ng-if="ruanganID=='-'"/>
                         </div>
                     </div>
@@ -169,7 +169,7 @@
                     <label for="id_discount" class="col-lg-3 control-label">Diskon</label>
                     <div class="col-lg-9">
                         <div class="input-group">
-                            <input type="text" name="discount" id="id_discount" ng-model="diskon" required class="form-control" value="{{ diskon }}" />
+                            <input type="text" name="discount" id="id_discount" required class="form-control" value="{{ diskon }}" />
                             <span ng-class="{'input-group-addon': true, 'has-error' : form.discount.$touched&&form.discount.$invalid}">%</span>
                         </div>
                     </div>

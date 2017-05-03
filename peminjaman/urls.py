@@ -34,6 +34,8 @@ urlpatterns = [
     # /peminjaman/bayar/2
     url(r'^bayar/$', views.togglepembayaran, name='bayarbase'),
     url(r'^bayar/(?P<peminjaman_id>[0-9]+)/$', views.togglepembayaran, name='bayar'),
-    #/log/filter/2017/1
-    url(r'^filter/$', views.filter, name='filter'),
+
+    #/peminjaman/filter/2017
+    url(r'^filter/$', views.filter, name='filter_base'),
+    url(r'^filter/(?P<year>[0-9]+)/$', views.filter, name='filter'),
 ]

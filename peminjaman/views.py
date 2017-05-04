@@ -38,6 +38,7 @@ def kalender(request, errormsg=''):
 def kalender_umum(request, errormsg=''):
     return render(request, 'peminjaman/kalender_umum.html', {})
 
+
 # Return a form which'll be used to add new Peminjaman object to model
 @login_required
 def formadd(request):
@@ -461,22 +462,11 @@ def togglepembayaran(request, peminjaman_id = 0):
 
 @login_required
 @csrf_exempt
-def filter(request):
-        received_json_data = json.loads(request.body)
-        print(received_json_data)
-        rx = re.compile("/[^/]*|[^/]+")
-        dateawal = received_json_data[u'dateawal']
-        dateawal = rx.findall(dateawal)
-        year_awal = int(dateawal[2][1:])
-        month_awal = int(dateawal[1][1:])
-        day_awal = int(dateawal[0])
-        dateakhir = received_json_data[u'dateakhir']
-        dateakhir = rx.findall(dateakhir)
-        year_akhir = int(dateakhir[2][1:])
-        month_akhir = int(dateakhir[1][1:])
-        day_akhir = int(dateakhir[0])
-        selected_peminjaman = Peminjaman.objects.filter(waktu_awal__gte=datetime(year_awal, month_awal, day_awal),waktu_akhir__lte=datetime(year_akhir, month_akhir, day_akhir,23)).values()
-        return JsonResponse({'results': list(selected_peminjaman)})
+def filter(request, year):
+    selected_peminjaman = Peminjaman.objects.filter(waktu_awal__year = year).values()
+    return JsonResponse({'results': list(selected_peminjaman)})
+
+
 def add_months(sourcedate,months):
     month = sourcedate.month - 1 + months
     year = int(sourcedate.year + month / 12 )
@@ -492,7 +482,6 @@ def diff_months(sourcedate,months):
     else :
         month = month - months
     return date(year, month, 1)
-
 
 @login_required
 def fetchrecord(request, d = date.today()):

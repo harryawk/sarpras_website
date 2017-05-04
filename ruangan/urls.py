@@ -19,6 +19,9 @@ urlpatterns = [
     url(r'^delete/$', views.formdelete, name='deletebase'),
     url(r'^delete/(?P<ruangan_id>[0-9]+)/$', views.formdelete, name='delete'),
 
-    # /ruangan/fetchjson/
+    # /ruangan/json/
     url(r'^json/$', views.fetchrecord, name='json'),
+
+    # /ruangan/json_umum/
+    url(r'^json_umum/$', views.fetchrecord_umum, name='json_umum'),
 ]

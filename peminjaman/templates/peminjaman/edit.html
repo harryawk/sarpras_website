@@ -213,17 +213,6 @@
 						</label>
 					</div>
 				</div>
-
-                <ul>
-                {% for error_item in error %}
-                <li>{{ error_item }}</li>
-                {% endfor %}
-
-                {% for message_item in message %}
-                <li>{{ message_item }}</li>
-                {% endfor %}
-                </ul>
-
                 <div class="form-group">
                     <div class="col-lg-6 col-lg-offset-3">
                         <input type="submit" value="Save" class="btn btn-primary" >
@@ -236,6 +225,26 @@
 
             </fieldset>
         </form>
+    </div>
+    <div class="col-lg-4">
+        {% if error %}
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Error</h3>
+                </div>
+                <div class="panel-body">
+                    <ul>
+                        {% for error_item in error %}
+                        <li>{{ error_item }}</li>
+                        {% endfor %}
+
+                        {% for message_item in message %}
+                        <li>{{ message_item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
     </div>
 </div>
 </div>

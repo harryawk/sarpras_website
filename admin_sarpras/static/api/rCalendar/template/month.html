@@ -45,7 +45,7 @@
                                     {{event.title}}
                                 </h5>
                                 <img ng-src="{{event.fotoRuangan != '' ? ('/img/'+ event.fotoRuangan) : '/static/images/img-not-available-ruangan.jpg'}}"
-                                     alt="" class="img-responsive" id="fotoRuangan" name="fotoRuangan" data-toggle="modal" data-target="#modalFoto" data-img-source="{{ ('/img/' + event.fotoRuangan) }}" ng-click="showImageDetail('/img/' + event.fotoRuangan )" >
+                                     alt="" class="img-responsive" id="fotoRuangan" name="fotoRuangan" data-toggle="modal" style="cursor: pointer" data-target="#modalFoto" data-img-source="{{ ('/img/' + event.fotoRuangan) }}" ng-click="showImageDetail('/img/' + event.fotoRuangan )" >
                             </div>
                         </div>
                       <div class="panel-body">
@@ -53,7 +53,8 @@
                             <div class="col-md-4 hidden-xs">
                                 <div class="poster">
                                     <img ng-src="{{event.fotoPeminjaman != '' ? ('/img/'+ event.fotoPeminjaman) : '/static/images/img-not-available-poster.jpg'}}"
-                                            alt="" class="img-responsive" id="fotoPeminjaman" name="fotoPeminjaman" data-toggle="modal" data-target="#modalFoto" data-img-source="{{ '/img/' + event.fotoPeminjaman }}" ng-click="showImageDetail('/img/' + event.fotoPeminjaman)">
+                                         alt="" class="img-responsive" id="fotoPeminjaman" name="fotoPeminjaman" data-toggle="modal" data-target="#modalFoto" data-img-source="{{ '/img/' + event.fotoPeminjaman }}"
+                                         style="cursor: pointer" ng-click="showImageDetail('/img/' + event.fotoPeminjaman)">
                                 </div>
                             </div>
                             <div class="col-md-8">

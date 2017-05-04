@@ -67,7 +67,7 @@
 					<label for="id_harga" class="control-label col-lg-3">Foto Ruangan</label>
 					<div class="col-lg-9">
 						<label class="btn btn-default btn-sm">
-							Pilih Foto ..
+							Pilih Foto ...
 							<input type="file" name="foto" style="display: none">
 						</label>
 					</div>
@@ -76,9 +76,9 @@
 				<div class="form-group">
 					<label for="id_warna" class="control-label col-lg-3">Warna Ruangan</label>					
 					<div class="col-lg-2">
-						<div class="input-group">
+						<div class="input-group" style="text-align: center">
 							<label class="btn btn-default btn-sm">
-								Pilih warna ...
+								Pilih warna
 								<input name="warna" id="id_warna" type="color" required class="form-control" ng-model="warna" />
 							</label>
 							<span class="input-group-addon" style="font-size: 150%;color: red;padding-left: 15px">*</span>
@@ -88,34 +88,43 @@
 
 				<div class="form-group">
 					<label for="id_restrict" class="control-label col-lg-3">Restrict Ruangan</label>
-					<div class="col-lg-2">
-						<div class="input-group">
-							<label class="btn btn-default btn-sm">
-								Apakah Ruangan Disembunyikan
-								<input name="restrict" id="id_restrict" type="checkbox" class="form-control" {% if restrict %} checked {% endif %} />
-							</label>
+					<div class="col-lg-9">
+						<div class="checkbox">
+						  <label>
+							  <input name="restrict" id="id_restrict" type="checkbox" {% if restrict %} checked {% endif %} > Ruangan disembunyikan <b style="color: red;padding-left: 5px">*</b>
+						  </label>
 						</div>
 					</div>
 				</div>
-
-				<ul>
-				{% for error_item in error %}
-					<li>{{ error_item }}</li>
-				{% endfor %}
-
-				{% for message_item in message %}
-					<li>{{ message_item }}</li>
-				{% endfor %}
-				</ul>
-
 				<div class="form-group">
 					<div class="col-lg-12" style="text-align: right">
 						<input type="submit" value="Save" class="btn btn-primary"/>
+						<a href="{% url 'ruangan:index' %}" class="btn btn-default">Cancel</a>
 					</div>
 				</div>
 			</fieldset>
 		</form>
 	</div>
+	<div class="col-lg-4">
+        {% if error %}
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Error</h3>
+                </div>
+                <div class="panel-body">
+                    <ul>
+                        {% for error_item in error %}
+                        <li>{{ error_item }}</li>
+                        {% endfor %}
+
+                        {% for message_item in message %}
+                        <li>{{ message_item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    </div>
 </div>
 </div>
 {% endblock %}

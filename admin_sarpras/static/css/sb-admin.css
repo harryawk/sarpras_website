@@ -129,3 +129,7 @@ img.img-responsive{
 label.control-label {
     font-weight: 500;
 }
+
+.input-group-addon.has-error {
+    color: red;
+}

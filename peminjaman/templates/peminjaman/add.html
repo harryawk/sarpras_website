@@ -55,29 +55,24 @@
 <div class="container-fluid">
 <div class="row">
     <div class="col-lg-6 panel " style="padding-top: 20px;">
-        <form enctype="multipart/form-data" action="{% url 'peminjaman:add' %}" method="post" id="peminjaman_form" novalidate ng-app="peminjamList" ng-controller="peminjamListController" class="form-horizontal">
+        <form enctype="multipart/form-data" action="{% url 'peminjaman:add' %}" method="post" id="peminjaman_form" novalidate ng-app="peminjamList" ng-controller="peminjamListController" class="form-horizontal" name="form">
             {% csrf_token %}
             <legend>Formulir Penambahan Peminjaman</legend>
-            <p style="color: red;text-align: right">* wajib diisi</p>
             <fieldset>
-                <div class="form-group">
+                <div ng-class="{'form-group': true, 'has-error' : form.nomor_surat.$touched&&form.nomor_surat.$invalid}">
                     <label for="id_nomor_surat" class="col-lg-3 control-label">Nomor Surat</label>
                     <div class="col-lg-9">
-                        <div class="input-group">
-                            <input type="text" name="nomor_surat" id="id_nomor_surat" class="form-control" value="{{ nomor_surat }}"/>
-                            <span class="input-group-addon" style="font-size: 150%;color: red">*</span>
-                        </div>
+                        <input type="text" name="nomor_surat" id="id_nomor_surat" ng-model="peminjaman.nomor_surat" class="form-control" value="{{ nomor_surat }}" required/>
                     </div>
                 </div>
-                <div class="form-group">
+                <div ng-class="{'form-group': true, 'has-error' : form.peminjam.$touched&&form.peminjam.$invalid}">
                     <label for="id_peminjam" class="col-md-3 control-label">Peminjam</label>
                     <div class="col-md-9">
                         <div class="input-group">
                             <select name="peminjam" required id="id_peminjam" ng-model="peminjamID" class="form-control">
-                                <option value="" selected>---------</option>
+                                <option value="" selected></option>
                                 <option value="{[{ peminjamData.id }]}" ng-repeat = "peminjamData in peminjamListData">{[{ peminjamData.nama }]}</option>
                             </select>
-                            <span class="input-group-addon" style="font-size: 150%;color: red">*</span>
                             <a id="change_id_peminjam"
                             href="/peminjam/edit/{[{peminjamID}]}"
                             title="Change selected peminjam" class="input-group-addon"><img src="/static/admin/img/icon-changelink.svg" alt="Change"/></a>
@@ -88,12 +83,13 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div ng-class="{'form-group': true, 'has-error' : form.ruangan.$touched&&(form.ruangan.$invalid||ruanganID=='-')}">
                     <label for="id_ruangan" class="col-lg-3 control-label">Ruangan</label>
                     <div class="col-lg-9">
                         <div class="input-group">
                             <div class="input-group">
-                                <span class="input-group-addon" style="padding-right: 20px">Tipe</span>
+                                <span ng-class="{'input-group-addon': true, 'has-error' : form.ruangan.$touched&&(form.ruangan.$invalid||ruanganID=='-')}"
+                                      style="padding-right: 20px">Tipe</span>
                                 <select  ng-model="filterTipe" id="id_tipe" class="form-control input-sm">
                                     <option value="" selected>Semua</option>
                                     <option value="Ruang">Ruangan</option>
@@ -102,13 +98,13 @@
                                 </select>
                             </div>
                             <div class="input-group">
-                                <span class="input-group-addon" style="padding-right: 10px">Nama</span>
+                                <span ng-class="{'input-group-addon': true, 'has-error' : form.ruangan.$touched&&(form.ruangan.$invalid||ruanganID=='-')}"
+                                      style="padding-right: 10px">Nama</span>
                                 <select name="ruangan" required id="id_ruangan" ng-model="ruanganID" class="form-control" style="width: 100%">
-                                    <option value="-" selected>---------</option>
+                                    <option value="-" selected></option>
                                     <option value="{[{ ruanganData.id }]}" ng-repeat = "ruanganData in ruanganListData | filter:{tipe:filterTipe}">{[{ ruanganData.nama }]}</option>
                                 </select>
                             </div>
-                            <span class="input-group-addon" style="font-size: 150%;color: red">*</span>
                             <a id="change_id_ruangan"
                                href="/ruangan/edit/{[{ruanganID}]}"
                                title="Change selected ruangan" class="input-group-addon"><img src="/static/admin/img/icon-changelink.svg" alt="Change"/></a>
@@ -119,7 +115,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div ng-class="{'form-group': true, 'has-error' : form.ruangan.$touched&&form.ruangan.$invalid}">
                     <label class="col-lg-3 control-label">Waktu awal</label>
                     <div class="col-md-7">
                         <div class="input-group">
@@ -131,7 +127,6 @@
                                 <span class="input-group-addon" style="padding-right: 30px">Jam</span>
                                 <input type="time" name="waktu_awal_1" id="id_waktu_awal_1" class="form-control" value="{{ pukul_awal }}" required />
                             </div>
-                            <span class="input-group-addon" style="font-size: 150%;color: red">*</span>
                         </div>
                     </div>
                 </div>
@@ -148,7 +143,6 @@
                                 <span class="input-group-addon" style="padding-right: 25px">Waktu</span>
                                 <input type="time" name="waktu_akhir_1" id="id_waktu_akhir_1" class="form-control" value="{{ pukul_akhir }}" required />
                             </div>
-                            <span class="input-group-addon" style="font-size: 150%;color: red">*</span>
                         </div>
                     </div>
                 </div>
@@ -156,32 +150,27 @@
                 <div class="form-group">
                     <label for="id_deskripsi" class="col-lg-3 control-label">Deskripsi</label>
                     <div class="col-lg-9">
-                        <div class="input-group">
-                            <textarea name="deskripsi" id="id_deskripsi" maxlength="1000" class="form-control" >{{ input_deskripsi }}</textarea>
-                            <span class="input-group-addon" style="font-size: 150%;color: red">*</span>
-                        </div>
+                        <textarea name="deskripsi" id="id_deskripsi" maxlength="1000" class="form-control" >{{ input_deskripsi }}</textarea>
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div ng-class="{'form-group': true, 'has-error' : form.harga.$touched&&form.harga.$invalid}">
                     <label for="id_harga" class="col-lg-3 control-label">Pembayaran</label>
                     <div class="col-lg-9" ng-model="ruanganID">
                         <div class="input-group">
-                            <span class="input-group-addon">Rp. </span>
-                            <input type="text" name="harga" id="id_harga" class="form-control" value="{[{ (ruanganListData | filter:{id: ruanganID})[0].harga }]}" ng-if="ruanganID!='-'"/>
+                            <span ng-class="{'input-group-addon': true, 'has-error' : form.harga.$touched&&form.harga.$invalid}">Rp. </span>
+                            <input type="text" name="harga" id="id_harga" class="form-control" required value="{[{ (ruanganListData | filter:{id: ruanganID})[0].harga }]}" ng-if="ruanganID!='-'"/>
                             <input type="text" name="harga" id="id_harga" class="form-control" value="0" ng-if="ruanganID=='-'"/>
-                            <span class="input-group-addon" style="font-size: 150%;color: red">*</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div ng-class="{'form-group': true, 'has-error' : form.discount.$touched&&form.discount.$invalid}">
                     <label for="id_discount" class="col-lg-3 control-label">Diskon</label>
                     <div class="col-lg-9">
                         <div class="input-group">
-                            <input type="text" name="discount" id="id_discount" class="form-control" value="{{ diskon }}" />
-                            <span class="input-group-addon">%</span>
-                            <span class="input-group-addon" style="font-size: 150%;color: red">*</span>
+                            <input type="text" name="discount" id="id_discount" required class="form-control" value="{{ diskon }}" />
+                            <span ng-class="{'input-group-addon': true, 'has-error' : form.discount.$touched&&form.discount.$invalid}">%</span>
                         </div>
                     </div>
                 </div>
@@ -196,16 +185,6 @@
 					</div>
 				</div>
 
-                <ul>
-                {% for error_item in error %}
-                <li>{{ error_item }}</li>
-                {% endfor %}
-
-                {% for message_item in message %}
-                <li>{{ message_item }}</li>
-                {% endfor %}
-                </ul>
-
                 <div class="form-group">
                     <div class="col-lg-10 col-lg-offset-3">
                         <!--<input type="submit" value="Save" class="default" name="_save" />-->
@@ -218,6 +197,26 @@
                 </div>
             </fieldset>
         </form>
+    </div>
+    <div class="col-lg-4">
+        {% if error %}
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Error</h3>
+                </div>
+                <div class="panel-body">
+                    <ul>
+                        {% for error_item in error %}
+                        <li>{{ error_item }}</li>
+                        {% endfor %}
+
+                        {% for message_item in message %}
+                        <li>{{ message_item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
     </div>
 </div>
 </div>

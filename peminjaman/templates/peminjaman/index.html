@@ -169,7 +169,6 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
     	var result
     	if($scope.filter_month.id == 12) result = true;
     	else result = element.waktu_awal.getMonth() == $scope.filter_month.id;
-    	console.log(result);
 	    return result;
 	}
 
@@ -187,7 +186,6 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
     };
 
 
-
 	/* EXPERIMENTAL CODE (Add arrow-down and arrow-up) */
 
 	// column state
@@ -197,7 +195,6 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
 	$scope.reverse = false;
 
 	$scope.sort = function ( coll ) {
-
 		$scope.column = coll;
 
 		if ($scope.reverse) {
@@ -221,6 +218,50 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
 		} else {
 			return '';
 		}
+	};
+
+
+	$scope.downloadCSV = function() {
+
+		var data = [["No Laporan", "Peminjam", "Ruangan", "Waktu Awal", "Waktu Akhir", "Tagihan", "Status Pembayaran", "Deskripsi"]];
+
+		var peminjaman = $scope.peminjamanListData;
+		peminjaman = $filter('filter')(peminjaman, {peminjam: $scope.filterPeminjam});
+		peminjaman = $filter('filter')(peminjaman, {ruangan: $scope.filterRuangan});
+		peminjaman = $filter('filter')(peminjaman, {waktu_bayar: $scope.filterBayar});
+		peminjaman = $filter('filter')(peminjaman, $scope.selectedMonthFilter);
+		peminjaman = $filter('filter')(peminjaman, $scope.filterTipe);
+		peminjaman = $filter('orderBy')(peminjaman, $scope.column, $scope.reverse);
+
+		angular.forEach(peminjaman, function(value, key){
+			data.push([
+				value.no_laporan.replace(/;/g, ','), 
+				value.peminjam.replace(/;/g, ','), 
+				value.ruangan.replace(/;/g, ','), 
+				$filter('date')(value.waktu_awal, "dd MMM yyyy, HH:mm", "UTC+0700"),
+				$filter('date')(value.waktu_akhir, "dd MMM yyyy, HH:mm", "UTC+0700"),
+				value.jumlah_tagihan,
+				"Lunas pada " + $filter('date')(value.waktu_bayar, "dd MMM yyyy"),
+				value.deskripsi.replace(/;/g, ',').replace(/(?:\r\n|\r|\n)/g, ' | ')]);
+		});
+		
+		var csvContent = "data:text/csv;charset=utf-8,";
+		data.forEach(function(infoArray, index){
+
+		   dataString = infoArray.join(";");
+		   csvContent += index < data.length ? dataString+ "\n" : dataString;
+
+		}); 
+		
+		var filename = $filter('date')(new Date, "dd-MM-yyyy") + ".csv"
+
+		var encodedUri = encodeURI(csvContent);
+		var link = document.createElement("a");
+		link.setAttribute("href", encodedUri);
+		link.setAttribute("download", filename);
+		document.body.appendChild(link); // Required for FF
+
+		link.click(); // This will download the data file named "my_data.csv".
 	};
 
 })
@@ -249,6 +290,7 @@ $(document).ready(function () {
 </script>
 
 <div id="AppPeminjamanList" ng-controller="peminjamanListController">
+
     <div class="row">
         <div class="col-sm-8">
             <ul class="breadcrumb" style="margin-bottom: 10px;">
@@ -259,6 +301,7 @@ $(document).ready(function () {
             <a href="{% url 'peminjaman:add' %}" class="btn btn-link btn-sm" style="padding-top: 8px">+ Tambah Peminjaman</a>
         </div>
     </div>
+
     <div class="panel container-fluid">
         <div class="container-fluid" style="margin-bottom: 10px;margin-top: 10px">
             <div class="row well well-sm">
@@ -361,6 +404,9 @@ $(document).ready(function () {
             </div>
         </div>
     </div>
+
+    <span ng-click="downloadCSV()">Download CSV</span>
+
 </div>
 
 <ul>
@@ -374,6 +420,7 @@ $(document).ready(function () {
 </ul>
 
 </div>
+
 
 <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>

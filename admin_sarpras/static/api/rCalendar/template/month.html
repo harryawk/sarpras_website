@@ -42,7 +42,7 @@
                         <div class="panel-heading" style="padding: 0px;text-align: center">
                             <div class="square">
                                 <h5 style="background-color: {{event.warnaRuang}};color:white;position: absolute;padding:5px 10px;bottom: 5px;right: 10px;z-index: 1;">
-                                    {{event.title}}
+                                    {{event.ruangan}}
                                 </h5>
                                 <img ng-src="{{event.fotoRuangan != '' ? ('/img/'+ event.fotoRuangan) : '/static/images/img-not-available-ruangan.jpg'}}"
                                      alt="" class="img-responsive" id="fotoRuangan" name="fotoRuangan" data-toggle="modal" style="cursor: pointer" data-target="#modalFoto" data-img-source="{{ ('/img/' + event.fotoRuangan) }}" ng-click="showImageDetail('/img/' + event.fotoRuangan )" >

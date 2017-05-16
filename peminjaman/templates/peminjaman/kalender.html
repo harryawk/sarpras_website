@@ -52,7 +52,6 @@
 	      	$scope.ruanganList = "ERROR";
 	    });
 		var filterByPeminjam;
-		// get the name of borrower
 	    function peminjamTampil(e) {
             for (var i in $scope.peminjamList) {
                 if (e == $scope.peminjamList[i].id) {
@@ -70,7 +69,7 @@
 		function ruanganTampil(e) {
             for (var i in $scope.ruanganList) {
                 if (e == $scope.ruanganList[i].id) {
-                    filterByRuangan = $scope.ruanganList[i].nama;
+                    filterByRuangan= $scope.ruanganList[i].nama;
                     fotoRuangan =  $scope.ruanganList[i].foto;
                     warnaRuangan = $scope.ruanganList[i].warna;
 
@@ -97,7 +96,6 @@
 		$scope.filterRuangan = "Semua";
 		$scope.filterPeminjam = "Semua";
 		fetchPeminjaman();
-		console.log("saya"+$scope.peminjamanList_GLOBAL)
 		$scope.filterEvents = function(e) {
             var events = [];
 			for (var indeksPeminjaman in $scope.peminjamanList_GLOBAL) {
@@ -106,7 +104,6 @@
 				//var filterByPeminjam = peminjamTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id);
 				var waktuAwal = new Date($scope.peminjamanList_GLOBAL[indeksPeminjaman].waktu_awal);
 				var waktuAkhir = new Date($scope.peminjamanList_GLOBAL[indeksPeminjaman].waktu_akhir);
-				console.log($scope.peminjamanList_GLOBAL[indeksPeminjaman]);
 				var stopParse = function (w0, w1) {
 				    if ((w1.getDate() - w0.getDate()) == 1) {
 				        if ((w1.getHours() < 7) || (w1.getHours() == 7) && (w1.getMinutes() == 0)) {
@@ -127,10 +124,11 @@
                             waktuAwal.getDate(), 23, 0, 0, 0);
                         events.push({
                             title: filterByRuangan,
+                            ruangan: filterByRuangan,
                             startTime: waktuAwal,
                             endTime: waktuAkhirTemp,
                             allDay: false,
-                            borrower: peminjamTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id),
+                            borrower: filterByPeminjam,
                             description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
                             fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
                             fotoRuangan: fotoRuangan,
@@ -149,10 +147,11 @@
                     }
 				    events.push({
 						title: filterByRuangan,
+						ruangan: filterByRuangan,
 						startTime: waktuAwal,
 						endTime: waktuAkhir,
 						allDay: false,
-						borrower: peminjamTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id),
+						borrower: filterByPeminjam,
 						description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
                         fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
                         fotoRuangan: fotoRuangan,
@@ -162,16 +161,17 @@
 					});
 				} else {
 
-					if ((filterByRuangan == $scope.filterRuangan && filterByPeminjam == $scope.filterPeminjam) || (filterByRuangan == $scope.filterRuangan && $scope.filterPeminjam == "Semua")) {
+					if ((filterByRuangan == $scope.filterRuangan && filterByPeminjam == $scope.filterPeminjam) || (filterByPeminjam == $scope.filterPeminjam && $scope.filterRuangan == "Semua")) {
 
 						while (!stopParse(waktuAwal,waktuAkhir)){
                             var waktuAkhirTemp = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(), waktuAwal.getDate(), 23, 0, 0, 0);
                             events.push({
                                 title: filterByRuangan,
+                                ruangan: filterByRuangan,
                                 startTime: waktuAwal,
                                 endTime: waktuAkhirTemp,
                                 allDay: false,
-                                borrower: peminjamTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id),
+                                borrower: filterByPeminjam,
                                 description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
                                 fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
                                 fotoRuangan: fotoRuangan,
@@ -190,10 +190,11 @@
                         }
 						events.push({
 							title: filterByRuangan,
+							ruangan: filterByRuangan,
 							startTime: waktuAwal,
 							endTime: waktuAkhir,
 							allDay: false,
-							borrower: peminjamTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id),
+							borrower: filterByPeminjam,
 							description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
                             fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
                             fotoRuangan: fotoRuangan,
@@ -203,15 +204,16 @@
 						});
 					} else {
 
-						if ($scope.filterRuangan == "Semua" && filterByPeminjam == $scope.filterPeminjam) {
+						if ($scope.filterPeminjam == "Semua" && filterByRuangan == $scope.filterRuangan) {
 							while (!stopParse(waktuAwal,waktuAkhir)) {
 								var waktuAkhirTemp = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(), waktuAwal.getDate(), 23, 0, 0, 0);
 								events.push({
-									title: filterByRuangan,
+									title: filterByPeminjam,
+									ruangan: filterByRuangan,
 									startTime: waktuAwal,
 									endTime: waktuAkhirTemp,
 									allDay: false,
-									borrower: ruanganTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id),
+									borrower: filterByPeminjam,
 									description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
 									fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
 									fotoRuangan: fotoRuangan,
@@ -229,11 +231,12 @@
                                 }
                             }
 							events.push({
-								title: filterByRuangan,
+								title: filterByPeminjam,
+								ruangan: filterByRuangan,
 								startTime: waktuAwal,
 								endTime: waktuAkhir,
 								allDay: false,
-								borrower: ruanganTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id),
+								borrower: filterByPeminjam,
 								description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
 								fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
 								fotoRuangan: fotoRuangan,
@@ -309,7 +312,7 @@
                                 Today
                             </span>
                             <span class="input-group-btn" style="padding-left: 15px">
-                                <span type="button" class="glyphicon glyphicon-refresh btn btn-link btn-sm" ng-click="filterEvents('refresh')" id="calendarRefresh" aria-hidden="true">
+                                <span type="button" class="glyphicon glyphicon-refresh btn btn-link btn-sm" ng-click="filterEvents('filter')" id="calendarRefresh" aria-hidden="true">
                                 </span>
                             </span>
                         </div>

@@ -38,6 +38,9 @@
                   <span class="navbar-brand" style="color: white">Kalender Peminjaman</span>
               </div>
             </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{% url 'login' %}">Login</a></li>
+            </ul>
           </div>
         </nav>
     </div>
@@ -89,7 +92,7 @@
                                                 Today
                                             </span>
                                             <span class="input-group-btn" style="padding-left: 15px">
-                                                <span type="button" class="glyphicon glyphicon-refresh btn btn-link btn-sm" ng-click="filterEvents('refresh')" id="calendarRefresh" aria-hidden="true">
+                                                <span type="button" class="glyphicon glyphicon-refresh btn btn-link btn-sm" ng-click="filterEvents('filter')" id="calendarRefresh" aria-hidden="true">
                                                 </span>
                                             </span>
                                         </div>
@@ -229,18 +232,31 @@
 				//var filterByPeminjam = peminjamTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id);
 				var waktuAwal = new Date($scope.peminjamanList_GLOBAL[indeksPeminjaman].waktu_awal);
 				var waktuAkhir = new Date($scope.peminjamanList_GLOBAL[indeksPeminjaman].waktu_akhir);
-				console.log($scope.peminjamanList_GLOBAL[indeksPeminjaman]);
+				var stopParse = function (w0, w1) {
+				    if ((w1.getDate() - w0.getDate()) == 1) {
+				        if ((w1.getHours() < 7) || (w1.getHours() == 7) && (w1.getMinutes() == 0)) {
+				            return true;
+                        } else {
+				            return false;
+                        }
+                    } else if ((w1.getDate() - w0.getDate()) > 1){
+				        return false;
+                    } else {
+				        return true;
+                    }
+                };
 
 				if (!$scope.filterRuangan || !$scope.filterPeminjam || ($scope.filterRuangan == "Semua" && $scope.filterPeminjam == "Semua") || e == "refresh") {
-					while (waktuAkhir.getDate() - waktuAwal.getDate() >= 1) {
+					while (!stopParse(waktuAwal,waktuAkhir)) {
                         var waktuAkhirTemp = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(),
-                            waktuAwal.getDate(), 23, 59, 59, 59);
+                            waktuAwal.getDate(), 23, 0, 0, 0);
                         events.push({
                             title: filterByRuangan,
+                            ruangan: filterByRuangan,
                             startTime: waktuAwal,
                             endTime: waktuAkhirTemp,
                             allDay: false,
-                            borrower: peminjamTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id),
+                            borrower: filterByPeminjam,
                             description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
                             fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
                             fotoRuangan: fotoRuangan,
@@ -249,14 +265,21 @@
 							roomOrBorrower: true
                         });
                         waktuAwal = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(),
-                            waktuAwal.getDate()+1, 0, 0, 0, 0);
+                            waktuAwal.getDate()+1, 7, 0, 0, 0);
+                    }
+                    if ((waktuAkhir.getDate() - waktuAwal.getDate()) == 1) {
+					    if ((waktuAkhir.getHours() < 7) || (waktuAkhir.getHours() == 7) && (waktuAkhir.getMinutes() == 0)){
+					        waktuAkhir = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(),
+                            waktuAwal.getDate(), 23, 0, 0, 0);
+                        }
                     }
 				    events.push({
 						title: filterByRuangan,
+						ruangan: filterByRuangan,
 						startTime: waktuAwal,
 						endTime: waktuAkhir,
 						allDay: false,
-						borrower: peminjamTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id),
+						borrower: filterByPeminjam,
 						description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
                         fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
                         fotoRuangan: fotoRuangan,
@@ -266,17 +289,17 @@
 					});
 				} else {
 
-					if ((filterByRuangan == $scope.filterRuangan && filterByPeminjam == $scope.filterPeminjam) || (filterByRuangan == $scope.filterRuangan && $scope.filterPeminjam == "Semua")) {
+					if ((filterByRuangan == $scope.filterRuangan && filterByPeminjam == $scope.filterPeminjam) || (filterByPeminjam == $scope.filterPeminjam && $scope.filterRuangan == "Semua")) {
 
-						while (waktuAkhir.getDate() - waktuAwal.getDate() >= 1) {
-                            var waktuAkhirTemp = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(), waktuAwal.getDate(), 23, 59, 59, 59);
-                                //waktuAwal.getDate(), 24, 0, 0, 0);
+						while (!stopParse(waktuAwal,waktuAkhir)){
+                            var waktuAkhirTemp = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(), waktuAwal.getDate(), 23, 0, 0, 0);
                             events.push({
                                 title: filterByRuangan,
+                                ruangan: filterByRuangan,
                                 startTime: waktuAwal,
                                 endTime: waktuAkhirTemp,
                                 allDay: false,
-                                borrower: peminjamTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id),
+                                borrower: filterByPeminjam,
                                 description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
                                 fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
                                 fotoRuangan: fotoRuangan,
@@ -285,14 +308,21 @@
 								roomOrBorrower: true
                             });
                             waktuAwal = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(),
-                                waktuAwal.getDate()+1, 0, 0, 0, 0);
+                                waktuAwal.getDate()+1, 7, 0, 0, 0);
+                        }
+                        if ((waktuAkhir.getHours() < 7) || (waktuAkhir.getHours() == 7) && (waktuAkhir.getMinutes() == 0)) {
+                            if (waktuAkhir.getHours() < 7){
+                                waktuAkhir = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(),
+                                waktuAwal.getDate(), 23, 0, 0, 0);
+                            }
                         }
 						events.push({
 							title: filterByRuangan,
+							ruangan: filterByRuangan,
 							startTime: waktuAwal,
 							endTime: waktuAkhir,
 							allDay: false,
-							borrower: peminjamTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id),
+							borrower: filterByPeminjam,
 							description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
                             fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
                             fotoRuangan: fotoRuangan,
@@ -302,16 +332,16 @@
 						});
 					} else {
 
-						if ($scope.filterRuangan == "Semua" && filterByPeminjam == $scope.filterPeminjam) {
-							while (waktuAkhir.getDate() - waktuAwal.getDate() >= 1) {
-								var waktuAkhirTemp = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(), waktuAwal.getDate(), 23, 59, 59, 59);
-									//waktuAwal.getDate(), 24, 0, 0, 0);
+						if ($scope.filterPeminjam == "Semua" && filterByRuangan == $scope.filterRuangan) {
+							while (!stopParse(waktuAwal,waktuAkhir)) {
+								var waktuAkhirTemp = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(), waktuAwal.getDate(), 23, 0, 0, 0);
 								events.push({
-									title: filterByRuangan,
+									title: filterByPeminjam,
+									ruangan: filterByRuangan,
 									startTime: waktuAwal,
 									endTime: waktuAkhirTemp,
 									allDay: false,
-									borrower: ruanganTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id),
+									borrower: filterByPeminjam,
 									description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
 									fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
 									fotoRuangan: fotoRuangan,
@@ -320,14 +350,21 @@
 									roomOrBorrower: true
 								});
 								waktuAwal = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(),
-									waktuAwal.getDate()+1, 0, 0, 0, 0);
+									waktuAwal.getDate()+1, 7, 0, 0, 0);
 							}
+							if ((waktuAkhir.getHours() < 7) || (waktuAkhir.getHours() == 7) && (waktuAkhir.getMinutes() == 0)) {
+                                if (waktuAkhir.getHours() < 7){
+                                    waktuAkhir = new Date(waktuAwal.getFullYear(), waktuAwal.getMonth(),
+                                    waktuAwal.getDate(), 23, 0, 0, 0);
+                                }
+                            }
 							events.push({
-								title: filterByRuangan,
+								title: filterByPeminjam,
+								ruangan: filterByRuangan,
 								startTime: waktuAwal,
 								endTime: waktuAkhir,
 								allDay: false,
-								borrower: ruanganTampil($scope.peminjamanList_GLOBAL[indeksPeminjaman].peminjam_id),
+								borrower: filterByPeminjam,
 								description: $scope.peminjamanList_GLOBAL[indeksPeminjaman].deskripsi,
 								fotoPeminjaman: $scope.peminjamanList_GLOBAL[indeksPeminjaman].foto,
 								fotoRuangan: fotoRuangan,
@@ -335,12 +372,14 @@
 
 								roomOrBorrower: true
 							});
+
 						}
 					}
 
 				}
 
 			}
+
 			$scope.eventSource = events;
 			$scope.$broadcast('eventSourceChanged',$scope.eventSource);
     	    console.log(events);

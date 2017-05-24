@@ -40,7 +40,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.6/angular-filter.js"></script>
 <script>
 
-var peminjamanList = angular.module('peminjamanList', ['angular.filter']);
+var peminjamanList = angular.module('peminjamanList', ['angular.filter', 'ui.bootstrap']);
 peminjamanList.config(function($interpolateProvider) {
     $interpolateProvider.startSymbol('{[{');
     $interpolateProvider.endSymbol('}]}');
@@ -264,6 +264,8 @@ peminjamanList.controller("peminjamanListController", function($scope, $http, $f
 		link.click(); // This will download the data file named "my_data.csv".
 	};
 
+    $scope.maxSize = 5;
+    $scope.currentPage = 1;
 })
 .filter('getTotal', function(){
   return function(data, key) {
@@ -380,7 +382,7 @@ $(document).ready(function () {
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table table-striped table-hover table-bordered">
+                <table class="table table-striped table-hover table-bordered" style="margin-bottom: 0px">
                    <tr>
                        <th ng-click="sort('no_laporan')" ng-class="sortClass('no_laporan')">No Laporan</th>
                        <th ng-click="sort('peminjam')" ng-class="sortClass('peminjam')">Peminjam</th>
@@ -392,8 +394,8 @@ $(document).ready(function () {
                        <th ng-click="sort('deskripsi')" ng-class="sortClass('deskripsi')">Description</th>
                    </tr>
 
-                   <tr ng-repeat = "peminjamanData in peminjamanListData | orderBy : column : reverse | filter:filterTipe | filter:{peminjam:filterPeminjam}
-                   | filter:{ruangan:filterRuangan} | filter:selectedMonthFilter | filter:{waktu_bayar:filterBayar}" >
+                   <tr ng-repeat = "peminjamanData in peminjamanFiltered = (peminjamanListData | orderBy : column : reverse | filter:filterTipe | filter:{peminjam:filterPeminjam}
+                   | filter:{ruangan:filterRuangan} | filter:selectedMonthFilter | filter:{waktu_bayar:filterBayar}) | limitTo:10:10*(currentPage-1)" >
 
                     	<td ng-click="go(peminjamanData.edit_link)"><a href="#">{[{ peminjamanData.no_laporan }]}</a></td>
                     	<td>{[{ peminjamanData.peminjam }]}</td>
@@ -406,6 +408,10 @@ $(document).ready(function () {
 
                 	</tr>
                 </table>
+                <div style="text-align: right">
+                    <ul uib-pagination total-items="peminjamanFiltered.length" ng-model="currentPage" max-size="maxSize" class="pagination-sm"
+                        boundary-links="true" force-ellipses="true" items-per-page=10></ul>
+                </div>
             </div>
         </div>
     </div>

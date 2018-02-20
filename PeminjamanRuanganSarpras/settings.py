@@ -25,7 +25,7 @@ SECRET_KEY = 'a%1#0qfz#!=#ywtc7c81iumwzhex)&ykfz5e6-7nk1xz-eui=b'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'pplk2f.if.itb.ac.id', '127.0.0.1', '167.205.35.113']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -125,7 +125,7 @@ USE_L10N = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 LOGIN_URL = '/login/'
 

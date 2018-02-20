@@ -77,7 +77,11 @@ WSGI_APPLICATION = 'PeminjamanRuanganSarpras.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-
+print("os.environ.get('DATABASE_URL')")
+print("os.environ.get('DATABASE_URL')")
+print(os.environ.get('DATABASE_URL'))
+print("os.environ.get('DATABASE_URL')")
+print("os.environ.get('DATABASE_URL')")
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

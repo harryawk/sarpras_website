@@ -81,20 +81,25 @@ print("os.environ.get('DATABASE_URL')")
 print("os.environ.get('DATABASE_URL')")
 print(os.environ.get('DATABASE_URL'))
 DB_URL = os.environ.get('DATABASE_URL')
-print(DB_URL.split('://')[1].split('@')[0].split(':')[0])
 print(DB_URL.split('://')[1].split('@')[0].split(':')[1])
 print("os.environ.get('DATABASE_URL')")
 print("os.environ.get('DATABASE_URL')")
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'sarpras_peminjamanruang',
-        'USER': 'admin_penjadwalan',
-        'PASSWORD': '',
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
+        'NAME': DB_URL.split('://')[1].split('@')[1].split('/')[1],
+        'USER': DB_URL.split('://')[1].split('@')[0].split(':')[0],
+        'PASSWORD': DB_URL.split('://')[1].split('@')[0].split(':')[1],
+        'HOST': DB_URL.split('://')[1].split('@')[1].split('/')[0].split(':')[0],   # Or an IP Address that your DB is hosted on
+        'PORT': '5432',
     }
 }
+
+print("'NAME':", DB_URL.split('://')[1].split('@')[1].split('/')[1])
+print("'USER':", DB_URL.split('://')[1].split('@')[0].split(':')[0])
+print("'PASSWORD':", DB_URL.split('://')[1].split('@')[0].split(':')[1])
+print("'HOST':", DB_URL.split('://')[1].split('@')[1].split('/')[0].split(':')[0])
+print("'PORT':", '5432')
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators

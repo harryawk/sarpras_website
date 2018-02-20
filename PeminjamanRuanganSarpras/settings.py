@@ -80,11 +80,14 @@ WSGI_APPLICATION = 'PeminjamanRuanganSarpras.wsgi.application'
 print("os.environ.get('DATABASE_URL')")
 print("os.environ.get('DATABASE_URL')")
 print(os.environ.get('DATABASE_URL'))
+DB_URL = os.environ.get('DATABASE_URL')
+print(DB_URL.split('://')[1].split('@')[0].split(':')[0])
+print(DB_URL.split('://')[1].split('@')[0].split(':')[1])
 print("os.environ.get('DATABASE_URL')")
 print("os.environ.get('DATABASE_URL')")
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'sarpras_peminjamanruang',
         'USER': 'admin_penjadwalan',
         'PASSWORD': '',
